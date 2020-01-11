@@ -4,7 +4,7 @@
 [![Generic badge](https://img.shields.io/badge/Status-Building.svg)](https://shields.io/)
 
 # COMP421_Database_Project
-Creation from scratch of an database for some application with (simple) user interface. 
+Creation from scratch of an database from scratch for a real world application. Step by step, you will design a schema, create a database using DB2/PostgreSQL, populate your database with data, maintain, query and update your data, develop application programs, and implement a user-friendly interface.
 
 ## Description 
 - Develop and build a database application for a real-world domain
