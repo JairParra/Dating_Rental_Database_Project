@@ -9,6 +9,9 @@ Creation from scratch of an database from scratch for a real world application. 
 ## Description 
 - Develop and build a database application for a real-world domain
 
+## Overleaf Project/ Writeup 
+- Editing link: https://www.overleaf.com/5728318556jbfmtpbsbybj
+
 ## Announcements 
 - Group on MyCourses: 88 
 - Languages used: Java, PostgreSQL, HTML/CSS/??? 
