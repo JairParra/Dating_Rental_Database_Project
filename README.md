@@ -17,7 +17,7 @@ Creation from scratch of an database from scratch for a real world application. 
 
 ## Announcements 
 - Group on MyCourses: 88 
-- Languages used: Java, PostgreSQL, HTML/CSS/??? 
+- Languages used: Java, PostgreSQL, HTML/CSS/Javascript???
 
 ## Tasks 
 - This section is intended to distribute work on the project to each of the members. 
