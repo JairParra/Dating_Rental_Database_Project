@@ -3,6 +3,9 @@
 [![Generic badge](https://img.shields.io/badge/COMP421_Databases_Systems-red.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/Status-Building.svg)](https://shields.io/)
 
+
+![](figs/database-blue.png)
+
 # COMP421_Database_Project
 Creation from scratch of an database from scratch for a real world application. Step by step, you will design a schema, create a database using DB2/PostgreSQL, populate your database with data, maintain, query and update your data, develop application programs, and implement a user-friendly interface.
 
@@ -14,7 +17,7 @@ Creation from scratch of an database from scratch for a real world application. 
 
 ## Announcements 
 - Group on MyCourses: 88 
-- Languages used: Java, PostgreSQL, HTML/CSS/??? 
+- Languages used: Java, PostgreSQL, HTML/CSS/Javascript???
 
 ## Tasks 
 - This section is intended to distribute work on the project to each of the members. 
