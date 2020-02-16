@@ -124,7 +124,7 @@ CREATE TABLE orderTable
   rating DECIMAL(2,1) 
     CONSTRAINT rat CHECK( rating > 0.0 AND rating <= 5.0), -- restrict range , add to req. analysis
   PRIMARY KEY(oid), 
-  FOREIGN KEY (rid) REFERENCES request (rid)
+  FOREIGN KEY (rid) REFERENCES request(rid)
     ON DELETE RESTRICT ON UPDATE CASCADE, 
   FOREIGN KEY (inid) REFERENCES invoice (inid) 
     ON DELETE RESTRICT ON UPDATE CASCADE, 
