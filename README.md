@@ -14,26 +14,13 @@ Creation from scratch of an database from scratch for a real world application. 
 - The purpose of this application is to introduce a dating system different to any others: a date rental service. Instead of putting time and effort in looking for a date, in which some cases people are not willing or feel unable to put in, we want to offer them the possibility of renting a suitable dating partner with certain desired characteristics. Consider for instance, an event in which going alone would be rather awkward; rent a date of your liking instead! Sometimes people feel lonely and would simply like some companies to do their preferred activities: walking around a park, going to a restaurant or a cinema, talk at a café, etc. We propose an interactive platform in which people can do this easily. 
 
 ## Overleaf Project/ Writeup 
-- Editing link: https://www.overleaf.com/5728318556jbfmtpbsbybj
+- Requirement Analysis & Relational Model translation: https://www.overleaf.com/5728318556jbfmtpbsbybj
+
 
 ## Announcements 
 - Group on MyCourses: 88 
 - Languages used: Java, Python?, PostgreSQL, HTML/CSS/Javascript?
 
-## Tasks 
-- This section is intended to distribute work on the project to each of the members. 
-
-### Jair 
-- Something 
-
-### Chelly (程贺惠敏)
-- Something 
-
-### Niezi Jin (聂子衿)
-- Something
-
-### Wang Jifeng (王季丰)
-- Something
 
 ## ER-diagram 
 

@@ -1,0 +1,10 @@
+# README 
+
+This file contains information about our current project. Please read it and keep it organized. 
+
+- host: comp421.cs.mcgill.ca
+- Linux account name: cs421g88 
+- password: ??? 
+
+ex. connection: ssh comp421.mcgill.ca -l cs421g88 
+
