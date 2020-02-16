@@ -2,11 +2,12 @@
 and inserts records into them as well*/ 
 
 -- Note keep the DROPs in this order
-DROP TABLE IF EXISTS mate; 
 DROP TABLE IF EXISTS customer; 
 DROP TABLE IF EXISTS application; 
 DROP TABLE IF EXISTS manager; 
-DROP TABLE IF EXISTS usertable; 
+DROP TABLE IF EXISTS mate CASCADE; -- cascade option will drop dependent tables
+DROP TABLE IF EXISTS usertable CASCADE; 
+DROP TABLE IF EXISTS request ; 
 
 -- NOTE: Cannot use keyword 'user'
 CREATE TABLE usertable
@@ -34,7 +35,8 @@ CREATE TABLE mate
   hourlyRate INTEGER, -- should we change this to decimal? 
   PRIMARY KEY(username), 
   -- refer to a specific column, restrict and cascade to be explained later
-  FOREIGN KEY(username) REFERENCES usertable (username) ON DELETE RESTRICT ON UPDATE CASCADE
+  FOREIGN KEY(username) REFERENCES usertable (username) 
+    ON DELETE RESTRICT ON UPDATE CASCADE
 ); 
 
 CREATE TABLE customer 
@@ -42,14 +44,16 @@ CREATE TABLE customer
   username VARCHAR(50) NOT NULL, 
   preferences VARCHAR(100), 
   PRIMARY KEY(username), 
-  FOREIGN KEY(username) REFERENCES usertable (username) ON DELETE RESTRICT ON UPDATE CASCADE
+  FOREIGN KEY(username) REFERENCES usertable (username) 
+    ON DELETE RESTRICT ON UPDATE CASCADE
 ); 
 
 CREATE TABLE manager 
 (
   username VARCHAR(50) NOT NULL, 
   PRIMARY KEY(username), 
-  FOREIGN KEY(username) REFERENCES usertable (username) ON DELETE RESTRICT ON UPDATE CASCADE
+  FOREIGN KEY(username) REFERENCES usertable (username) 
+    ON DELETE RESTRICT ON UPDATE CASCADE
 ); 
 
 CREATE TABLE application 
@@ -60,21 +64,27 @@ CREATE TABLE application
   isApproved VARCHAR(20) NOT NULL, -- contains boolean values? 
   mngName VARCHAR(50) NOT NULL, 
   PRIMARY KEY(appid, username), 
-  FOREIGN KEY(username) REFERENCES mate ON DELETE RESTRICT ON UPDATE CASCADE, 
-  FOREIGN KEY(mngName) REFERENCES manager ON DELETE RESTRICT ON UPDATE CASCADE 
+  FOREIGN KEY(username) REFERENCES mate (username) 
+    ON DELETE RESTRICT ON UPDATE CASCADE, 
+  FOREIGN KEY(mngName) REFERENCES manager(username)
+    ON DELETE RESTRICT ON UPDATE CASCADE 
 ); 
 
 CREATE TABLE request
 (
   rid SERIAL NOT NULL,  
   rinfo VARCHAR(100),  
-  rstatus VARCHAR(20), -- pending , rejected or accepted 
-  mateName VARCHAR(50), 
+  rstatus VARCHAR(20) NOT NULL DEFAULT 'pending', -- pending , rejected or accepted 
+  mateName VARCHAR(50) NOT NULL, 
   decTime DATE, -- decision time 
   PRIMARY KEY (rid), 
-  FOREIGN KEY (mateName) REFERENCES mate
-)
+  FOREIGN KEY (mateName) REFERENCES mate (username)
+    ON DELETE RESTRICT ON UPDATE CASCADE
+); 
 
+
+
+CREATE TABLE 
 
 
 END
