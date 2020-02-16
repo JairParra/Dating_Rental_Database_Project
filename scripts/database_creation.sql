@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS mate CASCADE; -- cascade option will drop dependent tables
 DROP TABLE IF EXISTS usertable CASCADE; 
 DROP TABLE IF EXISTS request ; 
 DROP TABLE IF EXISTS invoice CASCADE; 
+DROP TABLE IF EXISTS orderTable CASCADE; 
 
 -- NOTE: Cannot use keyword 'user'
 CREATE TABLE usertable
@@ -90,7 +91,7 @@ CREATE TABLE request
 CREATE TABLE invoice
 (
   inid SERIAL NOT NULL, 
-  oid INTEGER NOT NULL,  -- THIS IS A FOREIGN KEY, will see code right after ORDER
+  oid INTEGER NOT NULL,  -- THIS IS A FOREIGN KEY, will see code right after orderTable
   description VARCHAR(100) NOT NULL,
   dueDate DATE NOT NULL, 
   amount DECIMAL(100,2) NOT NULL, 
@@ -108,7 +109,6 @@ CREATE TABLE invoice
 -- so 'odate' is the order date: wthe day the "date" will take place.; 
 -- NOTE2: ordStatus != rstatus
 -- NOTE3: cannot name this 'order' because it is a keyword
-DROP TABLE IF EXISTS orderTable; 
 CREATE TABLE orderTable 
 (
   oid SERIAL NOT NULL, 
@@ -128,6 +128,10 @@ CREATE TABLE orderTable
   FOREIGN KEY (inid) REFERENCES invoice (inid)
   -- FOREIGN KEY (custName) REFERENCES request (custName) 
 ); 
+
+-- update the actual key 
+ALTER TABLE invoice 
+  ADD FOREIGN KEY (oid) REFERENCES orderTable (oid) ; 
 
 
 END
