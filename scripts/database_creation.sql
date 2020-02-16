@@ -1,9 +1,10 @@
 /*The following script creates all tables for the database, 
 and inserts records into them as well*/ 
 
-DROP TABLE IF EXISTS mate; 
 DROP TABLE IF EXISTS usertable; 
+DROP TABLE IF EXISTS mate; 
 DROP TABLE IF EXISTS customer; 
+DROP TABLE IF EXISTS manager; 
 
 -- NOTE: Cannot use keyword 'user'
 CREATE TABLE usertable
@@ -31,14 +32,35 @@ CREATE TABLE mate
   hourlyRate INTEGER, -- should we change this to decimal? 
   PRIMARY KEY(username), 
   FOREIGN KEY(username) REFERENCES userTable
-)
+); 
 
 CREATE TABLE customer 
 (
   username VARCHAR(50) NOT NULL, 
   preferences VARCHAR(100), 
-  PRIMARY KEY(username) 
+  PRIMARY KEY(username), 
   FOREIGN KEY(username) REFERENCES userTable
-)
+); 
+
+CREATE TABLE manager 
+(
+  username VARCHAR(50) NOT NULL, 
+  PRIMARY KEY(username), 
+  FOREIGN KEY(username) REFERENCES userTable
+); 
+
+CREATE TABLE application 
+(
+  appid SERIAL NOT NULL,  -- this will auto-increment 
+  username VARCHAR(50) NOT NULL, 
+  aTime DATE NOT NULL, 
+  isApproved VARCHAR(20) NOT NULL, -- contains boolean values? 
+  mngName VARCHAR(50) NOT NULL, 
+  PRIMARY KEY(appid, username), 
+  FOREIGN KEY(username) REFERENCES userTable, 
+  FOREIGN KEY(mngName) REFERENCES manager 
+); 
+
+
 
 END
