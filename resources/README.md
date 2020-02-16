@@ -12,10 +12,14 @@ Server information:
 
 ex. connection:  
 `ssh comp421.mcgill.ca -l cs421g88`  
-`password: ********` 
+
+`password: ********`
+
 `cs421g88@comp421 ~ $bash`
 
 Database information: 
 - Once inside the server, connect to `postgresql` as follows: 
+
 `psql cs421` 
+
 `password: <same_as_above>` 
