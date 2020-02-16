@@ -31,3 +31,4 @@ def config(filename='database.ini', section='postgresql'):
     # return the database object 
     return db 
             
+

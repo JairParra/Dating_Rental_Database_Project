@@ -17,14 +17,14 @@ def connect():
     """ Connect to the PosgreSQL database server """
     
     # connection variable 
-    conn = "None" 
+    conn = None
     
     try: 
         # read connection parameters 
         params = config()
         
         # connect to the PostgreSQL server
-        print("Connectinf to the PostgreSQL database...") 
+        print("Connecting to the PostgreSQL database...") 
         conn = psycopg2.connect(**params) 
         
         # create a cursor 
@@ -44,7 +44,8 @@ def connect():
         
         # display the results
         competition = cur.fetchall() 
-        print(competition)
+        for row in competition: 
+            print(row)
         
         # close the communication with the PostgreSQL 
         cur.close() 
@@ -56,7 +57,7 @@ def connect():
         # verify connection is not empty 
         if conn is not None:  
             conn.close() 
-            print("Database connection closed. ")
+            print("\n Database connection closed. ")
             
             
 if __name__ == '__main__': 
