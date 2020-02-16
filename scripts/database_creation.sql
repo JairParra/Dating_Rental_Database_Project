@@ -74,7 +74,7 @@ CREATE TABLE application
 -- NOTE: request also need to include the customer name!!!! 
 CREATE TABLE request
 (
-  rid SERIAL NOT NULL,  
+  rid SERIAL NOT NULL UNIQUE,  
   rinfo VARCHAR(100),   --request information? 
   rstatus VARCHAR(20) NOT NULL DEFAULT 'pending', -- pending , rejected or accepted 
   custName VARCHAR(50) NOT NULL, -- THIS IS NEW!! see note 
@@ -118,18 +118,15 @@ CREATE TABLE orderTable
   ordStatus VARCHAR(20) NOT NULL DEFAULT 'pending', -- {active, pending, complete}
   rid INTEGER NOT NULL,  --request id 
   inid INTEGER NOT NULL, -- invoice id 
-  custName VARCHAR(50) NOT NULL, 
+  -- custName VARCHAR(50) NOT NULL, -- CustName IS NOT NEEDED!! 
   ratingDate DATE, -- can be null if no rating
   comment VARCHAR(100), -- can be null 
   rating DECIMAL(2,1) 
     CONSTRAINT rat CHECK( rating > 0.0 AND rating <= 5.0), -- restrict range , add to req. analysis
-  PRIMARY KEY(oid), 
-  FOREIGN KEY (rid) REFERENCES request(rid)
-    ON DELETE RESTRICT ON UPDATE CASCADE, 
-  FOREIGN KEY (inid) REFERENCES invoice (inid) 
-    ON DELETE RESTRICT ON UPDATE CASCADE, 
-  FOREIGN KEY (custName) REFERENCES request (custName) 
-    ON DELETE RESTRICT ON UPDATE CASCADE
+  PRIMARY KEY (oid), 
+  FOREIGN KEY (rid) REFERENCES request(rid),
+  FOREIGN KEY (inid) REFERENCES invoice (inid)
+  -- FOREIGN KEY (custName) REFERENCES request (custName) 
 ); 
 
 
