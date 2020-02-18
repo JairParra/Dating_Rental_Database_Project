@@ -17,6 +17,27 @@ Creation from scratch of an database from scratch for a real world application. 
 - Requirement Analysis & Relational Model translation: https://www.overleaf.com/5728318556jbfmtpbsbybj
 
 
+## Connection instructions: 
+
+Server information:  
+- host: `comp421.cs.mcgill.ca`
+- Linux account name: `cs421g88` 
+- password: `<our group's password>`
+
+ex. connection:  
+`ssh comp421.mcgill.ca -l cs421g88`  
+
+`password: ********`
+
+`cs421g88@comp421 ~ $bash`
+
+Database information: 
+- Once inside the server, connect to `postgresql` as follows: 
+
+`psql cs421` 
+
+`password: <same_as_above>` 
+
 ## Announcements 
 - Group on MyCourses: 88 
 - Languages used: Java, Python?, PostgreSQL, HTML/CSS/Javascript?
