@@ -16,7 +16,6 @@ DROP TABLE IF EXISTS modify CASCADE;
 DROP TABLE IF EXISTS generate CASCADE;
 
 
-
 -- NOTE: Cannot use keyword 'user'
 CREATE TABLE usertable
 (
@@ -62,7 +61,7 @@ CREATE TABLE manager
   PRIMARY KEY(username), 
   FOREIGN KEY(username) REFERENCES usertable (username) 
     ON DELETE RESTRICT ON UPDATE CASCADE
-); 
+);
 
 CREATE TABLE application 
 (
