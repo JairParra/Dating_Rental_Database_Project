@@ -1,7 +1,7 @@
 [![Generic badge](https://img.shields.io/badge/Database_Project-blue.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/Contributors-4-<COLOR>.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/COMP421_Databases_Systems-red.svg)](https://shields.io/)
-[![Generic badge](https://img.shields.io/badge/Status-Building.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Status-<Building>.svg)](https://shields.io/)
 
 
 ![](figs/database-blue.png)
