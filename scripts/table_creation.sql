@@ -4,10 +4,10 @@ and inserts records into them as well*/
 -- Note keep the DROPs in this order
 DROP TABLE IF EXISTS customer CASCADE; 
 DROP TABLE IF EXISTS application; 
-DROP TABLE IF EXISTS manager; 
+DROP TABLE IF EXISTS manager CASCADE; 
 DROP TABLE IF EXISTS mate CASCADE; -- cascade option will drop dependent tables
 DROP TABLE IF EXISTS usertable CASCADE; 
-DROP TABLE IF EXISTS request ; 
+DROP TABLE IF EXISTS request CASCADE; 
 DROP TABLE IF EXISTS invoice CASCADE; 
 DROP TABLE IF EXISTS orderTable CASCADE; 
 DROP TABLE IF EXISTS activity CASCADE;
@@ -23,10 +23,10 @@ CREATE TABLE usertable
     username VARCHAR(50) NOT NULL, 
     password VARCHAR(100) NOT NULL, 
     email VARCHAR(100) NOT NULL, 
-    first_name VARCHAR(100) NOT NULL, 
-    last_name VARCHAR(100) NOT NULL, 
+    firstname VARCHAR(100) NOT NULL, 
+    lastname VARCHAR(100) NOT NULL, 
     sex VARCHAR(100) NOT NULL, 
-    city VARCHAR(20) NOT NULL, 
+    city VARCHAR(30) NOT NULL, 
     phoneNum INTEGER NOT NULL, 
     dateOfBirth DATE,  -- Can be null, but will control minimum age at application level
     PRIMARY KEY (username)
@@ -140,7 +140,7 @@ ALTER TABLE invoice
   ADD FOREIGN KEY (oid) REFERENCES orderTable (oid) ; 
 
 
---- Neijin's updates
+--- Neijin's updates  
 
 CREATE TABLE activity
 (
@@ -148,11 +148,9 @@ CREATE TABLE activity
     oid INTEGER NOT NULL,
     description VARCHAR(200) NOT NULL,
     mngName VARCHAR(50) NOT NULL,
-    PRIMARY KEY (aid),
-    FOREIGN KEY (oid) REFERENCES orderTable(oid)
-        ON DELETE RESTRICT ON UPDATE CASCADE,
+    PRIMARY KEY (aid), 
+    FOREIGN KEY (oid) REFERENCES orderTable(oid), 
     FOREIGN KEY (mngName) REFERENCES manager(username)
-        ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- Note1 :Use starttable not start since start is a keyword
@@ -176,22 +174,22 @@ CREATE TABLE modify
     oid INTEGER NOT NULL,
     modTime TIME NOT NULL,
     modDate DATE NOT NULL,
-    
     FOREIGN KEY (oid) REFERENCES orderTable(oid),
     FOREIGN KEY (mngName) REFERENCES manager(username),
     PRIMARY KEY (mngName,oid)
 );
 
+-- generates request if 
 CREATE TABLE generate
 (
     rid INTEGER NOT NULL,
     oid INTEGER NOT NULL,
-
-    PRIMARY KEY (rid), 
+    PRIMARY KEY (rid),  
     FOREIGN KEY (rid )REFERENCES request(rid)
         ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (oid) REFERENCES orderTable(oid)
         ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
-END.
+
+END
