@@ -66,12 +66,12 @@ CREATE TABLE manager
 CREATE TABLE application 
 (
   appid SERIAL NOT NULL,  -- this will auto-increment 
-  username VARCHAR(50) NOT NULL, --- NOTE: should switch 'username' to 'mateName'
+  mateName VARCHAR(50) NOT NULL, --- NOTE: previously called "username"
+  mngName VARCHAR(50) NOT NULL, 
   aTime DATE NOT NULL, 
   isApproved VARCHAR(20) NOT NULL, -- contains boolean values? 
-  mngName VARCHAR(50) NOT NULL, 
-  PRIMARY KEY(appid, username), 
-  FOREIGN KEY(username) REFERENCES mate (username) 
+  PRIMARY KEY(appid, mateName),   -- NOTE: previously chad "username" -> mateName
+  FOREIGN KEY(mateName) REFERENCES mate (username) 
     ON DELETE RESTRICT ON UPDATE CASCADE, 
   FOREIGN KEY(mngName) REFERENCES manager(username)
     ON DELETE RESTRICT ON UPDATE CASCADE 

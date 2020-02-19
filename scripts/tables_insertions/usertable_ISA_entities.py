@@ -19,8 +19,9 @@ from faker import Faker
 
 ### 2. Seup
 
-np.random.seed(42) # to obtain the same data everytime 
-random.seed(42) # same as above 
+# Set up random seeds for reproducibility
+np.random.seed(42) 
+random.seed(42) 
 
 # Can read from this crap quite easily 
 usertable = pd.read_csv('../../data_raw/user_table.csv', encoding='utf8')  # read artificial user table
@@ -48,6 +49,8 @@ customers = [username for username in usernames2 if username not in mates]
 ###############################################################################
 
 ### 3. Tables Creation 
+
+###############################################################################
 
 ## 3.1 create_mate
 
@@ -78,10 +81,12 @@ def create_mate(mates):
 mates_insertion = create_mate(mates)
 
  #save the table 
-with open("mate_insertions.sql", "w") as file: 
+with open("2.mate_insertions.sql", "w") as file: 
     file.writelines(mates_insertion) 
     file.close() 
     
+###############################################################################
+
     
 ## 3.2  customer_table 
     
@@ -103,17 +108,21 @@ def create_customer(customers):
 customer_insertion = create_customer(customers)
 
  #save the table 
-with open("customer_insertions.sql", "w") as file: 
+with open("3.customer_insertions.sql", "w") as file: 
     file.writelines(customer_insertion) 
     file.close() 
     
+    
+###############################################################################
+
     
 ## 3.3 manager table 
     
 def create_manager(managers): 
     
-    records = []  
+    records = [] # store the records 
     
+    # create SQL INSERT statements
     for username in managers: 
         stmt = "INSERT INTO manager VALUES('{}'); \n".format(username) 
         records += stmt 
@@ -124,9 +133,75 @@ def create_manager(managers):
 manager_insertion = create_manager(managers)
 
  #save the table 
-with open("manager_insertions.sql", "w") as file: 
+with open("4.manager_insertions.sql", "w") as file: 
     file.writelines(manager_insertion) 
     file.close()  
+    
+    
+###############################################################################
+
+
+## 3.4 application table 
+    
+def create_application(mates, managers): 
+    """ 
+    Will create insertion statements for the application table of the form: 
+        INSERT INTO application VALUES(appid, username, aTime, isApproved, mngName)
+    respecting the appropriate constraints. 
+    @ args: 
+        @ mates: a list of mate usernames 
+        @ managers: a list of manager usernames
+    """
+    
+    # Note: Number of mates has to be at least the number of managers
+    if len(mates) < len(managers): 
+        raise ValueError("Cannot have more managers than mates")
+        
+    
+    records = []  # store the records 
+
+    # Choose manager names with replacement
+    mngNames = np.random.choice(mates, size=len(mates), replace=True)
+    
+    # Set up time generation objects 
+    fake_time = Faker()
+    start_date = datetime.date(year=2018, month=1,day=1) # suppose our business started in 2018
+    
+    # Approval statuses
+    approved = ["True","False"]
+    
+    # create as many records as mates
+    for i in range(len(mates)): 
+        
+        mateName = mates[i] # choose exactly one matename 
+        mngName = mngNames[i] # choose one manager, could be repeated 
+        aTime = str(fake_time.date_between(start_date=start_date, end_date='today')) # random date from 2018
+        isApproved = np.random.choice(approved) # randomly choose one 
+        
+        stmt = "INSERT INTO application VALUES('{}','{}','{}','{}');\n".format(
+                        mateName, mngName, aTime, isApproved) 
+        
+        records += [stmt] 
+        
+    return records 
+
+# create the mates statements 
+application_insertion = create_application(mates, managers)
+
+ #save the table 
+with open("5.application_insertions.sql", "w") as file: 
+    file.writelines(application_insertion) 
+    file.close()  
+
+###############################################################################
+
+        
+    
+    
+        
+        
+    
+        
     
     
     
