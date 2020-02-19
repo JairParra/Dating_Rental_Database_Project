@@ -19,6 +19,9 @@ from faker import Faker
 
 ### 2. Seup
 
+np.random.seed(42) # to obtain the same data everytime 
+random.seed(42) # same as above 
+
 # Can read from this crap quite easily 
 usertable = pd.read_csv('../../data_raw/user_table.csv', encoding='utf8')  # read artificial user table
 userdict = usertable.set_index('username').to_dict() # convert to dictionary for easy search 
@@ -75,7 +78,7 @@ def create_mate(mates):
 mates_insertion = create_mate(mates)
 
  #save the table 
-with open("mate_insertion.sql", "w") as file: 
+with open("mate_insertions.sql", "w") as file: 
     file.writelines(mates_insertion) 
     file.close() 
     
@@ -100,7 +103,7 @@ def create_customer(customers):
 customer_insertion = create_customer(customers)
 
  #save the table 
-with open("customer_insertion.sql", "w") as file: 
+with open("customer_insertions.sql", "w") as file: 
     file.writelines(customer_insertion) 
     file.close() 
     
@@ -112,7 +115,7 @@ def create_manager(managers):
     records = []  
     
     for username in managers: 
-        stmt = "INSERT INTO manager VALUES('{}')".format(username) 
+        stmt = "INSERT INTO manager VALUES('{}'); \n".format(username) 
         records += stmt 
     
     return records
@@ -121,9 +124,11 @@ def create_manager(managers):
 manager_insertion = create_manager(managers)
 
  #save the table 
-with open("manager_insertion.sql", "w") as file: 
+with open("manager_insertions.sql", "w") as file: 
     file.writelines(manager_insertion) 
     file.close()  
+    
+    
     
     
     
