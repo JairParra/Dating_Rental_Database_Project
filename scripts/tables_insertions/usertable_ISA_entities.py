@@ -195,7 +195,72 @@ with open("5_application_insertions.sql", "w") as file:
 
 ###############################################################################
 
-### 3.5 
+### 3.5 request table 
+    
+def create_request(mates, customers, size=20): 
+    """ 
+    Will create insertion statements for the application table of the form: 
+        INSERT INTO application (rid, rinfo, rstatus, custName, mateName, decTime) VALUES( -,-,-,-,-,- )
+    respecting the appropriate constraints. 
+    @ args: 
+        @ mates: a list of mate usernames 
+        @ managers: a list of customers
+        
+    NOTE: A request must have exactly one Mate and exactly one Customer, but 
+        a customer can book several Mates, and a single Mate can be booked by several 
+        customers (see ER diagram). Request decDate CAN overlap! 
+    """
+    
+    records = []  # store the records 
+
+    # Choose mate and customer names without replacement
+    mateNames = np.random.choice(mates, size=size, replace=True) 
+    customerNames = np.random.choice(customers, size=size, replace=True)
+    
+    
+    # Set up time generation objects 
+    fake_time = Faker()
+    start_date = datetime.date(year=2018, month=1,day=1) # suppose our business started in 2018
+    request_dates = [fake_time.date_between(start_date=start_date, end_date='today') for i in range(size)] 
+    decision_dates = [fake_time.date_between(start_date=request_dates[i], end_date='today') for i in range(size)]
+    request_dates = [str(date) for date in request_dates]  # convert back to string format
+    decision_dates= [str(date) for date in decision_dates]  # convert back to string format ?
+    
+    # statuses 
+    statuses = ["DEFAULT","rejected","accepted"]
+    
+    # create size number of records
+    for i in range(size): 
+        
+        rid = i+1            
+        rstatus = np.random.choice(statuses, p=[0.20,0.40,0.40]) # choose status randomly 
+        custName = customerNames[i] 
+        mateName = mateNames[i] 
+        rdate = request_dates[i] 
+        decDate = decision_dates[i]
+        
+        # add don't add info for some requests
+        if i % 5 != 0: 
+            rinfo = "Information" + str(random.randint(1,100))
+            stmt = "INSERT INTO request VALUES({},'{}','{}','{}','{}','{}','{}');\n".format(
+                rid,rinfo,rstatus,custName,mateName,rdate,decDate)  
+        else: 
+            stmt = "INSERT INTO request VALUES({},DEFAULT,'{}','{}','{}','{}');\n".format(
+                rid,rstatus,custName,mateName,rdate,decDate)              
+        
+        records += [stmt] 
+        
+    return records 
+
+
+# create the request statements 
+request_insertion = create_request(mates, customers)
+
+#save the table 
+with open("6_request_insertions.sql", "w") as file: 
+    file.writelines(request_insertion) 
+    file.close()  
+
     
     
         

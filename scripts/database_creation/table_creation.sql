@@ -80,14 +80,15 @@ CREATE TABLE application
 -- NOTE: request also need to include the customer name!!!! 
 CREATE TABLE request
 (
-  rid SERIAL NOT NULL UNIQUE,  
-  rinfo VARCHAR(100),   --request information? 
+  rid SERIAL NOT NULL UNIQUE, 
+  rinfo VARCHAR(100),  --request information? 
   rstatus VARCHAR(20) NOT NULL DEFAULT 'pending', -- pending , rejected or accepted 
   custName VARCHAR(50) NOT NULL, -- THIS IS NEW!! see note 
   mateName VARCHAR(50) NOT NULL, 
-  decTime DATE, -- decision time 
+  rdate DATE, -- request time
+  decDate DATE, -- decision time 
   PRIMARY KEY (rid), 
-  FOREIGN KEY (mateName) REFERENCES mate (username)
+  FOREIGN KEY (mateName) REFERENCES mate (username) 
     ON DELETE RESTRICT ON UPDATE CASCADE, 
   FOREIGN KEY (custName) REFERENCES customer (username)
     ON DELETE RESTRICT ON UPDATE CASCADE
@@ -95,7 +96,7 @@ CREATE TABLE request
 
 CREATE TABLE invoice
 (
-  inid SERIAL NOT NULL, 
+  inid SERIAL NOTNULL, 
   oid INTEGER NOT NULL,  -- THIS IS A FOREIGN KEY, will see code right after orderTable
   description VARCHAR(100) NOT NULL,
   dueDate DATE NOT NULL, 

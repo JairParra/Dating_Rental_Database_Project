@@ -18,4 +18,3 @@ INSERT INTO application VALUES(17,'jpresnall10','mickovitzw','2019-01-09','False
 INSERT INTO application VALUES(18,'ndoersf','lchadbandh','2018-01-03','False');
 INSERT INTO application VALUES(19,'iscrimshaw14','bmccartand','2018-05-24','True');
 INSERT INTO application VALUES(20,'bmatousl','smccomiskieu','2019-04-21','False');
-
