@@ -81,7 +81,7 @@ def create_mate(mates):
 mates_insertion = create_mate(mates)
 
  #save the table 
-with open("2.mate_insertions.sql", "w") as file: 
+with open("2_mate_insertions.sql", "w") as file: 
     file.writelines(mates_insertion) 
     file.close() 
     
@@ -108,7 +108,7 @@ def create_customer(customers):
 customer_insertion = create_customer(customers)
 
  #save the table 
-with open("3.customer_insertions.sql", "w") as file: 
+with open("3_customer_insertions.sql", "w") as file: 
     file.writelines(customer_insertion) 
     file.close() 
     
@@ -133,7 +133,7 @@ def create_manager(managers):
 manager_insertion = create_manager(managers)
 
  #save the table 
-with open("4.manager_insertions.sql", "w") as file: 
+with open("4_manager_insertions.sql", "w") as file: 
     file.writelines(manager_insertion) 
     file.close()  
     
@@ -161,7 +161,7 @@ def create_application(mates, managers):
     records = []  # store the records 
 
     # Choose manager names with replacement
-    mngNames = np.random.choice(mates, size=len(mates), replace=True)
+    mngNames = np.random.choice(managers, size=len(mates), replace=True)
     
     # Set up time generation objects 
     fake_time = Faker()
@@ -178,8 +178,8 @@ def create_application(mates, managers):
         aTime = str(fake_time.date_between(start_date=start_date, end_date='today')) # random date from 2018
         isApproved = np.random.choice(approved) # randomly choose one 
         
-        stmt = "INSERT INTO application VALUES('{}','{}','{}','{}');\n".format(
-                        mateName, mngName, aTime, isApproved) 
+        stmt = "INSERT INTO application VALUES({},'{}','{}','{}','{}');\n".format(
+                        i+1,mateName, mngName, aTime, isApproved) 
         
         records += [stmt] 
         
@@ -189,13 +189,13 @@ def create_application(mates, managers):
 application_insertion = create_application(mates, managers)
 
  #save the table 
-with open("5.application_insertions.sql", "w") as file: 
+with open("5_application_insertions.sql", "w") as file: 
     file.writelines(application_insertion) 
     file.close()  
 
 ###############################################################################
 
-        
+### 3.5 
     
     
         
