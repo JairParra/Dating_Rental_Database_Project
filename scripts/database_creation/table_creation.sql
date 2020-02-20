@@ -96,7 +96,7 @@ CREATE TABLE request
 
 CREATE TABLE invoice
 (
-  inid SERIAL NOTNULL, 
+  inid SERIAL NOT NULL, 
   oid INTEGER NOT NULL,  -- THIS IS A FOREIGN KEY, will see code right after orderTable
   description VARCHAR(100) NOT NULL,
   dueDate DATE NOT NULL, 

@@ -261,6 +261,69 @@ with open("6_request_insertions.sql", "w") as file:
     file.writelines(request_insertion) 
     file.close()  
 
+
+###############################################################################
+
+### 3.6 request table 
+    
+## ** WRITE def create_<table>(): here ** ### 
+    
+    
+## ** WRITE export_sql code in here ** ##
+    
+    
+###############################################################################
+
+### 3.7 invoice table 
+    
+## ** WRITE def create_<table>(): here ** ### 
+
+
+## ** WRITE export_sql code in here ** ##
+
+    
+
+###############################################################################
+
+### 3.8 order table 
+    
+## ** WRITE def create_<table>(): here ** ### 
+    
+    
+## ** WRITE export_sql code in here ** ##
+
+
+
+###############################################################################
+
+### 3.9 startTable table 
+    
+## ** WRITE def create_<table>(): here ** ### 
+
+
+## ** WRITE export_sql code in here ** ##
+
+    
+    
+###############################################################################
+
+### 3.10 modify table 
+    
+## ** WRITE def create_<table>(): here ** ### 
+    
+    
+## ** WRITE export_sql code in here ** ##
+
+
+###############################################################################
+
+### 3.11 generate table 
+    
+## ** WRITE def create_<table>(): here ** ### 
+    
+    
+## ** WRITE export_sql code in here ** ##
+    
     
     
         
