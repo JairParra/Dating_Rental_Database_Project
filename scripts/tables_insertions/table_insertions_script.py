@@ -17,7 +17,7 @@ from faker import Faker
 
 ##############################################################################
 
-### 2. Seup
+### 2. Setup
 
 # Set up random seeds for reproducibility
 np.random.seed(42) 

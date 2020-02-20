@@ -168,7 +168,7 @@ CREATE TABLE startTable
     FOREIGN KEY (rid) REFERENCES request(rid)
 );
 
-CREATE TABLE modify
+CREATE TABLE modification -- NOTE: previously called "modify", but this is a reserved word
 (
     mngName VARCHAR(50) NOT NULL,
     oid INTEGER NOT NULL,
@@ -180,7 +180,7 @@ CREATE TABLE modify
 );
 
 -- generates request if 
-CREATE TABLE generate
+CREATE TABLE generate -- 
 (
     rid INTEGER NOT NULL,
     oid INTEGER NOT NULL,
