@@ -42,10 +42,12 @@ Database information:
 
 - Please run the creation (SQL) scripts in the following order: 
 
-    1. `usertable_insertions.sql` 
-    2. `mate_insertions.sql`
-    3. `customer_insertions.sql` 
-    4. `manager_insertions.sql`
+    1. `1_usertable_insertions.sql` 
+    2. `2_mate_insertions.sql`
+    3. `3_customer_insertions.sql` 
+    4. `4_manager_insertions.sql`
+    5. `5_application_insertions.sql` 
+    6. `6_request_insertions.sql`
 
 ## Announcements 
 - Group on MyCourses: 88 
