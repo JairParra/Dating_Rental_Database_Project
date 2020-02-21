@@ -70,8 +70,8 @@ CREATE TABLE manager
   --***FOREIGN KEY(username) REFERENCES usertable 
     ON DELETE RESTRICT ON UPDATE CASCADE
 );
-
-CREATE TABLE application 
+--*** problem? applicaitontable
+CREATE TABLE application
 (
   appid SERIAL NOT NULL,  -- this will auto-increment 
   mateName VARCHAR(50) NOT NULL, --- NOTE: previously called "username"
