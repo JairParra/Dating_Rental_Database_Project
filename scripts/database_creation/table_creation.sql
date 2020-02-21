@@ -69,16 +69,17 @@ CREATE TABLE manager
 
   --***FOREIGN KEY(username) REFERENCES usertable 
     ON DELETE RESTRICT ON UPDATE CASCADE
-); 
+);
 
 CREATE TABLE application 
 (
   appid SERIAL NOT NULL,  -- this will auto-increment 
-  username VARCHAR(50) NOT NULL, --- NOTE: should switch 'username' to 'mateName'
+  mateName VARCHAR(50) NOT NULL, --- NOTE: previously called "username"
+  mngName VARCHAR(50) NOT NULL, 
   aTime DATE NOT NULL, 
   isApproved VARCHAR(20) NOT NULL, -- ***BIT is common for boolean
   mngName VARCHAR(50) NOT NULL, 
-  PRIMARY KEY(appid, username), 
+  PRIMARY KEY(appid, mateName),   -- NOTE: previously chad "username" -> mateName
   FOREIGN KEY(username) REFERENCES mate (username) 
     ON DELETE RESTRICT ON UPDATE CASCADE, 
   FOREIGN KEY(mngName) REFERENCES manager(username)
@@ -95,8 +96,10 @@ CREATE TABLE request
   custName VARCHAR(50) NOT NULL, -- THIS IS NEW!! see note 
   mateName VARCHAR(50) NOT NULL, 
   decTime DATE, -- decision time --***NOTNULL?
+  rdate DATE, -- request time --*** why we need this
+  decDate DATE, -- decision time 
   PRIMARY KEY (rid), 
-  FOREIGN KEY (mateName) REFERENCES mate (username)
+  FOREIGN KEY (mateName) REFERENCES mate (username) 
     ON DELETE RESTRICT ON UPDATE CASCADE, 
   FOREIGN KEY (custName) REFERENCES customer (username)
     ON DELETE RESTRICT ON UPDATE CASCADE
@@ -178,7 +181,7 @@ CREATE TABLE startTable
     FOREIGN KEY (rid) REFERENCES request(rid)
 );
 
-CREATE TABLE modify
+CREATE TABLE modification -- NOTE: previously called "modify", but this is a reserved word
 (
     mngName VARCHAR(50) NOT NULL,
     oid INTEGER NOT NULL,
@@ -190,7 +193,7 @@ CREATE TABLE modify
 );
 
 -- generates request if 
-CREATE TABLE generate
+CREATE TABLE generate -- 
 (
     rid INTEGER NOT NULL,
     oid INTEGER NOT NULL,

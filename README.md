@@ -1,7 +1,7 @@
 [![Generic badge](https://img.shields.io/badge/Database_Project-blue.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/Contributors-4-<COLOR>.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/COMP421_Databases_Systems-red.svg)](https://shields.io/)
-[![Generic badge](https://img.shields.io/badge/Status-Building.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Status-<Building>.svg)](https://shields.io/)
 
 
 ![](figs/database-blue.png)
@@ -16,6 +16,41 @@ Creation from scratch of an database from scratch for a real world application. 
 ## Overleaf Project/ Writeup 
 - Requirement Analysis & Relational Model translation: https://www.overleaf.com/5728318556jbfmtpbsbybj
 
+
+## Connection instructions: 
+
+Server information:  
+- host: `comp421.cs.mcgill.ca`
+- Linux account name: `cs421g88` 
+- password: `<our group's password>`
+
+ex. connection:  
+`ssh comp421.mcgill.ca -l cs421g88`  
+
+`password: ********`
+
+`cs421g88@comp421 ~ $bash`
+
+Database information: 
+- Once inside the server, connect to `postgresql` as follows: 
+
+`psql cs421` 
+
+`password: <same_as_above>` 
+
+## Database creation: 
+
+- Please run the creation (SQL) scripts in the following order: 
+
+    1. `table_creation.sql` 
+    2. `1_usertable_insertions.sql` 
+    3. `2_mate_insertions.sql` 
+    4. `3_customer_insertions.sql` 
+    5. `4_manager_insertions.sql`
+    6. `5_application_insertions.sql` 
+    7. `6_request_insertions.sql`
+
+where the first script is in `scripts/database_creation/` and the rest are in `scripts/table_insertions/` 
 
 ## Announcements 
 - Group on MyCourses: 88 

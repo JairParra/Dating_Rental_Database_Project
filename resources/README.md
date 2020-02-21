@@ -23,3 +23,13 @@ Database information:
 `psql cs421` 
 
 `password: <same_as_above>` 
+
+## Database creation: 
+
+- Please run the creation (SQL) scripts in the following order: 
+
+    1. usertable_insertions.sql 
+    2. mate_insertions.sql
+    3. customer_insertions.sql 
+    4. manager_insertions.sql
+
