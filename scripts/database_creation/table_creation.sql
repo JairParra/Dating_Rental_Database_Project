@@ -69,7 +69,7 @@ CREATE TABLE application
   appid SERIAL NOT NULL,  -- this will auto-increment 
   mateName VARCHAR(50) NOT NULL, --- NOTE: previously called "username"
   mngName VARCHAR(50) NOT NULL, 
-  aTime DATE NOT NULL, 
+  aDate DATE NOT NULL,  -- application date
   appStatus VARCHAR(20) NOT NULL, -- contains boolean values?  -- NOTE:  check at software
   PRIMARY KEY(appid, mateName),   -- NOTE: previously chad "username" -> mateName
   FOREIGN KEY(mateName) REFERENCES mate (username) 
