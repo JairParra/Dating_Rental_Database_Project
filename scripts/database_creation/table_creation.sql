@@ -15,20 +15,19 @@ DROP TABLE IF EXISTS startTable CASCADE;
 DROP TABLE IF EXISTS modify CASCADE;
 DROP TABLE IF EXISTS generate CASCADE;
 
---***FROM MY NOTES. CASCADE is not really friendly,
---*** MAYBE WE SHOULD USE FORIENGN KEY
+
 
 -- NOTE: Cannot use keyword 'user'
 CREATE TABLE usertable
 (
     username VARCHAR(50) NOT NULL, 
     password VARCHAR(100) NOT NULL, 
-    email VARCHAR(100) NOT NULL, --UNIQUE
+    email VARCHAR(100) UNIQUE NOT NULL, 
     firstname VARCHAR(100) NOT NULL, 
     lastname VARCHAR(100) NOT NULL, 
-    sex VARCHAR(100) NOT NULL, -- ***can be INTEGER 0/1 to control?***
+    sex VARCHAR(100) NOT NULL,
     city VARCHAR(30) NOT NULL, 
-    phoneNum INTEGER NOT NULL, --**CHECK if INTEGER can hold 
+    phoneNum INTEGER NOT NULL, 
     dateOfBirth DATE,  -- Can be null, but will control minimum age at application level
     PRIMARY KEY (username)
 ); 
@@ -39,25 +38,21 @@ CREATE TABLE mate
   nickname VARCHAR(50) NOT NULL, 
   description VARCHAR(200) NOT NULL, 
   language VARCHAR(15) NOT NULL, 
-  height DECIMAL(3,2),  --store in  (meters.cm),  check at application level  
-  weight DECIMAL(5,2), -- measure in kg.
-  hourlyRate INTEGER, -- should we change this to decimal? , should check?  ***INTEGER is fine 
-
-  --*** WHY the above does not dequired NOT NULL
+  height DECIMAL(3,2) NOT NULL,  --store in  (meters.cm),  check at application level 
+  weight DECIMAL(5,2) NOT NULL, -- measure in kg.
+  hourlyRate INTEGER, -- should we change this to decimal? , should check? 
   PRIMARY KEY(username), 
   -- refer to a specific column, restrict and cascade to be explained later
   FOREIGN KEY(username) REFERENCES usertable (username) 
-  --***FOREIGN KEY(username) REFERENCES usertable 
     ON DELETE RESTRICT ON UPDATE CASCADE
 ); 
 
 CREATE TABLE customer 
 (
   username VARCHAR(50) NOT NULL, 
-  preferences VARCHAR(100), --***DEFUAL: 'undefined'
+  preferences VARCHAR(100) DEFAULT "undefined", 
   PRIMARY KEY(username), 
   FOREIGN KEY(username) REFERENCES usertable (username) 
-   --***FOREIGN KEY(username) REFERENCES usertable 
     ON DELETE RESTRICT ON UPDATE CASCADE
 ); 
 
@@ -66,21 +61,18 @@ CREATE TABLE manager
   username VARCHAR(50) NOT NULL, 
   PRIMARY KEY(username), 
   FOREIGN KEY(username) REFERENCES usertable (username) 
-
-  --***FOREIGN KEY(username) REFERENCES usertable 
     ON DELETE RESTRICT ON UPDATE CASCADE
 );
---*** problem? applicaitontable
-CREATE TABLE application
+
+CREATE TABLE application 
 (
   appid SERIAL NOT NULL,  -- this will auto-increment 
   mateName VARCHAR(50) NOT NULL, --- NOTE: previously called "username"
   mngName VARCHAR(50) NOT NULL, 
   aTime DATE NOT NULL, 
-  isApproved VARCHAR(20) NOT NULL, -- ***BIT is common for boolean
-  mngName VARCHAR(50) NOT NULL, 
+  appStatus VARCHAR(20) NOT NULL, -- contains boolean values?  -- NOTE:  check at software
   PRIMARY KEY(appid, mateName),   -- NOTE: previously chad "username" -> mateName
-  FOREIGN KEY(username) REFERENCES mate (username) 
+  FOREIGN KEY(mateName) REFERENCES mate (username) 
     ON DELETE RESTRICT ON UPDATE CASCADE, 
   FOREIGN KEY(mngName) REFERENCES manager(username)
     ON DELETE RESTRICT ON UPDATE CASCADE 
@@ -89,14 +81,12 @@ CREATE TABLE application
 -- NOTE: request also need to include the customer name!!!! 
 CREATE TABLE request
 (
-  rid SERIAL NOT NULL UNIQUE,  
-  --*** no need for decalring UNIQUE here
-  rinfo VARCHAR(100),   --request information? 
-  rstatus VARCHAR(20) NOT NULL DEFAULT 'pending', -- pending , rejected or accepted  ***WHY NOT INTEGER
+  rid SERIAL NOT NULL, 
+  rinfo VARCHAR(100),  --request information? 
+  rstatus VARCHAR(20) NOT NULL DEFAULT 'pending', -- pending , rejected or accepted 
   custName VARCHAR(50) NOT NULL, -- THIS IS NEW!! see note 
   mateName VARCHAR(50) NOT NULL, 
-  decTime DATE, -- decision time --***NOTNULL?
-  rdate DATE, -- request time --*** why we need this
+  rdate DATE, -- request time
   decDate DATE, -- decision time 
   PRIMARY KEY (rid), 
   FOREIGN KEY (mateName) REFERENCES mate (username) 
@@ -129,8 +119,7 @@ CREATE TABLE invoice
 CREATE TABLE orderTable 
 (
   oid SERIAL NOT NULL, 
-  oStartDate DATE NOT NULL, -- format: 'YYYY-MM-DD'
-  --*** oEndDate DATE NOT NULL, -- format: 'YYYY-MM-DD'
+  odate DATE NOT NULL, -- format: 'YYYY-MM-DD'
   startTime TIME NOT NULL, -- format: '15:00:02'
   endTime TIME NOT NULL, 
   ordStatus VARCHAR(20) NOT NULL DEFAULT 'pending', -- {active, pending, complete}
@@ -158,8 +147,7 @@ CREATE TABLE activity
 (
     aid SERIAL NOT NULL,
     oid INTEGER NOT NULL,
-    description VARCHAR(200) NOT NULL,
-    --***UNIQUE
+    description VARCHAR(200) NOT NULL UNIQUE,
     mngName VARCHAR(50) NOT NULL,
     PRIMARY KEY (aid), 
     FOREIGN KEY (oid) REFERENCES orderTable(oid), 
