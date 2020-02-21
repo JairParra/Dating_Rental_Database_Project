@@ -281,11 +281,12 @@ def create_invoice(customers, size=20):
     """
 
     records = []  # store the records 
-    oids = random.sample(range(1,size+1), 20)
+    # oids = random.sample(range(1,size+1), 20) if dont want to replicate
+    oids = []
     descriptions = ["description"+str(i+1) for i in range(len(size))] # dreate artificial 
     for j in range(size):
-        desp.append("description"+(j+1))
-        oids = random.sample(range(1,size+1), 20)
+        descriptions.append("description"+(j+1))
+        oids.append(random.randrange(1,size+1))
     
     # Set up time generation objects 
     fake_time = Faker()
@@ -323,7 +324,7 @@ def create_invoice(customers, size=20):
 invoice_insertion = create_invoice(customers)
 
 #save the table 
-with open("7_request_invoice.sql", "w") as file: 
+with open("7_invoice_insertions.sql", "w") as file: 
     file.writelines(request_insertion) 
     file.close()  
 
@@ -353,24 +354,94 @@ with open("7_request_invoice.sql", "w") as file:
 
 ### 3.10 modify table 
     
-## ** WRITE def create_<table>(): here ** ### 
+def create_modify( managers, size=20): 
+
+    records = []  # store the records 
+    oids = random.sample(range(1,size+1), size)
+    manager = random.sample(managers, size)
     
+    # create time
+    fake_time = Faker()
+    start_date = datetime.date(year=2018, month=1,day=1) # suppose our business started in 2018
+    modTimes = [fake_time.date_between(start_date=start_date, end_date='today') for i in range(size)] 
+    modTimes = [str(time) for time in modTimes]
     
-## ** WRITE export_sql code in here ** ##
+    # create size number of records
+    for i in range(size): 
+
+        stmt = "INSERT INTO modify VALUES({},{},'{}');\n".format(
+                manager[i],oids[i],modTImes[i])         
+        records += [stmt] 
+        
+    return records
+
+# create the request statements 
+modify_insertion = create_modify(customers)
+
+#save the table 
+with open("11_modify_insertions.sql", "w") as file: 
+    file.writelines(modify_insertion) 
+    file.close()  
+
 
 
 ###############################################################################
 
 ### 3.11 generate table 
     
+def create_generate( size=20): 
+    records = []  # store the records 
+    rids = random.sample(range(1,size+1), size)
+    
+    # create size number of records
+    for i in range(size): 
+        oid = random.randrange(1,size+1) 
+        stmt = "INSERT INTO generate VALUES({},{});\n".format(
+                rids[i],oid)         
+        records += [stmt] 
+        
+    return records
+
+# create the generate statements 
+generate_insertion = create_generate(customers)
+
+#save the table 
+with open("11_generate_insertions.sql", "w") as file: 
+    file.writelines(generate_insertion) 
+    file.close()  
+
+###############################################################################
+
+### 3.12 Activity table 
+    
 ## ** WRITE def create_<table>(): here ** ### 
     
     
 ## ** WRITE export_sql code in here ** ##
     
+###############################################################################
+
+### 3.13 Schedule table 
     
-    
+def create_schedule( size=20): 
+    records = []  # store the records 
+    aids = random.sample(range(1,size+1), size)
+    oids = random.sample(range(1,size+1), size)
+    # create size number of records
+    for i in range(size): 
+        stmt = "INSERT INTO schedule VALUES({},{});\n".format(
+                aids[i],oids[i])         
+        records += [stmt] 
         
+    return records
+
+# create the request statements 
+schedule_insertion = create_schedule()
+
+#save the table 
+with open("13_schedule_insertions.sql", "w") as file: 
+    file.writelines(schedule_insertion) 
+    file.close()  
         
     
         
