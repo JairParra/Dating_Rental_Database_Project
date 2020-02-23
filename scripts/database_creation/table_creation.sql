@@ -120,16 +120,14 @@ CREATE TABLE invoice
 CREATE TABLE orderTable 
 (
   oid SERIAL NOT NULL, 
-  odate DATE NOT NULL, -- format: 'YYYY-MM-DD'
-  startTime TIME NOT NULL, -- format: '15:00:02'
-  endTime TIME NOT NULL, 
+  startDate DATE NOT NULL, -- format: 'YYYY-MM-DD'
+  endDate DATE NOT NULL, -- format: 'YYYY-MM-DD'
   ordStatus VARCHAR(20) NOT NULL DEFAULT 'pending', -- {active, pending, complete}
-  rid INTEGER NOT NULL,  --request id 
-  inid INTEGER NOT NULL, -- invoice id 
-  -- custName VARCHAR(50) NOT NULL, -- CustName IS NOT NEEDED!! 
+  rid INTEGER NOT NULL,  --request id
+  -- custName VARCHAR(50) NOT NULL, -- CustName IS NOT NEEDED!!
   ratingDate DATE, -- can be null if no rating
   comment VARCHAR(100), -- can be null 
-  rating DECIMAL(2,1) 
+  rating DECIMAL(2,1)  -- can be null
     CONSTRAINT rat CHECK( rating > 0.0 AND rating <= 5.0), -- restrict range , add to req. analysis
   PRIMARY KEY (oid), 
   FOREIGN KEY (rid) REFERENCES request(rid),
@@ -163,7 +161,6 @@ CREATE TABLE startTable
     mateName VARCHAR(50) NOT NULL,
     custName VARCHAR(50) NOT NULL,
     startDate DATE NOT NULL,  --start date
-    startTime TIME NOT NULL,
     PRIMARY KEY (mateName, custName) ,
     FOREIGN KEY (mateName) REFERENCES mate(username),
     FOREIGN KEY (custName) REFERENCES customer(username),

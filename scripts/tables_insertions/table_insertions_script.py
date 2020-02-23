@@ -325,21 +325,80 @@ with open("7_invoice_insertions.sql", "w") as file:
 
 ### 3.8 order table 
     
-## ** WRITE def create_<table>(): here ** ### 
-    
-    
-## ** WRITE export_sql code in here ** ##
+def create_order(size=10):
+
+    records = []  # store the records
+    rids = [random.randrange(1, size + 1) for i in range(size)]
+    comments = ["comments" + str(i + 1) for i in range(size)]  # create artificial
+
+    # Set up time generation objects
+    fake_time = Faker()
+    start_date0 = datetime.date(year=2018, month=1, day=1)  # suppose our business started in 2018
+    start_dates = [fake_time.date_between(start_date=start_date0, end_date='today') for i in range(size)]
+
+    # statuses
+    statuses = ["active", "pending", "complete"]
+
+    # create size number of records
+    for i in range(size):
+
+        oid = i + 1
+        status = random.choice(statuses)  # choose status randomly
+        start_date = start_dates[i]
+        end_date = fake_time.date_between(start_date=start_date, end_date='today')
+        rate_date = fake_time.date_between(start_date=end_date, end_date='today')
+        rating = round(random.uniform(0.0,5.0), 1)
+        if(i % 5 ==3):
+            stmt = "INSERT INTO order VALUES({},'{}','{}','{}',{},'{}','{}',{});\n".format(
+                oid, str(start_date), end_date, status, rids[i], rate_date, comments[i], rating)
+        else:
+            stmt = "INSERT INTO order VALUES({},'{}','{}','{}','{}');\n".format(
+                oid, str(start_date), end_date, status,  comments[i])
+        records += [stmt]
+
+    return records
 
 
+# create the request statements
+order_insertion = create_order()
+
+# save the table
+with open("8_order_insertions.sql", "w") as file:
+    file.writelines(order_insertion)
+    file.close()
 
 ###############################################################################
 
 ### 3.9 startTable table 
-    
-## ** WRITE def create_<table>(): here ** ### 
+def create_startTable(mates, customers, size=10):
 
 
-## ** WRITE export_sql code in here ** ##
+    records = []  # store the records
+    rids = [random.randrange(1, size + 1) for i in range(size)]
+
+    customerNames = np.random.choice(customers, size=size, replace=False)
+    matesNames = np.random.choice(mates, size=size, replace=False)
+    # Set up time generation objects
+    fake_time = Faker()
+    start_date0 = datetime.date(year=2018, month=1, day=1)  # suppose our business started in 2018
+    start_dates = [fake_time.date_between(start_date=start_date0, end_date='today') for i in range(size)]
+
+    # create size number of records
+    for i in range(size):
+        start_date = start_dates[i]
+        stmt = "INSERT INTO startTable VALUES({},'{}','{}','{}');\n".format(
+            rids[i], customerNames[i],matesNames[i],str(start_date))
+        records += [stmt]
+    return records
+
+
+# create the request statements
+startTable_insertion = create_startTable(mates,customers)
+
+# save the table
+with open("9_startTable_insertions.sql", "w") as file:
+    file.writelines(startTable_insertion)
+    file.close()
 
 ###############################################################################
 ### 3.10 Activity table
