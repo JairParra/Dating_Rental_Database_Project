@@ -102,9 +102,10 @@ CREATE TABLE invoice
   description VARCHAR(100) NOT NULL,
   dueDate DATE NOT NULL, 
   amount DECIMAL(100,2) NOT NULL, 
-  custName VARCHAR(50) NOT NULL, 
-  pamount DECIMAL(100,2) NOT NULL, --NOTE: repeated????  
-  method VARCHAR(20) NOT NULL,
+  custName VARCHAR(50) NOT NULL,
+  --** can be not payed
+  payDate DATE,
+  method VARCHAR(20),
   status VARCHAR(20) NOT NULL, -- (pending, paid)   
   PRIMARY KEY(inid), 
   FOREIGN KEY(custName) REFERENCES customer (username) 
@@ -187,6 +188,17 @@ CREATE TABLE generate --
     oid INTEGER NOT NULL,
     PRIMARY KEY (rid),  
     FOREIGN KEY (rid )REFERENCES request(rid)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (oid) REFERENCES orderTable(oid)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE schedule --
+(
+    aid INTEGER NOT NULL,
+    oid INTEGER NOT NULL,
+    PRIMARY KEY (aid,oid),
+    FOREIGN KEY (aid)REFERENCES activity(aid)
         ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (oid) REFERENCES orderTable(oid)
         ON DELETE RESTRICT ON UPDATE CASCADE
