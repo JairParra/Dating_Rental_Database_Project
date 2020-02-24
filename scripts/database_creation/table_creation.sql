@@ -121,7 +121,7 @@ CREATE TABLE orderTable
 (
   oid SERIAL NOT NULL, 
   startDate DATE NOT NULL, -- format: 'YYYY-MM-DD'
-  endDate DATE NOT NULL, -- format: 'YYYY-MM-DD'
+  endDate DATE NOT NULL, -- format: 'YYYY-MM-DD' -- ** no need for this
   ordStatus VARCHAR(20) NOT NULL DEFAULT 'pending', -- {active, pending, complete}
   rid INTEGER NOT NULL,  --request id
   -- custName VARCHAR(50) NOT NULL, -- CustName IS NOT NEEDED!!
