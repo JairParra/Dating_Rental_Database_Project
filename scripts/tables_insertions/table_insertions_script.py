@@ -29,7 +29,7 @@ userdict = usertable.set_index('username').to_dict() # convert to dictionary for
 
 ## Managers 
 usernames = list(usertable['username']) # select all usernames 
-managers = list(np.random.choice(usernames, size=10, replace=False)) # select 10 managers 
+managers = list(np.random.choice(usernames, size=5, replace=False)) # select 10 managers 
 
 ## Mates 
 usernames2 = [name for name in usernames if name not in managers] # substract mates
@@ -39,8 +39,8 @@ possible_male_mates = [username for username in usernames2 if
 possible_female_mates = [username for username in usernames2 if 
                        userdict['dateofbirth'][username] < '2000-01-01' and 
                        userdict['sex'][username] == 'Female']
-male_mates = list(np.random.choice(possible_male_mates,size=10,replace=False)) 
-female_mates = list(np.random.choice(possible_female_mates,size=10,replace=False)) 
+male_mates = list(np.random.choice(possible_male_mates,size=5,replace=False)) 
+female_mates = list(np.random.choice(possible_female_mates,size=5,replace=False)) 
 mates = male_mates + female_mates 
 
 ## Customers 
@@ -86,7 +86,7 @@ with open("2_mate_insertions.sql", "w") as file:
     file.writelines(mates_insertion) 
     file.close() 
     
-###############################################################################
+#####################################################x##########################
 
     
 ## 3.2  customer_table 
@@ -95,7 +95,7 @@ def create_customer(customers):
     
     records = []  # store records
     
-    preferences = ["preference"+str(i) for i in range(len(mates))]  # create artificial  preferences
+    preferences = ["preference"+str(i) for i in range(len(customers))]  # create artificial  preferences
     i = 0 
     
     for username in customers: 
@@ -169,7 +169,7 @@ def create_application(mates, managers):
     start_date = datetime.date(year=2018, month=1,day=1) # suppose our business started in 2018
     
     # Approval statuses
-    approved = ["True","False"]
+    approved = ["Approved","Pending","Rejected"]
     
     # create as many records as mates
     for i in range(len(mates)): 
@@ -177,10 +177,10 @@ def create_application(mates, managers):
         mateName = mates[i] # choose exactly one matename 
         mngName = mngNames[i] # choose one manager, could be repeated 
         aTime = str(fake_time.date_between(start_date=start_date, end_date='today')) # random date from 2018
-        isApproved = np.random.choice(approved) # randomly choose one 
+        appStatus = np.random.choice(approved) # randomly choose one 
         
         stmt = "INSERT INTO application VALUES({},'{}','{}','{}','{}');\n".format(
-                        i+1,mateName, mngName, aTime, isApproved) 
+                        i+1,mateName, mngName, aTime, appStatus) 
         
         records += [stmt] 
         
@@ -198,7 +198,7 @@ with open("5_application_insertions.sql", "w") as file:
 
 ### 3.5 request table 
     
-def create_request(mates, customers, size=20): 
+def create_request(mates, customers, size=10): 
     """ 
     Will create insertion statements for the application table of the form: 
         INSERT INTO application (rid, rinfo, rstatus, custName, mateName, decTime) VALUES( -,-,-,-,-,- )
@@ -234,7 +234,7 @@ def create_request(mates, customers, size=20):
     for i in range(size): 
         
         rid = i+1            
-        rstatus = np.random.choice(statuses, p=[0.20,0.40,0.40]) # choose status randomly 
+        rstatus = np.random.choice(statuses, p=[0.30,0.35,0.35]) # choose status randomly 
         custName = customerNames[i] 
         mateName = mateNames[i] 
         rdate = request_dates[i] 
