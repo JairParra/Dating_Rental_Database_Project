@@ -163,3 +163,6 @@ dmypy.json
 ### Bash/Shell 
 
 gitpush.bash
+chelly Session.sql
+comp421 Session.sql
+.idea
