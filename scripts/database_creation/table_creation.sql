@@ -102,9 +102,10 @@ CREATE TABLE invoice
   description VARCHAR(100) NOT NULL,
   dueDate DATE NOT NULL, 
   amount DECIMAL(100,2) NOT NULL, 
-  custName VARCHAR(50) NOT NULL, 
-  pamount DECIMAL(100,2) NOT NULL, --NOTE: repeated????  
-  method VARCHAR(20) NOT NULL,
+  custName VARCHAR(50) NOT NULL,
+  --** can be not payed
+  payDate DATE,
+  method VARCHAR(20),
   status VARCHAR(20) NOT NULL, -- (pending, paid)   
   PRIMARY KEY(inid), 
   FOREIGN KEY(custName) REFERENCES customer (username) 
@@ -119,16 +120,14 @@ CREATE TABLE invoice
 CREATE TABLE orderTable 
 (
   oid SERIAL NOT NULL, 
-  odate DATE NOT NULL, -- format: 'YYYY-MM-DD'
-  startTime TIME NOT NULL, -- format: '15:00:02'
-  endTime TIME NOT NULL, 
+  startDate DATE NOT NULL, -- format: 'YYYY-MM-DD'
+  endDate DATE NOT NULL, -- format: 'YYYY-MM-DD' -- ** no need for this
   ordStatus VARCHAR(20) NOT NULL DEFAULT 'pending', -- {active, pending, complete}
-  rid INTEGER NOT NULL,  --request id 
-  inid INTEGER NOT NULL, -- invoice id 
-  -- custName VARCHAR(50) NOT NULL, -- CustName IS NOT NEEDED!! 
+  rid INTEGER NOT NULL,  --request id
+  -- custName VARCHAR(50) NOT NULL, -- CustName IS NOT NEEDED!!
   ratingDate DATE, -- can be null if no rating
   comment VARCHAR(100), -- can be null 
-  rating DECIMAL(2,1) 
+  rating DECIMAL(2,1)  -- can be null
     CONSTRAINT rat CHECK( rating > 0.0 AND rating <= 5.0), -- restrict range , add to req. analysis
   PRIMARY KEY (oid), 
   FOREIGN KEY (rid) REFERENCES request(rid),
@@ -162,7 +161,6 @@ CREATE TABLE startTable
     mateName VARCHAR(50) NOT NULL,
     custName VARCHAR(50) NOT NULL,
     startDate DATE NOT NULL,  --start date
-    startTime TIME NOT NULL,
     PRIMARY KEY (mateName, custName) ,
     FOREIGN KEY (mateName) REFERENCES mate(username),
     FOREIGN KEY (custName) REFERENCES customer(username),
@@ -187,6 +185,17 @@ CREATE TABLE generate --
     oid INTEGER NOT NULL,
     PRIMARY KEY (rid),  
     FOREIGN KEY (rid )REFERENCES request(rid)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (oid) REFERENCES orderTable(oid)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE schedule --
+(
+    aid INTEGER NOT NULL,
+    oid INTEGER NOT NULL,
+    PRIMARY KEY (aid,oid),
+    FOREIGN KEY (aid)REFERENCES activity(aid)
         ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (oid) REFERENCES orderTable(oid)
         ON DELETE RESTRICT ON UPDATE CASCADE
