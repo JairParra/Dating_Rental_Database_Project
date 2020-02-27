@@ -29,7 +29,7 @@ userdict = usertable.set_index('username').to_dict() # convert to dictionary for
 
 ## Managers 
 usernames = list(usertable['username']) # select all usernames 
-managers = list(np.random.choice(usernames, size=10, replace=False)) # select 10 managers 
+managers = list(np.random.choice(usernames, size=5, replace=False)) # select 10 managers 
 
 ## Mates 
 usernames2 = [name for name in usernames if name not in managers] # substract mates
@@ -39,8 +39,8 @@ possible_male_mates = [username for username in usernames2 if
 possible_female_mates = [username for username in usernames2 if 
                        userdict['dateofbirth'][username] < '2000-01-01' and 
                        userdict['sex'][username] == 'Female']
-male_mates = list(np.random.choice(possible_male_mates,size=10,replace=False)) 
-female_mates = list(np.random.choice(possible_female_mates,size=10,replace=False)) 
+male_mates = list(np.random.choice(possible_male_mates,size=5,replace=False)) 
+female_mates = list(np.random.choice(possible_female_mates,size=5,replace=False)) 
 mates = male_mates + female_mates 
 
 ## Customers 
@@ -86,7 +86,7 @@ with open("2_mate_insertions.sql", "w") as file:
     file.writelines(mates_insertion) 
     file.close() 
     
-###############################################################################
+#####################################################x##########################
 
     
 ## 3.2  customer_table 
@@ -95,7 +95,7 @@ def create_customer(customers):
     
     records = []  # store records
     
-    preferences = ["preference"+str(i) for i in range(len(mates))]  # create artificial  preferences
+    preferences = ["preference"+str(i) for i in range(len(customers))]  # create artificial  preferences
     i = 0 
     
     for username in customers: 
@@ -169,7 +169,7 @@ def create_application(mates, managers):
     start_date = datetime.date(year=2018, month=1,day=1) # suppose our business started in 2018
     
     # Approval statuses
-    approved = ["True","False"]
+    approved = ["Approved","Pending","Rejected"]
     
     # create as many records as mates
     for i in range(len(mates)): 
@@ -177,10 +177,10 @@ def create_application(mates, managers):
         mateName = mates[i] # choose exactly one matename 
         mngName = mngNames[i] # choose one manager, could be repeated 
         aTime = str(fake_time.date_between(start_date=start_date, end_date='today')) # random date from 2018
-        isApproved = np.random.choice(approved) # randomly choose one 
+        appStatus = np.random.choice(approved) # randomly choose one 
         
         stmt = "INSERT INTO application VALUES({},'{}','{}','{}','{}');\n".format(
-                        i+1,mateName, mngName, aTime, isApproved) 
+                        i+1,mateName, mngName, aTime, appStatus) 
         
         records += [stmt] 
         
@@ -198,7 +198,7 @@ with open("5_application_insertions.sql", "w") as file:
 
 ### 3.5 request table 
     
-def create_request(mates, customers, size=20): 
+def create_request(mates, customers, size=10): 
     """ 
     Will create insertion statements for the application table of the form: 
         INSERT INTO application (rid, rinfo, rstatus, custName, mateName, decTime) VALUES( -,-,-,-,-,- )
@@ -230,11 +230,14 @@ def create_request(mates, customers, size=20):
     # statuses 
     statuses = ["DEFAULT","rejected","accepted"]
     
+    # rids: we will need this values later
+    rids = []
+    
     # create size number of records
     for i in range(size): 
         
-        rid = i+1            
-        rstatus = np.random.choice(statuses, p=[0.20,0.40,0.40]) # choose status randomly 
+        rid = i+1
+        rstatus = np.random.choice(statuses, p=[0.30,0.35,0.35]) # choose status randomly 
         custName = customerNames[i] 
         mateName = mateNames[i] 
         rdate = request_dates[i] 
@@ -249,18 +252,84 @@ def create_request(mates, customers, size=20):
             stmt = "INSERT INTO request VALUES({},DEFAULT,'{}','{}','{}','{}');\n".format(
                 rid,rstatus,custName,mateName,rdate,decDate)              
         
+        rids += [rid]
         records += [stmt] 
         
-    return records 
+    return rids, records 
 
 
 # create the request statements 
-request_insertion = create_request(mates, customers)
+rids ,request_insertion = create_request(mates, customers) # note that we have also the rids produced
 
 #save the table 
 with open("6_request_insertions.sql", "w") as file: 
     file.writelines(request_insertion) 
     file.close()  
+    
+
+###############################################################################
+
+### 3.7 order table 
+    
+def create_order(rids):
+    """
+    Generate insertions of the shape: 
+        INSERT INTO orderTable VALUES (oid, startDate, endDate, ordStatus, rid, ratingDate, comment, rating)
+    NOTE: We want the rids to be UNIQUE!!! >> For each rid, we want to create an order.
+    """
+
+    size = len(rids)
+    records = []  # store the records
+    comments = ["comments" + str(i + 1) for i in range(size)]  # create artificial
+
+    # Set up time generation objects
+    fake_time = Faker()
+    start_date0 = datetime.date(year=2018, month=1, day=1)  # suppose our business started in 2018
+    start_dates = [fake_time.date_between(start_date=start_date0, end_date='today') for i in range(size)]
+
+    # statuses
+    statuses = ["active", "pending", "complete"]
+    
+    # return order ids 
+    oids = []
+
+    # create size number of records
+    for i in range(size):
+        
+        # collect all relevant values
+        oid = i + 1
+        start_date = start_dates[i]
+        end_date = fake_time.date_between(start_date=start_date, end_date='today')
+        ordstatus = random.choice(statuses)  # choose status randomly
+        rid = rids[i] # choose the rid from the input rids
+        rate_date = fake_time.date_between(start_date=end_date, end_date='today')
+        comment = comments[i]
+        rating = round(random.uniform(0.0,5.0), 1)
+        
+        # some orders will have no rating
+        if( i % 3 != 0 ):
+            stmt = "INSERT INTO orderTable VALUES ({},'{}','{}','{}',{},'{}','{}',{});\n".format(
+                oid, str(start_date), end_date, ordstatus, rid, rate_date, comment, rating)
+        else:
+            stmt = """INSERT INTO orderTable (oid, startDate,endDate, ordStatus,rid) 
+                VALUES({},'{}','{}','{}','{}');\n""".format(
+                oid, str(start_date), end_date, ordstatus,  comment)
+            
+        # update return values
+        records += [stmt]
+        oids += [oid]
+
+    return oids, records
+
+
+# create the request statements
+oids, order_insertion = create_order(rids)
+
+# save the table
+with open("7_order_insertions.sql", "w") as file:
+    file.writelines(order_insertion)
+    file.close()
+
 
 ###############################################################################
 
@@ -270,7 +339,7 @@ with open("6_request_insertions.sql", "w") as file:
 def create_invoice(customers, size=20):
     """
     Will create insertion statements for the invoice table of the form:
-    inid{}, oid{}, description, dueDate, amount{}, custName , method, status  (pending, paid)
+    inid, oid, description, dueDate, amount, custName , method, status  (pending, paid)
         INSERT INTO invoice (inid, oid, description, dueDate, amount,custName , method, status)  VALUES( -,-,-,-,-,- )
     respecting the appropriate constraints.
     @ args:
@@ -279,9 +348,9 @@ def create_invoice(customers, size=20):
     """
 
     records = []  # store the records
-    # oids = random.sample(range(1,size+1), 20) if dont want to replicate
-    oids = [random.randrange(1, size + 1) for i in range(size)]
-    descriptions = ["description" + str(i + 1) for i in range(size)]  # dreate artificial
+    oids = random.sample(range(1,size+1), 20) # if dont want to replicate
+#    oids = [random.randrange(1, size + 1) for i in range(size)]
+    descriptions = ["description" + str(i + 1) for i in range(size)]  # create artificial
 
     # Set up time generation objects
     fake_time = Faker()
@@ -316,56 +385,10 @@ def create_invoice(customers, size=20):
 invoice_insertion = create_invoice(customers)
 
 # save the table
-with open("7_invoice_insertions.sql", "w") as file:
+with open("8_invoice_insertions.sql", "w") as file:
     file.writelines(invoice_insertion)
     file.close()
 
-
-###############################################################################
-
-### 3.8 order table 
-    
-def create_order(size=10):
-
-    records = []  # store the records
-    rids = [random.randrange(1, size + 1) for i in range(size)]
-    comments = ["comments" + str(i + 1) for i in range(size)]  # create artificial
-
-    # Set up time generation objects
-    fake_time = Faker()
-    start_date0 = datetime.date(year=2018, month=1, day=1)  # suppose our business started in 2018
-    start_dates = [fake_time.date_between(start_date=start_date0, end_date='today') for i in range(size)]
-
-    # statuses
-    statuses = ["active", "pending", "complete"]
-
-    # create size number of records
-    for i in range(size):
-
-        oid = i + 1
-        status = random.choice(statuses)  # choose status randomly
-        start_date = start_dates[i]
-        end_date = fake_time.date_between(start_date=start_date, end_date='today')
-        rate_date = fake_time.date_between(start_date=end_date, end_date='today')
-        rating = round(random.uniform(0.0,5.0), 1)
-        if(i % 5 ==3):
-            stmt = "INSERT INTO order VALUES({},'{}','{}','{}',{},'{}','{}',{});\n".format(
-                oid, str(start_date), end_date, status, rids[i], rate_date, comments[i], rating)
-        else:
-            stmt = "INSERT INTO order VALUES({},'{}','{}','{}','{}');\n".format(
-                oid, str(start_date), end_date, status,  comments[i])
-        records += [stmt]
-
-    return records
-
-
-# create the request statements
-order_insertion = create_order()
-
-# save the table
-with open("8_order_insertions.sql", "w") as file:
-    file.writelines(order_insertion)
-    file.close()
 
 ###############################################################################
 
