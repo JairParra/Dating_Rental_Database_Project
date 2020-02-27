@@ -14,6 +14,7 @@ DROP TABLE IF EXISTS activity CASCADE;
 DROP TABLE IF EXISTS startTable CASCADE;
 DROP TABLE IF EXISTS modification CASCADE;
 DROP TABLE IF EXISTS generate CASCADE;
+DROP TABLE IF EXISTS schedule CASCADE;  
 
 
 
@@ -104,7 +105,7 @@ CREATE TABLE invoice
   amount DECIMAL(100,2) NOT NULL, 
   custName VARCHAR(50) NOT NULL,
   --** can be not payed
-  payDate DATE,
+  -- payDate DATE,
   method VARCHAR(20),
   status VARCHAR(20) NOT NULL, -- (pending, paid)   
   PRIMARY KEY(inid), 
@@ -130,8 +131,8 @@ CREATE TABLE orderTable
   rating DECIMAL(2,1)  -- can be null
     CONSTRAINT rat CHECK( rating > 0.0 AND rating <= 5.0), -- restrict range , add to req. analysis
   PRIMARY KEY (oid), 
-  FOREIGN KEY (rid) REFERENCES request(rid),
-  FOREIGN KEY (inid) REFERENCES invoice (inid)
+  FOREIGN KEY (rid) REFERENCES request(rid)
+  -- FOREIGN KEY (inid) REFERENCES invoice (inid)
   -- FOREIGN KEY (custName) REFERENCES request (custName) 
 ); 
 

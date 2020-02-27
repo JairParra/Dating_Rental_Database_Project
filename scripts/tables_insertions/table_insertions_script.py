@@ -230,10 +230,13 @@ def create_request(mates, customers, size=10):
     # statuses 
     statuses = ["DEFAULT","rejected","accepted"]
     
+    # rids: we will need this values later
+    rids = []
+    
     # create size number of records
     for i in range(size): 
         
-        rid = i+1            
+        rid = i+1
         rstatus = np.random.choice(statuses, p=[0.30,0.35,0.35]) # choose status randomly 
         custName = customerNames[i] 
         mateName = mateNames[i] 
@@ -249,18 +252,84 @@ def create_request(mates, customers, size=10):
             stmt = "INSERT INTO request VALUES({},DEFAULT,'{}','{}','{}','{}');\n".format(
                 rid,rstatus,custName,mateName,rdate,decDate)              
         
+        rids += [rid]
         records += [stmt] 
         
-    return records 
+    return rids, records 
 
 
 # create the request statements 
-request_insertion = create_request(mates, customers)
+rids ,request_insertion = create_request(mates, customers) # note that we have also the rids produced
 
 #save the table 
 with open("6_request_insertions.sql", "w") as file: 
     file.writelines(request_insertion) 
     file.close()  
+    
+
+###############################################################################
+
+### 3.7 order table 
+    
+def create_order(rids):
+    """
+    Generate insertions of the shape: 
+        INSERT INTO orderTable VALUES (oid, startDate, endDate, ordStatus, rid, ratingDate, comment, rating)
+    NOTE: We want the rids to be UNIQUE!!! >> For each rid, we want to create an order.
+    """
+
+    size = len(rids)
+    records = []  # store the records
+    comments = ["comments" + str(i + 1) for i in range(size)]  # create artificial
+
+    # Set up time generation objects
+    fake_time = Faker()
+    start_date0 = datetime.date(year=2018, month=1, day=1)  # suppose our business started in 2018
+    start_dates = [fake_time.date_between(start_date=start_date0, end_date='today') for i in range(size)]
+
+    # statuses
+    statuses = ["active", "pending", "complete"]
+    
+    # return order ids 
+    oids = []
+
+    # create size number of records
+    for i in range(size):
+        
+        # collect all relevant values
+        oid = i + 1
+        start_date = start_dates[i]
+        end_date = fake_time.date_between(start_date=start_date, end_date='today')
+        ordstatus = random.choice(statuses)  # choose status randomly
+        rid = rids[i] # choose the rid from the input rids
+        rate_date = fake_time.date_between(start_date=end_date, end_date='today')
+        comment = comments[i]
+        rating = round(random.uniform(0.0,5.0), 1)
+        
+        # some orders will have no rating
+        if( i % 3 != 0 ):
+            stmt = "INSERT INTO orderTable VALUES ({},'{}','{}','{}',{},'{}','{}',{});\n".format(
+                oid, str(start_date), end_date, ordstatus, rid, rate_date, comment, rating)
+        else:
+            stmt = """INSERT INTO orderTable (oid, startDate,endDate, ordStatus,rid) 
+                VALUES({},'{}','{}','{}','{}');\n""".format(
+                oid, str(start_date), end_date, ordstatus,  comment)
+            
+        # update return values
+        records += [stmt]
+        oids += [oid]
+
+    return oids, records
+
+
+# create the request statements
+oids, order_insertion = create_order(rids)
+
+# save the table
+with open("7_order_insertions.sql", "w") as file:
+    file.writelines(order_insertion)
+    file.close()
+
 
 ###############################################################################
 
@@ -270,7 +339,7 @@ with open("6_request_insertions.sql", "w") as file:
 def create_invoice(customers, size=20):
     """
     Will create insertion statements for the invoice table of the form:
-    inid{}, oid{}, description, dueDate, amount{}, custName , method, status  (pending, paid)
+    inid, oid, description, dueDate, amount, custName , method, status  (pending, paid)
         INSERT INTO invoice (inid, oid, description, dueDate, amount,custName , method, status)  VALUES( -,-,-,-,-,- )
     respecting the appropriate constraints.
     @ args:
@@ -279,9 +348,9 @@ def create_invoice(customers, size=20):
     """
 
     records = []  # store the records
-    # oids = random.sample(range(1,size+1), 20) if dont want to replicate
-    oids = [random.randrange(1, size + 1) for i in range(size)]
-    descriptions = ["description" + str(i + 1) for i in range(size)]  # dreate artificial
+    oids = random.sample(range(1,size+1), 20) # if dont want to replicate
+#    oids = [random.randrange(1, size + 1) for i in range(size)]
+    descriptions = ["description" + str(i + 1) for i in range(size)]  # create artificial
 
     # Set up time generation objects
     fake_time = Faker()
@@ -316,56 +385,10 @@ def create_invoice(customers, size=20):
 invoice_insertion = create_invoice(customers)
 
 # save the table
-with open("7_invoice_insertions.sql", "w") as file:
+with open("8_invoice_insertions.sql", "w") as file:
     file.writelines(invoice_insertion)
     file.close()
 
-
-###############################################################################
-
-### 3.8 order table 
-    
-def create_order(size=10):
-
-    records = []  # store the records
-    rids = [random.randrange(1, size + 1) for i in range(size)]
-    comments = ["comments" + str(i + 1) for i in range(size)]  # create artificial
-
-    # Set up time generation objects
-    fake_time = Faker()
-    start_date0 = datetime.date(year=2018, month=1, day=1)  # suppose our business started in 2018
-    start_dates = [fake_time.date_between(start_date=start_date0, end_date='today') for i in range(size)]
-
-    # statuses
-    statuses = ["active", "pending", "complete"]
-
-    # create size number of records
-    for i in range(size):
-
-        oid = i + 1
-        status = random.choice(statuses)  # choose status randomly
-        start_date = start_dates[i]
-        end_date = fake_time.date_between(start_date=start_date, end_date='today')
-        rate_date = fake_time.date_between(start_date=end_date, end_date='today')
-        rating = round(random.uniform(0.0,5.0), 1)
-        if(i % 5 ==3):
-            stmt = "INSERT INTO order VALUES({},'{}','{}','{}',{},'{}','{}',{});\n".format(
-                oid, str(start_date), end_date, status, rids[i], rate_date, comments[i], rating)
-        else:
-            stmt = "INSERT INTO order VALUES({},'{}','{}','{}','{}');\n".format(
-                oid, str(start_date), end_date, status,  comments[i])
-        records += [stmt]
-
-    return records
-
-
-# create the request statements
-order_insertion = create_order()
-
-# save the table
-with open("8_order_insertions.sql", "w") as file:
-    file.writelines(order_insertion)
-    file.close()
 
 ###############################################################################
 
