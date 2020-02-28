@@ -29,7 +29,7 @@ userdict = usertable.set_index('username').to_dict() # convert to dictionary for
 
 ## Managers 
 usernames = list(usertable['username']) # select all usernames 
-managers = list(np.random.choice(usernames, size=5, replace=False)) # select 10 managers 
+managers = list(np.random.choice(usernames, size=10, replace=False)) # select 10 managers 
 
 ## Mates 
 usernames2 = [name for name in usernames if name not in managers] # substract mates
@@ -39,8 +39,8 @@ possible_male_mates = [username for username in usernames2 if
 possible_female_mates = [username for username in usernames2 if 
                        userdict['dateofbirth'][username] < '2000-01-01' and 
                        userdict['sex'][username] == 'Female']
-male_mates = list(np.random.choice(possible_male_mates,size=5,replace=False)) 
-female_mates = list(np.random.choice(possible_female_mates,size=5,replace=False)) 
+male_mates = list(np.random.choice(possible_male_mates,size=10,replace=False)) 
+female_mates = list(np.random.choice(possible_female_mates,size=10,replace=False)) 
 mates = male_mates + female_mates 
 
 ## Customers 
@@ -63,6 +63,7 @@ def create_mate(mates):
     descriptions = ["description"+str(i) for i in range(len(mates))] # dreate artificial descriptions 
     languages = ["English","French","Eng & French"]
     i = 0 
+    
     
     for username in mates: 
         height = round(random.uniform(1.50, 2.00),2) # generate a random height 
@@ -198,7 +199,7 @@ with open("5_application_insertions.sql", "w") as file:
 
 ### 3.5 request table 
     
-def create_request(mates, customers, size=10): 
+def create_request(mates, customers, size=20): 
     """ 
     Will create insertion statements for the application table of the form: 
         INSERT INTO application (rid, rinfo, rstatus, custName, mateName, decTime) VALUES( -,-,-,-,-,- )
