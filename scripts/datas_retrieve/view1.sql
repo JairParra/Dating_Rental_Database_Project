@@ -1,6 +1,6 @@
-1 VIEW
-Background: For customers they might want to find the mate with higher rank.
-Find the all the mate has average rank more than 4.0 
+--1 VIEW
+--Background: For customers they might want to find the mate with higher rank.
+--Find the all the mate has average rank more than 4.0 
 CREATE VIEW mateRating1 (matename,rating) AS
 (SELECT matename, rating
 FROM 
