@@ -177,7 +177,6 @@ CREATE TABLE modification -- NOTE: previously called "modify", but this is a res
 (
     mngName VARCHAR(50) NOT NULL,
     oid INTEGER NOT NULL,
-    modTime TIME NOT NULL,
     modDate DATE NOT NULL,
     FOREIGN KEY (oid) REFERENCES orderTable(oid),
     FOREIGN KEY (mngName) REFERENCES manager(username),
