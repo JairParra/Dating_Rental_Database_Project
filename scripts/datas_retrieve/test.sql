@@ -1,5 +1,7 @@
 --
-CREATE VIEW timeRequest(custName, mateName) AS
-SELECT rid FROM orderTable WHERE DATEDIFF(day, '2018/03/05', endDate) <= 100
+
+CREATE VIEW timeRequest (oid,rid) AS
+SELECT oid,rid FROM orderTable WHERE ((DATE_PART('year', '2018-02-02'::date) - DATE_PART('year',enddate::date)) * 12 + (DATE_PART('month', '2018-02-02'::date) - DATE_PART('month', enddate::date))) <= 100
 ;
-SELECT custName, mateName FROM timeRequest as temp, request WHERE temp.rid=request.rid
+
+SELECT custname,matename,mngname FROM timeRequest as temp, request,modification WHERE temp.rid=request.rid AND temp.oid=modification.oid

@@ -20,8 +20,9 @@ SELECT matename FROM mateRating2 WHERE Average > 4.0
 -- Background: Say system has a bug, the orders has some problem between a certain time have problems, the manager want to find the cust, mate id to contact and solve the problem for the order)
 -- Find all manager, cust, mate usename of order between some time interval
 
---CREATE VIEW timeRequest(custName, mateName) AS
---SELECT rid FROM orderTable WHERE DATEDIFF(day, --'2018/03/05', endDate) <= 100
---;
---SELECT custName, mateName FROM timeRequest as temp, request WHERE temp.rid=request.rid
+CREATE VIEW timeRequest (oid,rid) AS
+SELECT oid,rid FROM orderTable WHERE ((DATE_PART('year', '2018-02-02'::date) - DATE_PART('year',enddate::date)) * 12 + (DATE_PART('month', '2018-02-02'::date) - DATE_PART('month', enddate::date))) <= 100
+;
+
+SELECT custname,matename,mngname FROM timeRequest as temp, request,modification WHERE temp.rid=request.rid AND temp.oid=modification.oid
 
