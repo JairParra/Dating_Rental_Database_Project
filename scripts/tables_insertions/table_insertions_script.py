@@ -126,7 +126,7 @@ def create_manager(managers):
     # create SQL INSERT statements
     for username in managers: 
         stmt = "INSERT INTO manager VALUES('{}'); \n".format(username) 
-        records += stmt 
+        records += [stmt] 
     
     return records
 
@@ -228,10 +228,12 @@ def create_request(mates, customers, size=10):
     decision_dates= [str(date) for date in decision_dates]  # convert back to string format ?
     
     # statuses 
-    statuses = ["DEFAULT","rejected","accepted"]
+    statuses = ["pending","rejected","accepted"]
     
     # rids: we will need this values later
     rids = []
+    custnames = [] 
+    matenames = []
     
     # create size number of records
     for i in range(size): 
@@ -244,7 +246,7 @@ def create_request(mates, customers, size=10):
         decDate = decision_dates[i]
         
         # add don't add info for some requests
-        if i % 5 != 0: 
+        if i % 6 != 0: 
             rinfo = "Information" + str(random.randint(1,100))
             stmt = "INSERT INTO request VALUES({},'{}','{}','{}','{}','{}','{}');\n".format(
                 rid,rinfo,rstatus,custName,mateName,rdate,decDate)  
@@ -253,13 +255,15 @@ def create_request(mates, customers, size=10):
                 rid,rstatus,custName,mateName,rdate,decDate)              
         
         rids += [rid]
-        records += [stmt] 
+        custnames += [custName]
+        matenames += [mateName]
+        records += [stmt]  
         
-    return rids, records 
+    return rids, custnames, matenames, records 
 
 
 # create the request statements 
-rids ,request_insertion = create_request(mates, customers) # note that we have also the rids produced
+starttable_rids ,custnames, matenames, request_insertion = create_request(mates, customers) # note that we have also the rids produced
 
 #save the table 
 with open("6_request_insertions.sql", "w") as file: 
@@ -278,6 +282,7 @@ def create_order(rids):
     NOTE: We want the rids to be UNIQUE!!! >> For each rid, we want to create an order.
     """
 
+    rids = list(np.random.permutation(rids)) # permute randomly
     size = len(rids)
     records = []  # store the records
     comments = ["comments" + str(i + 1) for i in range(size)]  # create artificial
@@ -313,7 +318,7 @@ def create_order(rids):
         else:
             stmt = """INSERT INTO orderTable (oid, startDate,endDate, ordStatus,rid) 
                 VALUES({},'{}','{}','{}','{}');\n""".format(
-                oid, str(start_date), end_date, ordstatus,  comment)
+                oid, str(start_date), end_date, ordstatus,  rid)
             
         # update return values
         records += [stmt]
@@ -333,10 +338,10 @@ with open("7_order_insertions.sql", "w") as file:
 
 ###############################################################################
 
-### 3.7 invoice table 
+### 3.8 invoice table 
     
 ## ** WRITE def create_<table>(): here ** ### 
-def create_invoice(customers, size=20):
+def create_invoice(customers, oids):
     """
     Will create insertion statements for the invoice table of the form:
     inid, oid, description, dueDate, amount, custName , method, status  (pending, paid)
@@ -344,12 +349,13 @@ def create_invoice(customers, size=20):
     respecting the appropriate constraints.
     @ args:
         @ customers: a list of customers
-
+        
+    NOTE: order ids are UNIQUE, but can be permuted.
     """
 
+    size = len(oids)
+    oids = list(np.random.permutation(oids))
     records = []  # store the records
-    oids = random.sample(range(1,size+1), 20) # if dont want to replicate
-#    oids = [random.randrange(1, size + 1) for i in range(size)]
     descriptions = ["description" + str(i + 1) for i in range(size)]  # create artificial
 
     # Set up time generation objects
@@ -364,25 +370,31 @@ def create_invoice(customers, size=20):
     # statuses
     statuses = ["pending", "paid"]
     methods = ["mastercard", "visa", "E-T", "debit", "paypal", "americanexpress", "applepay"]
+    
+    # return invoice ids 
+    inids = []
 
     # create size number of records
     for i in range(size):
-        inid = i + 1
+        
+        inid = i + 1  # invoice id 
+        oid = oids[i]
         status = random.choice(statuses)  # choose status randomly
-        method = random.choice(methods)
+        method = random.choice(methods) # choose method randomly
         custName = customerNames[i]
         due_date = due_dates[i]
         amount = round(random.uniform(15.00, 200.00))
         stmt = "INSERT INTO invoice VALUES({},{},'{}','{}','{}','{}','{}','{}');\n".format(
-            inid, oids[i], descriptions[i], due_date, amount, custName, method, status)
+            inid, oid, descriptions[i], due_date, amount, custName, method, status)
 
         records += [stmt]
+        inids += [inid]
 
-    return records
+    return inids, records
 
 
 # create the request statements
-invoice_insertion = create_invoice(customers)
+inids, invoice_insertion = create_invoice(customers, oids)
 
 # save the table
 with open("8_invoice_insertions.sql", "w") as file:
@@ -394,7 +406,11 @@ with open("8_invoice_insertions.sql", "w") as file:
 
 ### 3.9 startTable table 
 def create_startTable(mates, customers, size=10):
-
+    """
+    A Customer starts a Request to a Mate
+    Will create records of the form: 
+        INSERT INTO startTable VALUES(rid, mateName, custName, startDate)
+    """
 
     records = []  # store the records
     rids = [random.randrange(1, size + 1) for i in range(size)]
@@ -424,9 +440,30 @@ with open("9_startTable_insertions.sql", "w") as file:
     file.close()
 
 ###############################################################################
+
 ### 3.10 Activity table
 
-## ** WRITE def create_<table>(): here ** ###
+def create_activity(managers, size=10):
+    #aid, description, mngName
+
+    records = []  # store the records
+
+    descriptions = ["description" + str(i + 1) for i in range(size)]  # dreate artificial
+    managersNames = np.random.choice(managers, size=size, replace=True)
+    # create size number of records
+    for i in range(size):
+        aid = i+1
+        stmt = "INSERT INTO activity VALUES({},'{}','{}');\n".format(aid, descriptions[i],managersNames[i])
+        records += [stmt]
+    return records
+
+# create the request statements
+activity_insertion = create_activity(managers)
+
+# save the table
+with open("10_activity_insertions.sql", "w") as file:
+    file.writelines(activity_insertion)
+    file.close()
 
 
 ## ** WRITE export_sql code in here ** ##
