@@ -66,7 +66,7 @@ def create_mate(mates):
     
     for username in mates: 
         height = round(random.uniform(1.50, 2.00),2) # generate a random height 
-        weight = round(random.uniform(40.00, 75.00))  # generate a random weight 
+        weight = round(random.uniform(55.00, 75.00))  # generate a random weight 
         hourlyRate = random.randint(50,200) # generate a random hourly rate 
         language = np.random.choice(languages, replace=False)
         
@@ -240,6 +240,7 @@ def create_request(mates, customers, size=10):
         
         rid = i+1
         rstatus = np.random.choice(statuses, p=[0.30,0.35,0.35]) # choose status randomly 
+        rinfo = "Information" + str(random.randint(1,100))
         custName = customerNames[i] 
         mateName = mateNames[i] 
         rdate = request_dates[i] 
@@ -247,12 +248,11 @@ def create_request(mates, customers, size=10):
         
         # add don't add info for some requests
         if i % 6 != 0: 
-            rinfo = "Information" + str(random.randint(1,100))
             stmt = "INSERT INTO request VALUES({},'{}','{}','{}','{}','{}','{}');\n".format(
                 rid,rinfo,rstatus,custName,mateName,rdate,decDate)  
         else: 
-            stmt = "INSERT INTO request VALUES({},DEFAULT,'{}','{}','{}','{}');\n".format(
-                rid,rstatus,custName,mateName,rdate,decDate)              
+            stmt = "INSERT INTO request VALUES({},'{}',DEFAULT,'{}','{}','{}','{}');\n".format(
+                rid,rinfo,custName,mateName,rdate,decDate)              
         
         rids += [rid]
         custnames += [custName]
@@ -263,7 +263,7 @@ def create_request(mates, customers, size=10):
 
 
 # create the request statements 
-starttable_rids ,custnames, matenames, request_insertion = create_request(mates, customers) # note that we have also the rids produced
+rids ,rcustnames, rmatenames, request_insertion = create_request(mates, customers) # note that we have also the rids produced
 
 #save the table 
 with open("6_request_insertions.sql", "w") as file: 
@@ -405,18 +405,22 @@ with open("8_invoice_insertions.sql", "w") as file:
 ###############################################################################
 
 ### 3.9 startTable table 
-def create_startTable(mates, customers, size=10):
+def create_startTable(rids, customers, mates):
     """
     A Customer starts a Request to a Mate
     Will create records of the form: 
         INSERT INTO startTable VALUES(rid, mateName, custName, startDate)
     """
-
+    
+    size = len(rids)
     records = []  # store the records
-    rids = [random.randrange(1, size + 1) for i in range(size)]
 
-    customerNames = np.random.choice(customers, size=size, replace=False)
-    matesNames = np.random.choice(mates, size=size, replace=False)
+#    customerNames = np.random.choice(customers, size=size, replace=False)
+#    matesNames = np.random.choice(mates, size=size, replace=False) 
+    customerNames = customers 
+    matesNames = mates 
+    
+    
     # Set up time generation objects
     fake_time = Faker()
     start_date0 = datetime.date(year=2018, month=1, day=1)  # suppose our business started in 2018
@@ -426,30 +430,36 @@ def create_startTable(mates, customers, size=10):
     for i in range(size):
         start_date = start_dates[i]
         stmt = "INSERT INTO startTable VALUES({},'{}','{}','{}');\n".format(
-            rids[i], customerNames[i],matesNames[i],str(start_date))
+            rids[i], matesNames[i], customerNames[i],str(start_date))
         records += [stmt]
+        
     return records
 
 
 # create the request statements
-startTable_insertion = create_startTable(mates,customers)
+# the "r" lists came from the script to create the requests
+startTable_insertion = create_startTable(rids, rcustnames,rmatenames)
 
 # save the table
 with open("9_startTable_insertions.sql", "w") as file:
     file.writelines(startTable_insertion)
     file.close()
+    
+    
 
 ###############################################################################
 
 ### 3.10 Activity table
 
-def create_activity(managers, size=10):
+def create_activity(managers):
     #aid, description, mngName
 
     records = []  # store the records
-
+    
+    size = len(managers)
     descriptions = ["description" + str(i + 1) for i in range(size)]  # dreate artificial
     managersNames = np.random.choice(managers, size=size, replace=True)
+    
     # create size number of records
     for i in range(size):
         aid = i+1
@@ -468,13 +478,14 @@ with open("10_activity_insertions.sql", "w") as file:
 
 ## ** WRITE export_sql code in here ** ##
 
-
     
 ###############################################################################
 
 ### 3.11 modify table
     
-def create_modify(managers, size=10):
+def create_modify(managers):
+    
+    size = len(managers)
     records = []  # store the records
     oids = random.sample(range(1, size + 1), size)
     manager = random.sample(managers, size)
@@ -483,7 +494,7 @@ def create_modify(managers, size=10):
     fake_time = Faker()
     start_date = datetime.date(year=2018, month=1, day=1)  # suppose our business started in 2018
     modTimes = [fake_time.date_between(start_date=start_date, end_date='today') for i in range(size)]
-    modTimes = [str(time) for time in modTimes]
+    modTimes = [str(t) for t in modTimes] # t stands for time
 
     # create size number of records
     for i in range(size):
@@ -495,36 +506,48 @@ def create_modify(managers, size=10):
 
 
 # create the request statements
-modify_insertion = create_modify(customers)
+modify_insertion = create_modify(managers)
 
 # save the table
 with open("11_modify_insertions.sql", "w") as file:
     file.writelines(modify_insertion)
     file.close()
+    
 ###############################################################################
 
 ### 3.12 generate table
     
-def create_generate(size=20):
+def create_generate(oids, rids):
+    """ 
+    Assume oids and rids have same length (check later)
+    """
+    
+    size = len(oids) # 
     records = []  # store the records
-    rids = random.sample(range(1, size + 1),size)
+    
     # create size number of records
     for i in range(size):
-        oid = random.randrange(1, size + 1)
+        oid = oids[i]
+        rid = rids[i]
         stmt = "INSERT INTO generate VALUES({},{});\n".format(
-            rids[i], oid)
+            rid, oid)
         records += [stmt]
 
     return records
 
 
 # create the generate statements
-generate_insertion = create_generate()
+generate_insertion = create_generate(oids,rids)
 
 # save the table
 with open("12_generate_insertions.sql", "w") as file:
     file.writelines(generate_insertion)
     file.close()
+    
+    
+rids ,rcustnames, rmatenames
+
+    
 ###############################################################################
 
 
