@@ -17,7 +17,7 @@ SELECT matename, AVG(rating) as average FROM mateRating1 GROUP BY matename;
 SELECT matename FROM mateRating2 WHERE Average > 4.0
 
 --2View
--- Background: Say system has a bug, the orders has some problem between a certain time have problems, the manager want to find the cust, mate id to contact and solve the problem for the order)
+-- Background: Say system has a bug, the orders has some problem between a certain time if a manager modify the order, the system want to find the cust, mate id to contact and solve the problem for the order)
 -- Find all manager, cust, mate usename of order between some time interval
 
 CREATE VIEW timeRequest 
