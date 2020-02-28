@@ -459,16 +459,19 @@ def create_activity(managers):
     size = len(managers)
     descriptions = ["description" + str(i + 1) for i in range(size)]  # dreate artificial
     managersNames = np.random.choice(managers, size=size, replace=True)
+    aids = []
     
     # create size number of records
     for i in range(size):
         aid = i+1
         stmt = "INSERT INTO activity VALUES({},'{}','{}');\n".format(aid, descriptions[i],managersNames[i])
         records += [stmt]
-    return records
+        aids += [aid] 
+        
+    return aids, records
 
 # create the request statements
-activity_insertion = create_activity(managers)
+aids,activity_insertion = create_activity(managers)
 
 # save the table
 with open("10_activity_insertions.sql", "w") as file:
@@ -524,6 +527,7 @@ def create_generate(oids, rids):
     
     size = len(oids) # 
     records = []  # store the records
+    oids = np.random.permutation(oids)
     
     # create size number of records
     for i in range(size):
@@ -543,9 +547,6 @@ generate_insertion = create_generate(oids,rids)
 with open("12_generate_insertions.sql", "w") as file:
     file.writelines(generate_insertion)
     file.close()
-    
-    
-rids ,rcustnames, rmatenames
 
     
 ###############################################################################
@@ -553,21 +554,22 @@ rids ,rcustnames, rmatenames
 
 ### 3.13 Schedule table
 
-def create_schedule(size=20):
+def create_schedule(oids, aids):
+    
     records = []  # store the records
-    aids = random.sample(range(1, size + 1), size)
-    oids = random.sample(range(1, size + 1), size)
+    size = len(oids) # 
+    aids = list(np.random.choice(aids, size=size, replace=True))   
+    
     # create size number of records
     for i in range(size):
-        stmt = "INSERT INTO schedule VALUES({},{});\n".format(
-            aids[i], oids[i])
+        stmt = "INSERT INTO schedule VALUES({},{});\n".format( aids[i], oids[i])
         records += [stmt]
 
     return records
 
 
 # create the request statements
-schedule_insertion = create_schedule()
+schedule_insertion = create_schedule(oids, aids)
 
 # save the table
 with open("13_schedule_insertions.sql", "w") as file:
@@ -575,9 +577,7 @@ with open("13_schedule_insertions.sql", "w") as file:
     file.close()
         
     
-    
-    
-    
+        
     
 
 
