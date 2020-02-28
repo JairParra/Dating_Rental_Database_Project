@@ -83,7 +83,7 @@ CREATE TABLE application
 CREATE TABLE request
 (
   rid SERIAL NOT NULL, 
-  rinfo VARCHAR(100),  --request information? 
+  rinfo VARCHAR(100) NOT NULL ,  --request information? 
   rstatus VARCHAR(20) NOT NULL DEFAULT 'pending', -- pending , rejected or accepted 
   custName VARCHAR(50) NOT NULL, -- THIS IS NEW!! see note 
   mateName VARCHAR(50) NOT NULL, 
@@ -93,23 +93,6 @@ CREATE TABLE request
   FOREIGN KEY (mateName) REFERENCES mate (username) 
     ON DELETE RESTRICT ON UPDATE CASCADE, 
   FOREIGN KEY (custName) REFERENCES customer (username)
-    ON DELETE RESTRICT ON UPDATE CASCADE
-); 
-
-CREATE TABLE invoice
-(
-  inid SERIAL NOT NULL, 
-  oid INTEGER NOT NULL,  -- THIS IS A FOREIGN KEY, will see code right after orderTable
-  description VARCHAR(100) NOT NULL,
-  dueDate DATE NOT NULL, 
-  amount DECIMAL(100,2) NOT NULL, 
-  custName VARCHAR(50) NOT NULL,
-  --** can be not payed
-  -- payDate DATE,
-  method VARCHAR(20),
-  status VARCHAR(20) NOT NULL, -- (pending, paid)   
-  PRIMARY KEY(inid), 
-  FOREIGN KEY(custName) REFERENCES customer (username) 
     ON DELETE RESTRICT ON UPDATE CASCADE
 ); 
 
@@ -128,7 +111,7 @@ CREATE TABLE orderTable
   -- custName VARCHAR(50) NOT NULL, -- CustName IS NOT NEEDED!!
   ratingDate DATE, -- can be null if no rating
   comment VARCHAR(100), -- can be null 
-  rating DECIMAL(2,1)  -- can be null
+  rating DECIMAL(2,1)  -- can be nul  l
     CONSTRAINT rat CHECK( rating > 0.0 AND rating <= 5.0), -- restrict range , add to req. analysis
   PRIMARY KEY (oid), 
   FOREIGN KEY (rid) REFERENCES request(rid)
@@ -136,25 +119,33 @@ CREATE TABLE orderTable
   -- FOREIGN KEY (custName) REFERENCES request (custName) 
 ); 
 
--- update the actual key 
-ALTER TABLE invoice 
-  ADD FOREIGN KEY (oid) REFERENCES orderTable (oid) ; 
-
-
---- Neijin's updates  
-
-CREATE TABLE activity
+CREATE TABLE invoice
 (
-    aid SERIAL NOT NULL,
-    oid INTEGER NOT NULL,
-    description VARCHAR(200) NOT NULL UNIQUE,
-    mngName VARCHAR(50) NOT NULL,
-    PRIMARY KEY (aid), 
-    FOREIGN KEY (oid) REFERENCES orderTable(oid), 
-    FOREIGN KEY (mngName) REFERENCES manager(username)
-);
+  inid SERIAL NOT NULL, 
+  oid INTEGER NOT NULL,  -- THIS IS A FOREIGN KEY, will see code right after orderTable
+  description VARCHAR(100) NOT NULL,
+  dueDate DATE NOT NULL, 
+  amount DECIMAL(100,2) NOT NULL, 
+  custName VARCHAR(50) NOT NULL,
+  --** can be not payed
+  -- payDate DATE,
+  method VARCHAR(20),
+  status VARCHAR(20) NOT NULL, -- (pending, paid)   
+  PRIMARY KEY(inid), 
+  FOREIGN KEY(custName) REFERENCES customer (username) 
+    ON DELETE RESTRICT ON UPDATE CASCADE, 
+  FOREIGN KEY (oid) REFERENCES orderTable (oid) 
+    ON DELETE RESTRICT ON UPDATE CASCADE
+); 
 
--- Note1 :Use starttable not start since start is a keyword
+
+
+
+-- -- update the actual key 
+-- ALTER TABLE invoice 
+--   ADD FOREIGN KEY (oid) REFERENCES orderTable (oid) ; 
+
+-- Note1 : Use starttable not start since start is a keyword
 -- Note2 : Add an attribute called startDate
 CREATE TABLE startTable
 (
@@ -162,11 +153,25 @@ CREATE TABLE startTable
     mateName VARCHAR(50) NOT NULL,
     custName VARCHAR(50) NOT NULL,
     startDate DATE NOT NULL,  --start date
-    PRIMARY KEY (mateName, custName) ,
+    PRIMARY KEY (rid, mateName, custName) ,
     FOREIGN KEY (mateName) REFERENCES mate(username),
     FOREIGN KEY (custName) REFERENCES customer(username),
     FOREIGN KEY (rid) REFERENCES request(rid)
 );
+
+
+--- Neijin's updates  
+
+CREATE TABLE activity
+(
+    aid SERIAL NOT NULL,
+    description VARCHAR(200) NOT NULL UNIQUE,
+    mngName VARCHAR(50) NOT NULL,
+    PRIMARY KEY (aid), 
+    FOREIGN KEY (mngName) REFERENCES manager(username)
+);
+
+
 
 CREATE TABLE modification -- NOTE: previously called "modify", but this is a reserved word
 (
