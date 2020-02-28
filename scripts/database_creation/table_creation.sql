@@ -16,10 +16,7 @@ DROP TABLE IF EXISTS modification CASCADE;
 DROP TABLE IF EXISTS generate CASCADE;
 DROP TABLE IF EXISTS schedule CASCADE;  
 
-
-
--- NOTE: Cannot use keyword 'user'
-CREATE TABLE usertable
+CREATE TABLE usertable --entity
 (
     username VARCHAR(50) NOT NULL, 
     password VARCHAR(100) NOT NULL, 
@@ -33,7 +30,7 @@ CREATE TABLE usertable
     PRIMARY KEY (username)
 ); 
 
-CREATE TABLE mate 
+CREATE TABLE mate --entity ISA user
 ( 
   username VARCHAR(50) NOT NULL, 
   nickname VARCHAR(50) NOT NULL, 
@@ -41,14 +38,14 @@ CREATE TABLE mate
   language VARCHAR(15) NOT NULL, 
   height DECIMAL(3,2) NOT NULL,  --store in  (meters.cm),  check at application level 
   weight DECIMAL(5,2) NOT NULL, -- measure in kg.
-  hourlyRate INTEGER, -- should we change this to decimal? , should check? 
+  hourlyRate DECIMAL, -- should we change this to decimal? , should check? 
   PRIMARY KEY(username), 
   -- refer to a specific column, restrict and cascade to be explained later
   FOREIGN KEY(username) REFERENCES usertable (username) 
     ON DELETE RESTRICT ON UPDATE CASCADE
 ); 
 
-CREATE TABLE customer 
+CREATE TABLE customer --entity ISA user
 (
   username VARCHAR(50) NOT NULL, 
   preferences VARCHAR(100) NOT NULL DEFAULT  'undefined' , 
@@ -57,7 +54,7 @@ CREATE TABLE customer
     ON DELETE RESTRICT ON UPDATE CASCADE
 ); 
 
-CREATE TABLE manager 
+CREATE TABLE manager --entity ISA user
 (
   username VARCHAR(50) NOT NULL, 
   PRIMARY KEY(username), 
@@ -65,14 +62,14 @@ CREATE TABLE manager
     ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
-CREATE TABLE application 
+CREATE TABLE application --weak entity of mate
 (
-  appid SERIAL NOT NULL,  -- this will auto-increment 
-  mateName VARCHAR(50) NOT NULL, --- NOTE: previously called "username"
-  mngName VARCHAR(50) NOT NULL, 
+  appid SERIAL NOT NULL,  -- application id; auto-increment 
+  mateName VARCHAR(50) NOT NULL, --username of mate
+  mngName VARCHAR(50) NOT NULL, --manager name(username of manager)
   aDate DATE NOT NULL,  -- application date
-  appStatus VARCHAR(20) NOT NULL, -- contains boolean values?  -- NOTE:  check at software
-  PRIMARY KEY(appid, mateName),   -- NOTE: previously chad "username" -> mateName
+  appStatus VARCHAR(20) NOT NULL, -- (Pending, Approved, Rejected)
+  PRIMARY KEY(appid, mateName),  
   FOREIGN KEY(mateName) REFERENCES mate (username) 
     ON DELETE RESTRICT ON UPDATE CASCADE, 
   FOREIGN KEY(mngName) REFERENCES manager(username)
@@ -80,12 +77,12 @@ CREATE TABLE application
 ); 
 
 -- NOTE: request also need to include the customer name!!!! 
-CREATE TABLE request
+CREATE TABLE request --entity
 (
-  rid SERIAL NOT NULL, 
-  rinfo VARCHAR(100) NOT NULL ,  --request information? 
+  rid SERIAL NOT NULL, --request id; auto-increment
+  rinfo VARCHAR(100) NOT NULL ,  --request information
   rstatus VARCHAR(20) NOT NULL DEFAULT 'pending', -- pending , rejected or accepted 
-  custName VARCHAR(50) NOT NULL, -- THIS IS NEW!! see note 
+  custName VARCHAR(50) NOT NULL, -- customer name
   mateName VARCHAR(50) NOT NULL, 
   rdate DATE, -- request time
   decDate DATE, -- decision time 
@@ -96,19 +93,12 @@ CREATE TABLE request
     ON DELETE RESTRICT ON UPDATE CASCADE
 ); 
 
-
--- NOTE1: For this one we need to store both date AND exact time, 
--- so 'odate' is the order date: wthe day the "date" will take place.; 
--- NOTE2: ordStatus != rstatus
--- NOTE3: cannot name this 'order' because it is a keyword
-CREATE TABLE orderTable 
+CREATE TABLE orderTable --entity
 (
   oid SERIAL NOT NULL, 
   startDate DATE NOT NULL, -- format: 'YYYY-MM-DD'
-  endDate DATE NOT NULL, -- format: 'YYYY-MM-DD' -- ** no need for this
   ordStatus VARCHAR(20) NOT NULL DEFAULT 'pending', -- {active, pending, complete}
   rid INTEGER NOT NULL,  --request id
-  -- custName VARCHAR(50) NOT NULL, -- CustName IS NOT NEEDED!!
   ratingDate DATE, -- can be null if no rating
   comment VARCHAR(100), -- can be null 
   rating DECIMAL(2,1)  -- can be nul  l
@@ -119,17 +109,15 @@ CREATE TABLE orderTable
   -- FOREIGN KEY (custName) REFERENCES request (custName) 
 ); 
 
-CREATE TABLE invoice
+CREATE TABLE invoice --entity
 (
-  inid SERIAL NOT NULL, 
-  oid INTEGER NOT NULL,  -- THIS IS A FOREIGN KEY, will see code right after orderTable
+  inid SERIAL NOT NULL, --invoice id; auto-increment
+  oid INTEGER NOT NULL,  -- order id
   description VARCHAR(100) NOT NULL,
   dueDate DATE NOT NULL, 
   amount DECIMAL(100,2) NOT NULL, 
-  custName VARCHAR(50) NOT NULL,
-  --** can be not payed
-  -- payDate DATE,
-  method VARCHAR(20),
+  custName VARCHAR(50) NOT NULL, --customer name (username of customer)
+  method VARCHAR(20) NOT NULL, -- payment method  
   status VARCHAR(20) NOT NULL, -- (pending, paid)   
   PRIMARY KEY(inid), 
   FOREIGN KEY(custName) REFERENCES customer (username) 
@@ -138,56 +126,42 @@ CREATE TABLE invoice
     ON DELETE RESTRICT ON UPDATE CASCADE
 ); 
 
-
-
-
--- -- update the actual key 
--- ALTER TABLE invoice 
---   ADD FOREIGN KEY (oid) REFERENCES orderTable (oid) ; 
-
--- Note1 : Use starttable not start since start is a keyword
--- Note2 : Add an attribute called startDate
-CREATE TABLE startTable
+CREATE TABLE startTable --relationship between request, mate, and customer
 (
-    rid INTEGER NOT NULL,
-    mateName VARCHAR(50) NOT NULL,
-    custName VARCHAR(50) NOT NULL,
+    rid INTEGER NOT NULL, --request id
+    mateName VARCHAR(50) NOT NULL, --username of mate
+    custName VARCHAR(50) NOT NULL, --customer name (username of customer)
     startDate DATE NOT NULL,  --start date
-    PRIMARY KEY (rid, mateName, custName) ,
+    PRIMARY KEY (rid, mateName, custName),
     FOREIGN KEY (mateName) REFERENCES mate(username),
     FOREIGN KEY (custName) REFERENCES customer(username),
     FOREIGN KEY (rid) REFERENCES request(rid)
 );
 
-
---- Neijin's updates  
-
-CREATE TABLE activity
+CREATE TABLE activity --entity
 (
-    aid SERIAL NOT NULL,
+    aid SERIAL NOT NULL, --activity id; auto-increment
     description VARCHAR(200) NOT NULL UNIQUE,
-    mngName VARCHAR(50) NOT NULL,
+    mngName VARCHAR(50) NOT NULL, --manager name (username of manager)
     PRIMARY KEY (aid), 
     FOREIGN KEY (mngName) REFERENCES manager(username)
 );
 
-
-
-CREATE TABLE modification -- NOTE: previously called "modify", but this is a reserved word
+CREATE TABLE modification --relationship between manager and order
 (
-    mngName VARCHAR(50) NOT NULL,
-    oid INTEGER NOT NULL,
+    mngName VARCHAR(50) NOT NULL, --manager name (username of manager)
+    oid INTEGER NOT NULL, --order id
     modDate DATE NOT NULL,
     FOREIGN KEY (oid) REFERENCES orderTable(oid),
     FOREIGN KEY (mngName) REFERENCES manager(username),
     PRIMARY KEY (mngName,oid)
 );
 
--- generates request if 
-CREATE TABLE generate -- 
+
+CREATE TABLE generate --relationship between request and order
 (
-    rid INTEGER NOT NULL,
-    oid INTEGER NOT NULL,
+    rid INTEGER NOT NULL, --request id
+    oid INTEGER NOT NULL, --order id
     PRIMARY KEY (rid),  
     FOREIGN KEY (rid )REFERENCES request(rid)
         ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -195,10 +169,10 @@ CREATE TABLE generate --
         ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
-CREATE TABLE schedule --
+CREATE TABLE schedule --relationship between order and activity
 (
-    aid INTEGER NOT NULL,
-    oid INTEGER NOT NULL,
+    aid INTEGER NOT NULL, --activity id
+    oid INTEGER NOT NULL, --order id
     PRIMARY KEY (aid,oid),
     FOREIGN KEY (aid)REFERENCES activity(aid)
         ON DELETE RESTRICT ON UPDATE CASCADE,
