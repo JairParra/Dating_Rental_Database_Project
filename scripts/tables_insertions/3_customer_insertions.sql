@@ -18,3 +18,6 @@ INSERT INTO customer VALUES('chysom17','preference16');
 INSERT INTO customer VALUES('bgager1a','preference17'); 
 INSERT INTO customer VALUES('cchittem1b','preference18'); 
 INSERT INTO customer VALUES('gfilinkov1d','preference19'); 
+
+SELECT * FROM customer LIMIT 10; 
+

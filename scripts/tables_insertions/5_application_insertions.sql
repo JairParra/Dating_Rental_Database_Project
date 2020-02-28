@@ -18,3 +18,6 @@ INSERT INTO application VALUES(17,'jpresnall10','lchadbandh','2018-03-17','Rejec
 INSERT INTO application VALUES(18,'ndoersf','cchippq','2018-04-24','Approved');
 INSERT INTO application VALUES(19,'iscrimshaw14','cchippq','2019-09-26','Rejected');
 INSERT INTO application VALUES(20,'bmatousl','zelsie19','2018-06-19','Pending');
+
+
+SELECT * FROM application LIMIT 10; 

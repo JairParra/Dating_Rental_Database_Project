@@ -8,3 +8,5 @@ INSERT INTO modification VALUES('candreuttij',2,'2018-01-21');
 INSERT INTO modification VALUES('cchippq',5,'2018-01-25');
 INSERT INTO modification VALUES('bmccartand',3,'2018-09-30');
 INSERT INTO modification VALUES('lchadbandh',8,'2018-06-17');
+
+SELECT * FROM modification LIMIT 10; 

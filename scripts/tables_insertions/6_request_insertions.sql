@@ -18,3 +18,5 @@ INSERT INTO request VALUES(17,'Information99','accepted','jrosendale5','vissakov
 INSERT INTO request VALUES(18,'Information100','rejected','kmulvyr','bmatousl','2020-01-11','2020-01-12');
 INSERT INTO request VALUES(19,'Information8',DEFAULT,'ngeraldeze','jpresnall10','2018-05-02','2019-03-02');
 INSERT INTO request VALUES(20,'Information30','accepted','tbonnor7','jpresnall10','2019-09-20','2020-01-05');
+
+SELECT * FROM request LIMIT 10; 

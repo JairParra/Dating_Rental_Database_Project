@@ -8,3 +8,6 @@ INSERT INTO activity VALUES(7,'description7','bmccartand');
 INSERT INTO activity VALUES(8,'description8','smccomiskieu');
 INSERT INTO activity VALUES(9,'description9','cneumann1c');
 INSERT INTO activity VALUES(10,'description10','cchippq');
+
+SELECT * FROM activity LIMIT 10; 
+
