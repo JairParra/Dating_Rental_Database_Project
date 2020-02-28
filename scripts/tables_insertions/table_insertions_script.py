@@ -277,7 +277,6 @@ def create_order(rids): #argument is a list of request id
         # collect all relevant values
         oid = i + 1
         start_date = start_dates[i]
-        end_date = fake_time.date_between(start_date=start_date, end_date='today')
         ordstatus = random.choice(statuses)  # choose status randomly
         rid = rids[i] # choose the rid from the input rids
         rate_date = fake_time.date_between(start_date=end_date, end_date='today')
@@ -286,14 +285,14 @@ def create_order(rids): #argument is a list of request id
         
         # some orders will have no rating
         if( i % 3 != 0 ):
-            stmt = "INSERT INTO orderTable VALUES ({},'{}','{}','{}',{},'{}','{}',{});\n".format(
-                oid, str(start_date), end_date, ordstatus, rid, rate_date, comment, rating)
-            #SQL: INSERT INTO orderTable VALUES (oid, startDate, endDate, ordStatus, rid, ratingDate, comment, rating)
+            stmt = "INSERT INTO orderTable VALUES ({},'{}','{}',{},'{}','{}',{});\n".format(
+                oid, str(start_date), ordstatus, rid, rate_date, comment, rating)
+            #SQL: INSERT INTO orderTable VALUES (oid, startDate, ordStatus, rid, ratingDate, comment, rating)
         else:
-            stmt = """INSERT INTO orderTable (oid, startDate,endDate, ordStatus,rid) 
-                VALUES({},'{}','{}','{}','{}');\n""".format(
-                oid, str(start_date), end_date, ordstatus,  rid)
-            #SQL:  INSERT INTO orderTable (oid, startDate, endDate, ordStatus, rid) VALUES (-,-,-,-,-)
+            stmt = """INSERT INTO orderTable (oid, startDate, ordStatus,rid) 
+                VALUES({},'{}','{}','{}');\n""".format(
+                oid, str(start_date),  ordstatus,  rid)
+            #SQL:  INSERT INTO orderTable (oid, startDate, ordStatus, rid) VALUES (-,-,-,-,-)
             # represent requests without rating
             
         # update return values

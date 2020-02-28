@@ -117,6 +117,7 @@ CREATE TABLE invoice --entity
   dueDate DATE NOT NULL, 
   amount DECIMAL(100,2) NOT NULL, 
   custName VARCHAR(50) NOT NULL, --customer name (username of customer)
+  method VARCHAR(20) NOT NULL, -- payment method  
   status VARCHAR(20) NOT NULL, -- (pending, paid)   
   PRIMARY KEY(inid), 
   FOREIGN KEY(custName) REFERENCES customer (username) 
@@ -131,7 +132,7 @@ CREATE TABLE startTable --relationship between request, mate, and customer
     mateName VARCHAR(50) NOT NULL, --username of mate
     custName VARCHAR(50) NOT NULL, --customer name (username of customer)
     startDate DATE NOT NULL,  --start date
-    PRIMARY KEY (rid, mateName, custName) ,
+    PRIMARY KEY (rid, mateName, custName),
     FOREIGN KEY (mateName) REFERENCES mate(username),
     FOREIGN KEY (custName) REFERENCES customer(username),
     FOREIGN KEY (rid) REFERENCES request(rid)
