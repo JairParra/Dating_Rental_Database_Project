@@ -1,3 +1,5 @@
+--- *** INTERESTING QUERIES ***
+
 insteresting_queries.sql
 --1. For customers, they want to find a perfect partner who meets his/her requirements. 
 -- Thus customer will search for mates with cireteria
@@ -118,6 +120,9 @@ GROUP BY aid
 (1 row)
 
 ------------------------------------
+
+-- *** UPDATE/DELETION QUERIES *** 
+
 update_queries.sql
 -- 1. A mate want to accept a request. Assume the request id is 101.
 UPDATE request 

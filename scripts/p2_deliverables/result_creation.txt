@@ -234,3 +234,236 @@ COMMIT
  cs421g88 | starttable            | table    | cs421g88
  cs421g88 | usertable             | table    | cs421g88
 (18 rows)
+
+
+
+                   List of relations
+  Schema  |         Name          |   Type   |  Owner   
+----------+-----------------------+----------+----------
+ cs421g88 | activity              | table    | cs421g88
+ cs421g88 | activity_aid_seq      | sequence | cs421g88
+ cs421g88 | application           | table    | cs421g88
+ cs421g88 | application_appid_seq | sequence | cs421g88
+ cs421g88 | customer              | table    | cs421g88
+ cs421g88 | generate              | table    | cs421g88
+ cs421g88 | invoice               | table    | cs421g88
+ cs421g88 | invoice_inid_seq      | sequence | cs421g88
+ cs421g88 | manager               | table    | cs421g88
+ cs421g88 | mate                  | table    | cs421g88
+ cs421g88 | modification          | table    | cs421g88
+ cs421g88 | ordertable            | table    | cs421g88
+ cs421g88 | ordertable_oid_seq    | sequence | cs421g88
+ cs421g88 | request               | table    | cs421g88
+ cs421g88 | request_rid_seq       | sequence | cs421g88
+ cs421g88 | schedule              | table    | cs421g88
+ cs421g88 | starttable            | table    | cs421g88
+ cs421g88 | usertable             | table    | cs421g88
+(18 rows)
+
+
+                                                       Table "cs421g88.activity"
+   Column    |          Type          |                       Modifiers                        | Storage  | Stats target | Description 
+-------------+------------------------+--------------------------------------------------------+----------+--------------+-------------
+ aid         | integer                | not null default nextval('activity_aid_seq'::regclass) | plain    |              | 
+ description | character varying(200) | not null                                               | extended |              | 
+ mngname     | character varying(50)  | not null                                               | extended |              | 
+Indexes:
+    "activity_pkey" PRIMARY KEY, btree (aid)
+    "activity_description_key" UNIQUE CONSTRAINT, btree (description)
+Foreign-key constraints:
+    "activity_mngname_fkey" FOREIGN KEY (mngname) REFERENCES manager(username)
+Referenced by:
+    TABLE "schedule" CONSTRAINT "schedule_aid_fkey" FOREIGN KEY (aid) REFERENCES activity(aid) ON UPDATE CASCADE ON DELETE RESTRICT
+
+
+                                                      Table "cs421g88.application"
+  Column   |         Type          |                          Modifiers                          | Storage  | Stats target | Description 
+-----------+-----------------------+-------------------------------------------------------------+----------+--------------+-------------
+ appid     | integer               | not null default nextval('application_appid_seq'::regclass) | plain    |              | 
+ matename  | character varying(50) | not null                                                    | extended |              | 
+ mngname   | character varying(50) | not null                                                    | extended |              | 
+ adate     | date                  | not null                                                    | plain    |              | 
+ appstatus | character varying(20) | not null                                                    | extended |              | 
+Indexes:
+    "application_pkey" PRIMARY KEY, btree (appid, matename)
+Foreign-key constraints:
+    "application_matename_fkey" FOREIGN KEY (matename) REFERENCES mate(username) ON UPDATE CASCADE ON DELETE RESTRICT
+    "application_mngname_fkey" FOREIGN KEY (mngname) REFERENCES manager(username) ON UPDATE CASCADE ON DELETE RESTRICT
+
+                                                   Table "cs421g88.customer"
+   Column    |          Type          |                    Modifiers                    | Storage  | Stats target | Description 
+-------------+------------------------+-------------------------------------------------+----------+--------------+-------------
+ username    | character varying(50)  | not null                                        | extended |              | 
+ preferences | character varying(100) | not null default 'undefined'::character varying | extended |              | 
+Indexes:
+    "customer_pkey" PRIMARY KEY, btree (username)
+Foreign-key constraints:
+    "customer_username_fkey" FOREIGN KEY (username) REFERENCES usertable(username) ON UPDATE CASCADE ON DELETE RESTRICT
+Referenced by:
+    TABLE "invoice" CONSTRAINT "invoice_custname_fkey" FOREIGN KEY (custname) REFERENCES customer(username) ON UPDATE CASCADE ON DELETE RESTRICT
+    TABLE "request" CONSTRAINT "request_custname_fkey" FOREIGN KEY (custname) REFERENCES customer(username) ON UPDATE CASCADE ON DELETE RESTRICT
+    TABLE "starttable" CONSTRAINT "starttable_custname_fkey" FOREIGN KEY (custname) REFERENCES customer(username)
+
+                      Table "cs421g88.generate"
+ Column |  Type   | Modifiers | Storage | Stats target | Description 
+--------+---------+-----------+---------+--------------+-------------
+ rid    | integer | not null  | plain   |              | 
+ oid    | integer | not null  | plain   |              | 
+Indexes:
+    "generate_pkey" PRIMARY KEY, btree (rid)
+Foreign-key constraints:
+    "generate_oid_fkey" FOREIGN KEY (oid) REFERENCES ordertable(oid) ON UPDATE CASCADE ON DELETE RESTRICT
+    "generate_rid_fkey" FOREIGN KEY (rid) REFERENCES request(rid) ON UPDATE CASCADE ON DELETE RESTRICT
+
+                                                       Table "cs421g88.invoice"
+   Column    |          Type          |                       Modifiers                        | Storage  | Stats target | Description 
+-------------+------------------------+--------------------------------------------------------+----------+--------------+-------------
+ inid        | integer                | not null default nextval('invoice_inid_seq'::regclass) | plain    |              | 
+ oid         | integer                | not null                                               | plain    |              | 
+ description | character varying(100) | not null                                               | extended |              | 
+ duedate     | date                   | not null                                               | plain    |              | 
+ amount      | numeric(100,2)         | not null                                               | main     |              | 
+ custname    | character varying(50)  | not null                                               | extended |              | 
+ method      | character varying(20)  | not null                                               | extended |              | 
+ status      | character varying(20)  | not null                                               | extended |              | 
+Indexes:
+    "invoice_pkey" PRIMARY KEY, btree (inid)
+Foreign-key constraints:
+    "invoice_custname_fkey" FOREIGN KEY (custname) REFERENCES customer(username) ON UPDATE CASCADE ON DELETE RESTRICT
+    "invoice_oid_fkey" FOREIGN KEY (oid) REFERENCES ordertable(oid) ON UPDATE CASCADE ON DELETE RESTRICT
+
+                              Table "cs421g88.manager"
+  Column  |         Type          | Modifiers | Storage  | Stats target | Description 
+----------+-----------------------+-----------+----------+--------------+-------------
+ username | character varying(50) | not null  | extended |              | 
+Indexes:
+    "manager_pkey" PRIMARY KEY, btree (username)
+Foreign-key constraints:
+    "manager_username_fkey" FOREIGN KEY (username) REFERENCES usertable(username) ON UPDATE CASCADE ON DELETE RESTRICT
+Referenced by:
+    TABLE "activity" CONSTRAINT "activity_mngname_fkey" FOREIGN KEY (mngname) REFERENCES manager(username)
+    TABLE "application" CONSTRAINT "application_mngname_fkey" FOREIGN KEY (mngname) REFERENCES manager(username) ON UPDATE CASCADE ON DELETE RESTRICT
+    TABLE "modification" CONSTRAINT "modification_mngname_fkey" FOREIGN KEY (mngname) REFERENCES manager(username)
+
+                                  Table "cs421g88.mate"
+   Column    |          Type          | Modifiers | Storage  | Stats target | Description 
+-------------+------------------------+-----------+----------+--------------+-------------
+ username    | character varying(50)  | not null  | extended |              | 
+ nickname    | character varying(50)  | not null  | extended |              | 
+ description | character varying(200) | not null  | extended |              | 
+ language    | character varying(15)  | not null  | extended |              | 
+ height      | numeric(3,2)           | not null  | main     |              | 
+ weight      | numeric(5,2)           | not null  | main     |              | 
+ hourlyrate  | numeric                |           | main     |              | 
+Indexes:
+    "mate_pkey" PRIMARY KEY, btree (username)
+Foreign-key constraints:
+    "mate_username_fkey" FOREIGN KEY (username) REFERENCES usertable(username) ON UPDATE CASCADE ON DELETE RESTRICT
+Referenced by:
+    TABLE "application" CONSTRAINT "application_matename_fkey" FOREIGN KEY (matename) REFERENCES mate(username) ON UPDATE CASCADE ON DELETE RESTRICT
+    TABLE "request" CONSTRAINT "request_matename_fkey" FOREIGN KEY (matename) REFERENCES mate(username) ON UPDATE CASCADE ON DELETE RESTRICT
+    TABLE "starttable" CONSTRAINT "starttable_matename_fkey" FOREIGN KEY (matename) REFERENCES mate(username)
+
+                            Table "cs421g88.modification"
+ Column  |         Type          | Modifiers | Storage  | Stats target | Description 
+---------+-----------------------+-----------+----------+--------------+-------------
+ mngname | character varying(50) | not null  | extended |              | 
+ oid     | integer               | not null  | plain    |              | 
+ moddate | date                  | not null  | plain    |              | 
+Indexes:
+    "modification_pkey" PRIMARY KEY, btree (mngname, oid)
+Foreign-key constraints:
+    "modification_mngname_fkey" FOREIGN KEY (mngname) REFERENCES manager(username)
+    "modification_oid_fkey" FOREIGN KEY (oid) REFERENCES ordertable(oid)
+
+                                                      Table "cs421g88.ordertable"
+   Column   |          Type          |                        Modifiers                         | Storage  | Stats target | Description 
+------------+------------------------+----------------------------------------------------------+----------+--------------+-------------
+ oid        | integer                | not null default nextval('ordertable_oid_seq'::regclass) | plain    |              | 
+ startdate  | date                   | not null                                                 | plain    |              | 
+ ordstatus  | character varying(20)  | not null default 'pending'::character varying            | extended |              | 
+ rid        | integer                | not null                                                 | plain    |              | 
+ ratingdate | date                   |                                                          | plain    |              | 
+ comment    | character varying(100) |                                                          | extended |              | 
+ rating     | numeric(2,1)           |                                                          | main     |              | 
+Indexes:
+    "ordertable_pkey" PRIMARY KEY, btree (oid)
+Check constraints:
+    "rat" CHECK (rating > 0.0 AND rating <= 5.0)
+Foreign-key constraints:
+    "ordertable_rid_fkey" FOREIGN KEY (rid) REFERENCES request(rid)
+Referenced by:
+    TABLE "generate" CONSTRAINT "generate_oid_fkey" FOREIGN KEY (oid) REFERENCES ordertable(oid) ON UPDATE CASCADE ON DELETE RESTRICT
+    TABLE "invoice" CONSTRAINT "invoice_oid_fkey" FOREIGN KEY (oid) REFERENCES ordertable(oid) ON UPDATE CASCADE ON DELETE RESTRICT
+    TABLE "modification" CONSTRAINT "modification_oid_fkey" FOREIGN KEY (oid) REFERENCES ordertable(oid)
+    TABLE "schedule" CONSTRAINT "schedule_oid_fkey" FOREIGN KEY (oid) REFERENCES ordertable(oid) ON UPDATE CASCADE ON DELETE RESTRICT
+
+
+                                                     Table "cs421g88.request"
+  Column  |          Type          |                       Modifiers                       | Storage  | Stats target | Description 
+----------+------------------------+-------------------------------------------------------+----------+--------------+-------------
+ rid      | integer                | not null default nextval('request_rid_seq'::regclass) | plain    |              | 
+ rinfo    | character varying(100) | not null                                              | extended |              | 
+ rstatus  | character varying(20)  | not null default 'pending'::character varying         | extended |              | 
+ custname | character varying(50)  | not null                                              | extended |              | 
+ matename | character varying(50)  | not null                                              | extended |              | 
+ rdate    | date                   |                                                       | plain    |              | 
+ decdate  | date                   |                                                       | plain    |              | 
+Indexes:
+    "request_pkey" PRIMARY KEY, btree (rid)
+Foreign-key constraints:
+    "request_custname_fkey" FOREIGN KEY (custname) REFERENCES customer(username) ON UPDATE CASCADE ON DELETE RESTRICT
+    "request_matename_fkey" FOREIGN KEY (matename) REFERENCES mate(username) ON UPDATE CASCADE ON DELETE RESTRICT
+Referenced by:
+    TABLE "generate" CONSTRAINT "generate_rid_fkey" FOREIGN KEY (rid) REFERENCES request(rid) ON UPDATE CASCADE ON DELETE RESTRICT
+    TABLE "ordertable" CONSTRAINT "ordertable_rid_fkey" FOREIGN KEY (rid) REFERENCES request(rid)
+    TABLE "starttable" CONSTRAINT "starttable_rid_fkey" FOREIGN KEY (rid) REFERENCES request(rid)
+
+                      Table "cs421g88.schedule"
+ Column |  Type   | Modifiers | Storage | Stats target | Description 
+--------+---------+-----------+---------+--------------+-------------
+ aid    | integer | not null  | plain   |              | 
+ oid    | integer | not null  | plain   |              | 
+Indexes:
+    "schedule_pkey" PRIMARY KEY, btree (aid, oid)
+Foreign-key constraints:
+    "schedule_aid_fkey" FOREIGN KEY (aid) REFERENCES activity(aid) ON UPDATE CASCADE ON DELETE RESTRICT
+    "schedule_oid_fkey" FOREIGN KEY (oid) REFERENCES ordertable(oid) ON UPDATE CASCADE ON DELETE RESTRICT
+
+cs421=> \d+ starttable
+                              Table "cs421g88.starttable"
+  Column   |         Type          | Modifiers | Storage  | Stats target | Description 
+-----------+-----------------------+-----------+----------+--------------+-------------
+ rid       | integer               | not null  | plain    |              | 
+ matename  | character varying(50) | not null  | extended |              | 
+ custname  | character varying(50) | not null  | extended |              | 
+ startdate | date                  | not null  | plain    |              | 
+Indexes:
+    "starttable_pkey" PRIMARY KEY, btree (rid, matename, custname)
+Foreign-key constraints:
+    "starttable_custname_fkey" FOREIGN KEY (custname) REFERENCES customer(username)
+    "starttable_matename_fkey" FOREIGN KEY (matename) REFERENCES mate(username)
+    "starttable_rid_fkey" FOREIGN KEY (rid) REFERENCES request(rid)
+
+
+                                Table "cs421g88.usertable"
+   Column    |          Type          | Modifiers | Storage  | Stats target | Description 
+-------------+------------------------+-----------+----------+--------------+-------------
+ username    | character varying(50)  | not null  | extended |              | 
+ password    | character varying(100) | not null  | extended |              | 
+ email       | character varying(100) | not null  | extended |              | 
+ firstname   | character varying(100) | not null  | extended |              | 
+ lastname    | character varying(100) | not null  | extended |              | 
+ sex         | character varying(100) | not null  | extended |              | 
+ city        | character varying(30)  | not null  | extended |              | 
+ phonenum    | integer                | not null  | plain    |              | 
+ dateofbirth | date                   |           | plain    |              | 
+Indexes:
+    "usertable_pkey" PRIMARY KEY, btree (username)
+    "usertable_email_key" UNIQUE CONSTRAINT, btree (email)
+Referenced by:
+    TABLE "customer" CONSTRAINT "customer_username_fkey" FOREIGN KEY (username) REFERENCES usertable(username) ON UPDATE CASCADE ON DELETE RESTRICT
+    TABLE "manager" CONSTRAINT "manager_username_fkey" FOREIGN KEY (username) REFERENCES usertable(username) ON UPDATE CASCADE ON DELETE RESTRICT
+    TABLE "mate" CONSTRAINT "mate_username_fkey" FOREIGN KEY (username) REFERENCES usertable(username) ON UPDATE CASCADE ON DELETE RESTRICT
+
+
