@@ -1,0 +1,706 @@
+1_usertable_insertions.sql
+----------------------------------------------------------
+insert into usertable (username, password, email , firstname, lastname, sex, city , phoneNum, dateOfBirth) values ('jspurling0', 'iDuaE17UqD', 'jspurling0@cnet.com', 'Jeno', 'Spurling', 'Female', 'Roanoke', 823311983, '1990-08-05');
+insert into usertable (username, password, email , firstname, lastname, sex, city , phoneNum, dateOfBirth) values ('gjantzen1', 'gK3MEjmRjWG', 'gjantzen1@ustream.tv', 'Gabrielle', 'Jantzen', 'Male', 'Amurzet', 868151565, '1980-08-10');
+insert into usertable (username, password, email , firstname, lastname, sex, city , phoneNum, dateOfBirth) values ('fhoys2', '0IMU2gpMnT', 'fhoys2@live.com', 'Fidelity', 'Hoys', 'Male', 'San Francisco', 289543071, '1975-10-25');
+insert into usertable (username, password, email , firstname, lastname, sex, city , phoneNum, dateOfBirth) values ('estirton3', 'LI2uS0yn', 'estirton3@twitter.com', 'Elfreda', 'Stirton', 'Male', 'Nioro du Rip', 347128423, '1997-09-12');
+insert into usertable (username, password, email , firstname, lastname, sex, city , phoneNum, dateOfBirth) values ('broizin4', 'nzLSdSLEX', 'broizin4@live.com', 'Bard', 'Roizin', 'Male', 'Barbudo', 591434233, '1971-02-05');
+----------------------------------------------------------
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+  username   |   password   |          email          | firstname | lastname  |  sex   |     city      | phonenum  | dateofbirth 
+-------------+--------------+-------------------------+-----------+-----------+--------+---------------+-----------+-------------
+ jspurling0  | iDuaE17UqD   | jspurling0@cnet.com     | Jeno      | Spurling  | Female | Roanoke       | 823311983 | 1990-08-05
+ gjantzen1   | gK3MEjmRjWG  | gjantzen1@ustream.tv    | Gabrielle | Jantzen   | Male   | Amurzet       | 868151565 | 1980-08-10
+ fhoys2      | 0IMU2gpMnT   | fhoys2@live.com         | Fidelity  | Hoys      | Male   | San Francisco | 289543071 | 1975-10-25
+ estirton3   | LI2uS0yn     | estirton3@twitter.com   | Elfreda   | Stirton   | Male   | Nioro du Rip  | 347128423 | 1997-09-12
+ broizin4    | nzLSdSLEX    | broizin4@live.com       | Bard      | Roizin    | Male   | Barbudo       | 591434233 | 1971-02-05
+ jrosendale5 | jOxUSjwmYk   | jrosendale5@salon.com   | Jade      | Rosendale | Male   | Mananjary     | 219508772 | 2000-11-10
+ tbampkin6   | cArn4UKHzqSx | tbampkin6@addthis.com   | Tim       | Bampkin   | Female | Sayang Lauq   | 324612460 | 1999-08-27
+ tbonnor7    | ql69p2ER6    | tbonnor7@vkontakte.ru   | Tripp     | Bonnor    | Male   | Dian-ay       | 743645835 | 1984-05-13
+ swoodhouse8 | X4lUuuH4e    | swoodhouse8@youtube.com | Shirlene  | Woodhouse | Male   | Tuluá         | 999245753 | 1975-12-08
+ vissakov9   | 6JSDjWUA     | vissakov9@nba.com       | Vaclav    | Issakov   | Male   | Santo Niño    | 385990447 | 1984-02-22
+(10 rows)
+
+2_mate_insertions.sql
+----------------------------------------------------------
+INSERT INTO mate VALUES('jballintyne12','nickname0','description0','French',1.82,56,120); 
+INSERT INTO mate VALUES('swoodhouse8','nickname1','description1','French',1.62,58,76); 
+INSERT INTO mate VALUES('poneills','nickname2','description2','French',1.84,73,72); 
+INSERT INTO mate VALUES('bwhorfa','nickname3','description3','French',1.8,56,73); 
+INSERT INTO mate VALUES('gjantzen1','nickname4','description4','Eng & French',1.61,65,56); 
+----------------------------------------------------------
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+   username    | nickname  | description  |   language   | height | weight | hourlyrate 
+---------------+-----------+--------------+--------------+--------+--------+------------
+ jballintyne12 | nickname0 | description0 | French       |   1.82 |  56.00 |        120
+ swoodhouse8   | nickname1 | description1 | French       |   1.62 |  58.00 |         76
+ poneills      | nickname2 | description2 | French       |   1.84 |  73.00 |         72
+ bwhorfa       | nickname3 | description3 | French       |   1.80 |  56.00 |         73
+ gjantzen1     | nickname4 | description4 | Eng & French |   1.61 |  65.00 |         56
+ estirton3     | nickname5 | description5 | Eng & French |   1.78 |  69.00 |        189
+ iorrisv       | nickname6 | description6 | French       |   1.71 |  64.00 |        121
+ tmccandiex    | nickname7 | description7 | French       |   1.90 |  55.00 |         90
+ vissakov9     | nickname8 | description8 | French       |   1.85 |  62.00 |         89
+ broizin4      | nickname9 | description9 | French       |   1.61 |  70.00 |         76
+(10 rows)
+
+3_customer_insertions.sql
+----------------------------------------------------------
+INSERT INTO customer VALUES('fhoys2','preference0'); 
+INSERT INTO customer VALUES('jrosendale5','preference1'); 
+INSERT INTO customer VALUES('tbampkin6','preference2'); 
+INSERT INTO customer VALUES('tbonnor7','preference3'); 
+INSERT INTO customer VALUES('hsimmigc','preference4'); 
+----------------------------------------------------------
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+  username   | preferences 
+-------------+-------------
+ fhoys2      | preference0
+ jrosendale5 | preference1
+ tbampkin6   | preference2
+ tbonnor7    | preference3
+ hsimmigc    | preference4
+ ngeraldeze  | preference5
+ cwhewellg   | preference6
+ aportwainei | preference7
+ dlinzeyk    | preference8
+ rhebbesm    | preference9
+(10 rows)
+
+4_manager_insertions.sql
+----------------------------------------------------------
+INSERT INTO manager VALUES('bmccartand'); 
+INSERT INTO manager VALUES('tharkes13'); 
+INSERT INTO manager VALUES('smccomiskieu'); 
+INSERT INTO manager VALUES('zelsie19'); 
+INSERT INTO manager VALUES('lchadbandh'); 
+----------------------------------------------------------
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+   username   
+--------------
+ bmccartand
+ tharkes13
+ smccomiskieu
+ zelsie19
+ lchadbandh
+ cneumann1c
+ cchippq
+ lvedyasovp
+ mickovitzw
+ candreuttij
+(10 rows)
+
+5_application_insertions.sql
+----------------------------------------------------------
+INSERT INTO application VALUES(1,'jballintyne12','smccomiskieu','2019-01-14','Approved');
+INSERT INTO application VALUES(2,'swoodhouse8','lchadbandh','2018-11-08','Rejected');
+INSERT INTO application VALUES(3,'poneills','smccomiskieu','2019-05-09','Rejected');
+INSERT INTO application VALUES(4,'bwhorfa','bmccartand','2018-06-09','Rejected');
+INSERT INTO application VALUES(5,'gjantzen1','lchadbandh','2018-05-22','Pending');
+----------------------------------------------------------
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ appid |   matename    |   mngname    |   adate    | appstatus 
+-------+---------------+--------------+------------+-----------
+     1 | jballintyne12 | smccomiskieu | 2019-01-14 | Approved
+     2 | swoodhouse8   | lchadbandh   | 2018-11-08 | Rejected
+     3 | poneills      | smccomiskieu | 2019-05-09 | Rejected
+     4 | bwhorfa       | bmccartand   | 2018-06-09 | Rejected
+     5 | gjantzen1     | lchadbandh   | 2018-05-22 | Pending
+     6 | estirton3     | candreuttij  | 2019-08-03 | Pending
+     7 | iorrisv       | cchippq      | 2018-03-05 | Pending
+     8 | tmccandiex    | cchippq      | 2018-12-14 | Approved
+     9 | vissakov9     | mickovitzw   | 2019-06-17 | Pending
+    10 | broizin4      | candreuttij  | 2018-05-05 | Approved
+(10 rows)
+
+6_request_insertions.sql
+----------------------------------------------------------
+INSERT INTO request VALUES(1,'Information78',DEFAULT,'gfilinkov1d','jballintyne12','2018-06-09','2019-12-30');
+INSERT INTO request VALUES(2,'Information82','rejected','kmulvyr','jballintyne12','2019-05-02','2019-05-16');
+INSERT INTO request VALUES(3,'Information22','pending','cwhewellg','bmatousl','2019-01-02','2019-09-25');
+INSERT INTO request VALUES(4,'Information69','accepted','jrosendale5','nclapshaw18','2018-10-29','2020-01-15');
+INSERT INTO request VALUES(5,'Information94','rejected','tbampkin6','vissakov9','2020-01-25','2020-02-12');
+----------------------------------------------------------
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ rid |     rinfo     | rstatus  |  custname   |   matename    |   rdate    |  decdate   
+-----+---------------+----------+-------------+---------------+------------+------------
+   1 | Information78 | pending  | gfilinkov1d | jballintyne12 | 2018-06-09 | 2019-12-30
+   2 | Information82 | rejected | kmulvyr     | jballintyne12 | 2019-05-02 | 2019-05-16
+   3 | Information22 | pending  | cwhewellg   | bmatousl      | 2019-01-02 | 2019-09-25
+   4 | Information69 | accepted | jrosendale5 | nclapshaw18   | 2018-10-29 | 2020-01-15
+   5 | Information94 | rejected | tbampkin6   | vissakov9     | 2020-01-25 | 2020-02-12
+   6 | Information32 | accepted | chysom17    | poneills      | 2019-12-15 | 2020-02-23
+   7 | Information21 | pending  | hsimmigc    | iorrisv       | 2020-01-10 | 2020-01-28
+   8 | Information60 | accepted | chysom17    | estirton3     | 2018-10-22 | 2018-12-17
+   9 | Information49 | accepted | chysom17    | tmccandiex    | 2020-02-17 | 2020-02-19
+  10 | Information35 | pending  | chysom17    | vissakov9     | 2019-02-15 | 2019-08-09
+(10 rows)
+
+7_order_insertions.sql 
+----------------------------------------------------------
+INSERT INTO orderTable (oid, startDate, ordStatus,rid)
+                VALUES(1,'2018-04-20','active','14');
+INSERT INTO orderTable VALUES (2,'2018-07-27','pending',6,'2018-10-12','comments2',1.3);
+INSERT INTO orderTable VALUES (3,'2019-11-16','active',5,'2020-02-10','comments3',4.6);
+INSERT INTO orderTable (oid, startDate, ordStatus,rid)
+----------------------------------------------------------
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ oid | startdate  | ordstatus | rid | ratingdate |  comment  | rating 
+-----+------------+-----------+-----+------------+-----------+--------
+   1 | 2018-04-20 | active    |  14 |            |           |       
+   2 | 2018-07-27 | pending   |   6 | 2018-10-12 | comments2 |    1.3
+   3 | 2019-11-16 | active    |   5 | 2020-02-10 | comments3 |    4.6
+   4 | 2018-07-09 | complete  |  17 |            |           |       
+   5 | 2019-08-27 | pending   |  16 | 2019-11-20 | comments5 |    1.1
+   6 | 2018-10-01 | pending   |  15 | 2020-02-04 | comments6 |    2.0
+   7 | 2018-05-11 | complete  |   4 |            |           |       
+   8 | 2019-02-13 | pending   |  10 | 2019-09-03 | comments8 |    0.7
+   9 | 2018-10-14 | complete  |   3 | 2020-02-04 | comments9 |    2.8
+  10 | 2018-12-03 | pending   |  19 |            |           |       
+(10 rows)
+
+8_invoice_insertions.sql
+----------------------------------------------------------
+INSERT INTO invoice VALUES(1,19,'description1','2018-11-16','148','tbonnor7','americanexpress','pending');
+INSERT INTO invoice VALUES(2,2,'description2','2019-10-26','134','ngeraldeze','applepay','paid');
+INSERT INTO invoice VALUES(3,14,'description3','2018-04-14','95','aportwainei','E-T','pending');
+INSERT INTO invoice VALUES(4,18,'description4','2019-10-13','191','gfilinkov1d','mastercard','paid');
+INSERT INTO invoice VALUES(5,8,'description5','2019-06-26','156','tbampkin6','paypal','paid');
+----------------------------------------------------------
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ inid | oid |  description  |  duedate   | amount |  custname   |     method      | status  
+------+-----+---------------+------------+--------+-------------+-----------------+---------
+    1 |  19 | description1  | 2018-11-16 | 148.00 | tbonnor7    | americanexpress | pending
+    2 |   2 | description2  | 2019-10-26 | 134.00 | ngeraldeze  | applepay        | paid
+    3 |  14 | description3  | 2018-04-14 |  95.00 | aportwainei | E-T             | pending
+    4 |  18 | description4  | 2019-10-13 | 191.00 | gfilinkov1d | mastercard      | paid
+    5 |   8 | description5  | 2019-06-26 | 156.00 | tbampkin6   | paypal          | paid
+    6 |  20 | description6  | 2019-10-13 | 131.00 | llount16    | applepay        | pending
+    7 |   6 | description7  | 2018-06-02 |  84.00 | tbampkin6   | visa            | pending
+    8 |   4 | description8  | 2019-09-08 | 191.00 | bgager1a    | paypal          | pending
+    9 |  10 | description9  | 2019-04-26 |  75.00 | wpawelecz   | paypal          | pending
+   10 |  15 | description10 | 2019-03-09 | 187.00 | bgager1a    | mastercard      | pending
+   11 |   3 | description11 | 2019-02-16 |  26.00 | jrosendale5 | visa            | paid
+   12 |  13 | description12 | 2019-06-19 | 150.00 | tbampkin6   | mastercard      | pending
+   13 |   9 | description13 | 2019-12-02 | 114.00 | llount16    | applepay        | pending
+   14 |   7 | description14 | 2019-06-21 | 137.00 | dlinzeyk    | visa            | pending
+   15 |  11 | description15 | 2018-02-21 | 113.00 | tbonnor7    | E-T             | pending
+   16 |  17 | description16 | 2018-03-27 | 187.00 | fhoys2      | visa            | paid
+   17 |   5 | description17 | 2018-04-05 |  73.00 | tbonnor7    | americanexpress | pending
+   18 |  12 | description18 | 2018-10-27 | 181.00 | fhoys2      | debit           | paid
+   19 |  16 | description19 | 2018-03-18 |  61.00 | wpawelecz   | mastercard      | paid
+   20 |   1 | description20 | 2019-04-25 |  19.00 | llount16    | E-T             | pending
+(20 rows)
+
+9_startTable_insertions.sql
+----------------------------------------------------------
+INSERT INTO startTable VALUES(1,'jballintyne12','gfilinkov1d','2019-01-19');
+INSERT INTO startTable VALUES(2,'jballintyne12','kmulvyr','2018-06-26');
+INSERT INTO startTable VALUES(3,'bmatousl','cwhewellg','2018-01-02');
+INSERT INTO startTable VALUES(4,'nclapshaw18','jrosendale5','2020-02-01');
+INSERT INTO startTable VALUES(5,'vissakov9','tbampkin6','2018-08-07');
+----------------------------------------------------------
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ rid |   matename    |  custname   | startdate  
+-----+---------------+-------------+------------
+   1 | jballintyne12 | gfilinkov1d | 2019-01-19
+   2 | jballintyne12 | kmulvyr     | 2018-06-26
+   3 | bmatousl      | cwhewellg   | 2018-01-02
+   4 | nclapshaw18   | jrosendale5 | 2020-02-01
+   5 | vissakov9     | tbampkin6   | 2018-08-07
+   6 | poneills      | chysom17    | 2018-08-21
+   7 | iorrisv       | hsimmigc    | 2020-01-28
+   8 | estirton3     | chysom17    | 2018-09-24
+   9 | tmccandiex    | chysom17    | 2018-11-01
+  10 | vissakov9     | chysom17    | 2018-03-01
+(10 rows)
+
+10_activity_insertions.sql
+----------------------------------------------------------
+INSERT INTO activity VALUES(1,'description1','zelsie19');
+INSERT INTO activity VALUES(2,'description2','lvedyasovp');
+INSERT INTO activity VALUES(3,'description3','lvedyasovp');
+INSERT INTO activity VALUES(4,'description4','cchippq');
+INSERT INTO activity VALUES(5,'description5','smccomiskieu');
+----------------------------------------------------------
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ aid |  description  |   mngname    
+-----+---------------+--------------
+   1 | description1  | zelsie19
+   2 | description2  | lvedyasovp
+   3 | description3  | lvedyasovp
+   4 | description4  | cchippq
+   5 | description5  | smccomiskieu
+   6 | description6  | bmccartand
+   7 | description7  | bmccartand
+   8 | description8  | smccomiskieu
+   9 | description9  | cneumann1c
+  10 | description10 | cchippq
+(10 rows)
+
+11_modify_insertions.sql
+----------------------------------------------------------
+INSERT INTO modification VALUES('tharkes13',9,'2019-08-24');
+INSERT INTO modification VALUES('mickovitzw',4,'2018-03-20');
+INSERT INTO modification VALUES('zelsie19',10,'2019-04-17');
+INSERT INTO modification VALUES('smccomiskieu',1,'2019-09-24');
+INSERT INTO modification VALUES('cneumann1c',7,'2019-01-23');
+----------------------------------------------------------
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+   mngname    | oid |  moddate   
+--------------+-----+------------
+ tharkes13    |   9 | 2019-08-24
+ mickovitzw   |   4 | 2018-03-20
+ zelsie19     |  10 | 2019-04-17
+ smccomiskieu |   1 | 2019-09-24
+ cneumann1c   |   7 | 2019-01-23
+ lvedyasovp   |   6 | 2018-11-05
+ candreuttij  |   2 | 2018-01-21
+ cchippq      |   5 | 2018-01-25
+ bmccartand   |   3 | 2018-09-30
+ lchadbandh   |   8 | 2018-06-17
+(10 rows)
+
+12_generate_insertions.sql
+----------------------------------------------------------
+INSERT INTO generate VALUES(1,16);
+INSERT INTO generate VALUES(2,12);
+INSERT INTO generate VALUES(3,15);
+INSERT INTO generate VALUES(4,20);
+INSERT INTO generate VALUES(5,10);
+----------------------------------------------------------
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ rid | oid 
+-----+-----
+   1 |  16
+   2 |  12
+   3 |  15
+   4 |  20
+   5 |  10
+   6 |   9
+   7 |   7
+   8 |   4
+   9 |   1
+  10 |   5
+(10 rows)
+
+13_schedule_insertions.sql
+----------------------------------------------------------
+INSERT INTO schedule VALUES(3,1);
+INSERT INTO schedule VALUES(4,2);
+INSERT INTO schedule VALUES(3,3);
+INSERT INTO schedule VALUES(1,4);
+INSERT INTO schedule VALUES(1,5);
+----------------------------------------------------------
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ aid | oid 
+-----+-----
+   3 |   1
+   4 |   2
+   3 |   3
+   1 |   4
+   1 |   5
+   5 |   6
+   6 |   7
+   3 |   8
+   9 |   9
+   5 |  10
+(10 rows)
+
