@@ -6,45 +6,50 @@ SELECT mate.username, height, weight, (DATE_PART('year', '2020-02-27'::date) - D
 FROM usertable, mate 
 WHERE usertable.username = mate.username AND height > 1.8 AND weight < 80 AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) < 40;
 
--- 2. For custmers, they might want to see his/her requests in the past 90days.
+-- 2. For customers, they might want to see his/her requests in the past 90days.
 -- The return result should include matename, request date as well as request status 
 -- Assume today's date is "2020/02/27", this customer's name is bmatousl.
 SELECT mateName, rdate, rstatus 
 FROM request
-WHERE custName = 'bmatousl' AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', rdate)) <= 90;
+WHERE custName = 'chysom17' AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', rdate)) <= 90;
 
---3. For some reaason, the manager want to know all the people(both mate and customers) who have performed a specific activity on a specific date
+--3. For some reason, the manager want to know all the people(both mate and customers) who have performed a specific activity on a specific date
 -- Find name of custsmer and mates who has performed (which mean order status is complete) activity with "aid=1" on date "2020/02/27"
 SELECT DISTINCT custName AS name
 FROM request, ordertable
 WHERE request.rid = ordertable.rid 
-    AND request.rstatus = 'complete'
+    AND ordertable.ordStatus = 'complete'
     AND request.rid = (
         SELECT rid 
         FROM ordertable, schedule
-        WHERE ordertable.oid = schedule.oid AND schedule.aid = 1 AND ordertable.startdate = '2019-05-02'
+        WHERE ordertable.oid = schedule.oid AND schedule.aid = 3 AND ordertable.startdate = '2020-02-14'
 )
 UNION
 SELECT DISTINCT matename AS name
 FROM request, ordertable
 WHERE request.rid = ordertable.rid 
-    AND request.rstatus = 'complete'
+    AND ordertable.ordStatus = 'complete'
     AND request.rid = (
         SELECT rid 
         FROM ordertable, schedule
-        WHERE ordertable.oid = schedule.oid AND schedule.aid = 1 AND ordertable.startdate = '2020/02/27'
+        WHERE ordertable.oid = schedule.oid AND schedule.aid = 3 AND ordertable.startdate = '2020-02-14'
 );
-
 
 
 -- 4. The manager wants to find out the customers who has not paid for an invoice after the duedate (assume today is "2020/02/27")
 -- and send the customer an email. Thus we need to find out email, order id, invoice id, invoice duedate and invoice amount
-SELECT email, oid, inid, invoice.dueDate, invoid.amount
-FROM usertable, customer, ordertable, invoice
-WHERE invoice.status = "pending" AND invoice.dueDate < "2020/02/27";
+SELECT email, ordertable.oid, inid, invoice.dueDate, invoice.amount
+FROM usertable, customer, ordertable, request, invoice
+WHERE 
+            usertable.username = customer.username 
+            AND customer.username = request.custName
+            AND ordertable.rid = request.rid
+            AND ordertable.oid = invoice.oid
+            AND invoice.status = 'pending' 
+            AND invoice.dueDate < '2020-02-27';
 
--- 5. Find the most popular activity among male customers with age between 25-35 years old inclusive
-SELECT count(*)
+-- 5. Find the most popular activity among female customers with age between 25-35 years old inclusive
+SELECT aid, count(*)
 FROM schedule
 WHERE aid = (
     SELECT MAX(count)
@@ -55,20 +60,14 @@ WHERE aid = (
             AND customer.username = request.custName
             AND ordertable.rid = request.rid
             AND ordertable.oid = schedule.oid
-            -- AND usertable.sex = 'male'
-            AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) >=10
-            -- AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) <=40
+            AND usertable.sex = 'Female'
+            AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) >=25
+            AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) <=35
         GROUP BY aid 
     ) AS max
 )
+GROUP BY aid
 
 
-SELECT aid
-        FROM usertable, customer, request, ordertable, schedule
-        WHERE usertable.username = customer.username 
-            AND customer.username = request.custName
-            AND ordertable.rid = request.rid
-            AND ordertable.oid = schedule.oid
-        ;
 
 
