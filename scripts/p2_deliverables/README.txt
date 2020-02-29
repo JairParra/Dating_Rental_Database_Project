@@ -13,3 +13,18 @@
 ## resultRetrieve.txt 
 
 - This file contains some interesting queries, table updates and deletion, as well as views creations on our database tables along with their descriptions, and the code. 
+
+## table_insertions_script.py 
+
+- This is the auxiliar creation script to generate most of the data. 
+
+NOTE: We also attached all the actual SQL and Python files if you want to check. 
+
+
+GROUP INFORMATION: 
+
+Group88 
+Hair Albeiro Parra Barrera 
+Zijin Nie 
+Hehuiming Cheng  
+Jifeng Wang 
