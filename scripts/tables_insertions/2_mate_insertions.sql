@@ -18,3 +18,5 @@ INSERT INTO mate VALUES('jpresnall10','nickname16','description16','English',1.9
 INSERT INTO mate VALUES('ndoersf','nickname17','description17','French',1.64,68,143); 
 INSERT INTO mate VALUES('iscrimshaw14','nickname18','description18','Eng & French',1.58,62,118); 
 INSERT INTO mate VALUES('bmatousl','nickname19','description19','French',1.85,69,68); 
+
+SELECT * FROM mate LIMIT 10; 

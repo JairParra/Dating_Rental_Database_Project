@@ -18,3 +18,6 @@ INSERT INTO invoice VALUES(17,5,'description17','2018-04-05','73','tbonnor7','am
 INSERT INTO invoice VALUES(18,12,'description18','2018-10-27','181','fhoys2','debit','paid');
 INSERT INTO invoice VALUES(19,16,'description19','2018-03-18','61','wpawelecz','mastercard','paid');
 INSERT INTO invoice VALUES(20,1,'description20','2019-04-25','19','llount16','E-T','pending');
+
+SELECT * FROM invoice;  
+

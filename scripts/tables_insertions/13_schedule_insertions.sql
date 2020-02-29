@@ -18,3 +18,5 @@ INSERT INTO schedule VALUES(5,17);
 INSERT INTO schedule VALUES(7,18);
 INSERT INTO schedule VALUES(1,19);
 INSERT INTO schedule VALUES(3,20);
+
+SELECT * FROM schedule LIMIT 10; 

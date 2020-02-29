@@ -29,7 +29,11 @@ userdict = usertable.set_index('username').to_dict() # convert to dictionary for
 
 ## list of Managers 
 usernames = list(usertable['username']) # select all usernames 
+<<<<<<< HEAD
+managers = list(np.random.choice(usernames, size=10, replace=False)) # select 10 managers 
+=======
 managers = list(np.random.choice(usernames, size=5, replace=False)) # select 5 random managers 
+>>>>>>> 501a4f3ffbd315b84830f8ab540a54d65e73ec47
 
 ## list of Mates 
 usernames2 = [name for name in usernames if name not in managers] # substract mates
@@ -38,10 +42,17 @@ possible_male_mates = [username for username in usernames2 if
                        userdict['sex'][username] == 'Male']
 possible_female_mates = [username for username in usernames2 if 
                        userdict['dateofbirth'][username] < '2000-01-01' and 
+<<<<<<< HEAD
+                       userdict['sex'][username] == 'Female']
+male_mates = list(np.random.choice(possible_male_mates,size=10,replace=False)) 
+female_mates = list(np.random.choice(possible_female_mates,size=10,replace=False)) 
+mates = male_mates + female_mates 
+=======
                        userdict['sex'][username] == 'Female']  # exclude users who's under 18 //suppose the business started in 2018
 male_mates = list(np.random.choice(possible_male_mates,size=5,replace=False)) 
 female_mates = list(np.random.choice(possible_female_mates,size=5,replace=False)) # randomly choose 5 male and 5 female from possible list
 mates = male_mates + female_mates #as mate
+>>>>>>> 501a4f3ffbd315b84830f8ab540a54d65e73ec47
 
 ## list of Customers 
 customers = [username for username in usernames2 if username not in mates] 
@@ -63,6 +74,7 @@ def create_mate(mates): # argument is a list of mate
     descriptions = ["description"+str(i) for i in range(len(mates))] # dreate artificial descriptions 
     languages = ["English","French","Eng & French"]
     i = 0 
+    
     
     for username in mates: 
         height = round(random.uniform(1.50, 2.00),2) # generate a random height 
@@ -190,7 +202,23 @@ with open("5_application_insertions.sql", "w") as file:
 
 ### 3.5 request table 
     
+<<<<<<< HEAD
+def create_request(mates, customers, size=20): 
+    """ 
+    Will create insertion statements for the application table of the form: 
+        INSERT INTO application (rid, rinfo, rstatus, custName, mateName, decTime) VALUES( -,-,-,-,-,- )
+    respecting the appropriate constraints. 
+    @ args: 
+        @ mates: a list of mate usernames 
+        @ managers: a list of customers
+        
+    NOTE: A request must have exactly one Mate and exactly one Customer, but 
+        a customer can book several Mates, and a single Mate can be booked by several 
+        customers (see ER diagram). Request decDate CAN overlap! 
+    """
+=======
 def create_request(mates, customers, size=10): #arguments are a list of mate, a list of customer, and size as integer
+>>>>>>> 501a4f3ffbd315b84830f8ab540a54d65e73ec47
     
     records = []  # store the records 
 

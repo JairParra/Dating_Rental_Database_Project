@@ -198,3 +198,7 @@ insert into usertable (username, password, email , firstname, lastname, sex, cit
 insert into usertable (username, password, email , firstname, lastname, sex, city , phoneNum, dateOfBirth) values ('hlowery5h', 'ispE7ySZxVdB', 'hlowery5h@whitehouse.gov', 'Hunter', 'Lowery', 'Female', 'Tarbes', 188093846, '1982-09-10');
 insert into usertable (username, password, email , firstname, lastname, sex, city , phoneNum, dateOfBirth) values ('dmessier5i', 'xqLQnDm6oQv', 'dmessier5i@chronoengine.com', 'Davis', 'Messier', 'Female', 'Fengmu', 967748167, '1988-12-20');
 insert into usertable (username, password, email , firstname, lastname, sex, city , phoneNum, dateOfBirth) values ('sboyson5j', 'X0UUScVC5A', 'sboyson5j@networkadvertising.org', 'Sheffield', 'Boyson', 'Male', 'Losino-Petrovskiy', 987818612, '1982-07-16');
+
+
+-- Output the result
+SELECT * FROM usertable LIMIT 10; 

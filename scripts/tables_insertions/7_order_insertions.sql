@@ -25,3 +25,5 @@ INSERT INTO orderTable VALUES (18,'2019-11-22','pending',18,'2020-02-12','commen
 INSERT INTO orderTable (oid, startDate,ordStatus,rid)
                 VALUES(19,'2018-06-12','pending','7');
 INSERT INTO orderTable VALUES (20,'2020-02-14','complete',8,'2020-02-19','comments20',4.3);
+
+SELECT * FROM ordertable LIMIT 10; 

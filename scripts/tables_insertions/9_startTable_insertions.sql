@@ -18,3 +18,5 @@ INSERT INTO startTable VALUES(17,'vissakov9','jrosendale5','2019-01-02');
 INSERT INTO startTable VALUES(18,'bmatousl','kmulvyr','2019-06-09');
 INSERT INTO startTable VALUES(19,'jpresnall10','ngeraldeze','2019-01-31');
 INSERT INTO startTable VALUES(20,'jpresnall10','tbonnor7','2019-11-02');
+
+SELECT * FROM starttable LIMIT 10; 

@@ -40,17 +40,25 @@ Database information:
 
 ## Database creation: 
 
-- Please run the creation (SQL) scripts in the following order: 
+- Please run the following creation (SQL) scriptsin the following order: 
 
-    1. `table_creation.sql` 
+    1. `table_creation.sql`
     2. `1_usertable_insertions.sql` 
     3. `2_mate_insertions.sql` 
     4. `3_customer_insertions.sql` 
     5. `4_manager_insertions.sql`
     6. `5_application_insertions.sql` 
     7. `6_request_insertions.sql`
+    8. `7_order_insertions.sql` 
+    9. `8_invoice_insertions.sql` 
+    10. `9_startTable_insertions.sql`
+    11. `10_activity_insertions.sql` 
+    12. `11_modify_insertions.sql` 
+    13. `12_generate_insertions.sql` 
+    14. `13_schedule_insertions.sql`
 
-where the first script is in `scripts/database_creation/` and the rest are in `scripts/table_insertions/` 
+where the first script is in `scripts/database_creation/` and the rest are in `scripts/table_insertions/` . 
+Script 1 is was randomly generated, subsequent table creation scripts were generated using the `table_insertions_script.py` script.
 
 ## Announcements 
 - Group on MyCourses: 88 
