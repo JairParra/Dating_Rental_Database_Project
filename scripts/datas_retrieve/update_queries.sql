@@ -20,3 +20,13 @@ WHERE email = 'cchittem1b@amazon.de';
 
 DELETE FROM invoice
 WHERE method = 'applepay';
+
+-- 5. We have discovered that the customer with custname chysom17 
+-- has been in prison 5 times. We will then reject all his requests.
+UPDATE request 
+SET rstatus = 'rejected' 
+WHERE custname = 'chysom17'; 
+
+
+
+
