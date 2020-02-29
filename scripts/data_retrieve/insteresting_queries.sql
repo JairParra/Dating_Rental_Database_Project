@@ -8,7 +8,7 @@ WHERE usertable.username = mate.username AND height > 1.8 AND weight < 80 AND (D
 
 -- 2. For customers, they might want to see his/her requests in the past 90days.
 -- The return result should include matename, request date as well as request status 
--- Assume today's date is "2020/02/27", this customer's name is bmatousl.
+-- Assume today's date is "2020/02/27", this customer's name is chysom17.
 SELECT mateName, rdate, rstatus 
 FROM request
 WHERE custName = 'chysom17' AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', rdate)) <= 90;
