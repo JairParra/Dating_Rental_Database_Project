@@ -29,30 +29,20 @@ userdict = usertable.set_index('username').to_dict() # convert to dictionary for
 
 ## list of Managers 
 usernames = list(usertable['username']) # select all usernames 
-<<<<<<< HEAD
-managers = list(np.random.choice(usernames, size=10, replace=False)) # select 10 managers 
-=======
-managers = list(np.random.choice(usernames, size=5, replace=False)) # select 5 random managers 
->>>>>>> 501a4f3ffbd315b84830f8ab540a54d65e73ec47
+managers = list(np.random.choice(usernames, size=20, replace=False)) # select 10 managers 
+
 
 ## list of Mates 
 usernames2 = [name for name in usernames if name not in managers] # substract mates
 possible_male_mates = [username for username in usernames2 if 
-                       userdict['dateofbirth'][username] < '2000-01-01' and 
+                       userdict['dateofbirth'][username] < '2000-01-01' and  # mates must be at least 20yo
                        userdict['sex'][username] == 'Male']
 possible_female_mates = [username for username in usernames2 if 
                        userdict['dateofbirth'][username] < '2000-01-01' and 
-<<<<<<< HEAD
                        userdict['sex'][username] == 'Female']
-male_mates = list(np.random.choice(possible_male_mates,size=10,replace=False)) 
-female_mates = list(np.random.choice(possible_female_mates,size=10,replace=False)) 
+male_mates = list(np.random.choice(possible_male_mates,size=20,replace=False)) 
+female_mates = list(np.random.choice(possible_female_mates,size=20,replace=False)) 
 mates = male_mates + female_mates 
-=======
-                       userdict['sex'][username] == 'Female']  # exclude users who's under 18 //suppose the business started in 2018
-male_mates = list(np.random.choice(possible_male_mates,size=5,replace=False)) 
-female_mates = list(np.random.choice(possible_female_mates,size=5,replace=False)) # randomly choose 5 male and 5 female from possible list
-mates = male_mates + female_mates #as mate
->>>>>>> 501a4f3ffbd315b84830f8ab540a54d65e73ec47
 
 ## list of Customers 
 customers = [username for username in usernames2 if username not in mates] 
@@ -202,8 +192,7 @@ with open("5_application_insertions.sql", "w") as file:
 
 ### 3.5 request table 
     
-<<<<<<< HEAD
-def create_request(mates, customers, size=20): 
+def create_request(mates, customers, size=30): 
     """ 
     Will create insertion statements for the application table of the form: 
         INSERT INTO application (rid, rinfo, rstatus, custName, mateName, decTime) VALUES( -,-,-,-,-,- )
@@ -215,11 +204,7 @@ def create_request(mates, customers, size=20):
     NOTE: A request must have exactly one Mate and exactly one Customer, but 
         a customer can book several Mates, and a single Mate can be booked by several 
         customers (see ER diagram). Request decDate CAN overlap! 
-    """
-=======
-def create_request(mates, customers, size=10): #arguments are a list of mate, a list of customer, and size as integer
->>>>>>> 501a4f3ffbd315b84830f8ab540a54d65e73ec47
-    
+    """    
     records = []  # store the records 
 
     # Choose mate and customer names without replacement
@@ -307,7 +292,7 @@ def create_order(rids): #argument is a list of request id
         start_date = start_dates[i]
         ordstatus = random.choice(statuses)  # choose status randomly
         rid = rids[i] # choose the rid from the input rids
-        rate_date = fake_time.date_between(start_date=end_date, end_date='today')
+        rate_date = fake_time.date_between(start_date=start_date, end_date='today')
         comment = comments[i]
         rating = round(random.uniform(0.0,5.0), 1)
         
