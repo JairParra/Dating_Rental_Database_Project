@@ -30,9 +30,6 @@ CREATE TABLE usertable --entity
     PRIMARY KEY (username)
 ); 
 
-DESCRIBE usertable; 
-
-
 CREATE TABLE mate --entity ISA user
 ( 
   username VARCHAR(50) NOT NULL, 
