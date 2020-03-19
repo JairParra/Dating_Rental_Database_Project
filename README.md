@@ -60,14 +60,10 @@ Database information:
 where the first script is in `scripts/database_creation/` and the rest are in `scripts/table_insertions/` . 
 Script 1 is was randomly generated, subsequent table creation scripts were generated using the `table_insertions_script.py` script.
 
-## Announcements 
-- Group on MyCourses: 88 
-- Languages used: Java, Python?, PostgreSQL, HTML/CSS/Javascript?
-
-
 ## ER-diagram 
 
 ![](figs/ER_model.png)
 
 ## User-interface 
-- Building 
+- The relevant files are located under the `user_interface` directory. 
+- Currently, application will only be emulated locally, but the intention is that it will eventually be available online as well. For this reason, HTML scripts are also placed as well. 
