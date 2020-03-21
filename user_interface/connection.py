@@ -37,15 +37,18 @@ def connect():
         # display the PostgreSQL database version 
         db_version = cur.fetchone()
         print(db_version)
+        print("type(fetchone) : ", type(db_version))
         
         # fetch some more stuff
         print("SELECT * FROM application;\n") 
-        cur.execute('SELECT * FROM application;')
+        cur.execute('SELECT * FROM application LIMIT 10;')
         
         # display the results
         competition = cur.fetchall() 
         for row in competition: 
             print(row)
+            
+        print("type(fetchall) : ", type(competition))
         
         # close the communication with the PostgreSQL 
         cur.close() 
