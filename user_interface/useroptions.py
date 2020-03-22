@@ -226,11 +226,107 @@ class ManagerSession(LoginSession):
         """
         Customized Menu with Manager Options
         """ 
+        raise NotImplementedError  
         
         
+        
+class MateSession(LoginSession):
+    """ 
+    Inherits from the LoginSession class and implements extra methods
+    appropriate to Mate Functions and permissions. 
+    """ 
+    def __init__(self, loginsession, verbose=True): 
+        """
+        @args: 
+            @ loginsession: an instance of the LoginSession class. Will throw an error 
+            if wrong type input. 
+        """
+        # Initialize and typecheck
+        super().__init__(verbose) # call super constructor 
+        if not isinstance(loginsession, LoginSession):
+            raise TypeError("Constructor argument should be of type 'LoginSession'")
+            
+        # Copy all attributes from argument instance
+        self.login_resp = loginsession.login_resp 
+        self.usertype = loginsession.usertype 
+        self.usertype_vals = loginsession.usertype_vals 
+                
+        print("MATE LOGIN: \n", self.login_resp) 
+        print("MATE TYPE: \n", self.usertype)
+        print("MATE VALUES: \n", self.usertype_vals)
+        
+        
+    def menu(self): 
+        """
+        Customized Menu with Manager Options
+        """ 
+        raise NotImplementedError  
+  
+
+    
+class CustomerSession(LoginSession):
+    """ 
+    Inherits from the LoginSession class and implements extra methods
+    appropriate to Customer Functions and permissions. 
+    """ 
+    def __init__(self, loginsession, verbose=True): 
+        """
+        @args: 
+            @ loginsession: an instance of the LoginSession class. Will throw an error 
+            if wrong type input. 
+        """
+        # Initialize and typecheck
+        super().__init__(verbose) # call super constructor 
+        if not isinstance(loginsession, LoginSession):
+            raise TypeError("Constructor argument should be of type 'LoginSession'")
+            
+        # Copy all attributes from argument instance
+        self.login_resp = loginsession.login_resp 
+        self.usertype = loginsession.usertype 
+        self.usertype_vals = loginsession.usertype_vals 
+                
+        print("CUSTOMER LOGIN: \n", self.login_resp) 
+        print("CUSTOMER TYPE: \n", self.usertype)
+        print("CUSTOMER VALUES: \n", self.usertype_vals)
+        
+        
+    def menu(self): 
+        """
+        Customized Menu with Manager Options
+        """ 
+        raise NotImplementedError  
     
     
-    
+class MasterSession(LoginSession):
+    """ 
+    This allows for special 
+    """ 
+    def __init__(self, loginsession, verbose=True): 
+        """
+        @args: 
+            @ loginsession: an instance of the LoginSession class. Will throw an error 
+            if wrong type input. 
+        """
+        # Initialize and typecheck
+        super().__init__(verbose) # call super constructor 
+        if not isinstance(loginsession, LoginSession):
+            raise TypeError("Constructor argument should be of type 'LoginSession'")
+            
+        # Copy all attributes from argument instance
+        self.login_resp = loginsession.login_resp 
+        self.usertype = loginsession.usertype 
+        self.usertype_vals = loginsession.usertype_vals 
+                
+        print("CUSTOMER LOGIN: \n", self.login_resp) 
+        print("CUSTOMER TYPE: \n", self.usertype)
+        print("CUSTOMER VALUES: \n", self.usertype_vals)
+        
+        
+    def menu(self): 
+        """
+        Customized Menu with Manager Options
+        """ 
+        raise NotImplementedError  
         
         
         

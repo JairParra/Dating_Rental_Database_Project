@@ -15,7 +15,7 @@ import sys
 import time
 import argparse 
 import pandas as pd
-from useroptions import LoginSession, ManagerSession
+from useroptions import LoginSession, ManagerSession, MateSession, CustomerSession, MasterSession
 from getpass import getpass
 
 ###############################################################################
@@ -81,9 +81,20 @@ if __name__ == '__main__':
                     logses.fetch_usertype() # retrieve values for usertype
                     print("Usertype values: \n", logses.usertype_vals)  
                     
-                    if True: 
-                        print("\n******MANAGER ACESS******\n")
+                    if logses.usertype == 'manager': 
+                        print("******MANAGER ACESS******\n")
                         mgr_access = ManagerSession(logses) # initialize and copy attributes.  
+                        
+                    elif logses.usertype == 'mate': 
+                        print("******MATE ACESS******\n")
+                        mate_access = MateSession(logses) # initialize and copy attributes.  
+                        
+                    elif logses.usertype == 'customer': 
+                        print("******CUSTOMER ACESS******\n")
+                        cust_access = CustomerSession(logses) # initialize and copy attributes.   
+                        
+                    else: 
+                        raise TypeError("Usertype not existent.")
                     
 
             ## 1. Exit log-in menu 
@@ -102,6 +113,7 @@ if __name__ == '__main__':
             print("ARGS:{}\n".format(e.args))
             print("Error: ", e)
             print(e.__traceback__)
+            print("Context: ", e.__context__)
 
 
 
