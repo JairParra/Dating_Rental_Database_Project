@@ -13,9 +13,9 @@ import os
 import re
 import sys
 import time
-import useroptions 
 import argparse 
 import pandas as pd
+from useroptions import LoginSession, ManagerSession
 from getpass import getpass
 
 ###############################################################################
@@ -46,11 +46,16 @@ if __name__ == '__main__':
     if args.demo: 
         print("Running demo...")
         
-    # 
+    # Variables to be used by options: 
+    login = {} 
+        
+    ## LOGIN LOOP ## 
     while True: 
         
-        login_string = "Welcome to the MateRental database! \n"
-        login_string += "Please choose one of the available options below:\n"
+        login_string = "\n######################################################\n"
+        login_string += "Welcome to the MateRental database! \n"
+        login_string += "######################################################\n"
+        login_string += "\nPlease choose one of the available options below:\n"
         login_string += "\t 1. Log-in/Register\n"  
         login_string += "\t 2. Exit" 
         print(login_string) 
@@ -58,7 +63,6 @@ if __name__ == '__main__':
         try: 
             # Prompt and parse input
             user_input = input() 
-            print("Your input: {}".format(user_input)) 
             
             ## 1. Log-in menu 
             if re.match(r'^1.*', str(user_input)): 
@@ -67,12 +71,20 @@ if __name__ == '__main__':
                 print("Username or email:")
                 user = input() 
                 password = getpass() # obtain screen encrypted password
-                login = useroptions.login(user=user, password=password) # this will return a boolean 
+                logses = LoginSession() # instantiate object
+                login = logses.login(user=user, password=password) # this will return all login info
                 
                 # If login was successful
-                if login['status'] == True: 
+                if login['login_status'] == True: 
                     print("Successful login!")
-                
+                    print("Login response: \n", login, "\n")
+                    logses.fetch_usertype() # retrieve values for usertype
+                    print("Usertype values: \n", logses.usertype_vals)  
+                    
+                    if True: 
+                        print("\n******MANAGER ACESS******\n")
+                        mgr_access = ManagerSession(logses) # initialize and copy attributes.  
+                    
 
             ## 1. Exit log-in menu 
             elif re.match(r'^2.*', str(user_input)):
@@ -81,72 +93,15 @@ if __name__ == '__main__':
             else: 
                 print("Invalid input") 
                 
+                
+            ## 2. Options menu for customer: 
+            
+                
         except Exception as e: 
             print("I/O error occurred\n")
             print("ARGS:{}\n".format(e.args))
-            e.with_traceback() # output traceback 
-            
-    
-#    
-#    ## Main Loop 
-#    while True: 
-#        
-#        # Menu display 
-#        options_string = "Welcome to the MateRental database! \n"
-#        options_string += "Please choose one of the available options below:\n"
-#        options_string += "\t 1. Log-in/Register\n" 
-#        options_string += "\t 2. Option2\n" 
-#        options_string += "\t 3. Option3\n" 
-#        options_string += "\t 4. Option4\n" 
-#        options_string += "\t 5. Option5\n" 
-#        options_string += "\t 6. Quit\n" 
-#        print(options_string) 
-#        
-#        if args.demo: 
-#            print("Running demo...")
-#        
-#        # Obtain user options
-#        try: 
-#            # Prompt and parse input
-#            print("Please select an option by selecting a number")
-#            user_input = input() 
-#            print("Your input: ", user_input) 
-#            
-#            ## 1. Log in or register 
-#            if re.match(r'^1.*', str(user_input)): 
-#                print("Please choose one option below:") 
-#                print("1. Log-in") 
-#                print("2. Register") 
-#                
-#                ### 1. Log-in with existing credentials
-#                if re.match(r'^1.*', str(input())): 
-#                    
-#                    # fetch username 
-#                    print("Username or email:")
-#                    username = input() 
-#                    print("Password: ") 
-#                    password = input()
-#                    useroptions.login()
-#                    sys.exit()
-#                    
-#                ### 2. Register new credentials 
-#                elif re.match(r'^2.*', str(input())):
-#                    print("Please enter a new username: ") 
-#                    print("Please enter a password")
-#                    sys.exit()
-#                else: 
-#                    print("Invalid input") 
-#            
-#            if re.match(r'^6.*', str(user_input)): 
-#                print("Good bye! :) ")
-#                sys.exit() 
-#                break 
-#            
-#        except Exception as e: 
-#            print("I/O error occurred\n")
-#            print("ARGS:{}\n".format(e.args))
-#            e.with_traceback() # output traceback 
-
+            print("Error: ", e)
+            print(e.__traceback__)
 
 
 
