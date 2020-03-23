@@ -226,6 +226,20 @@ class ManagerSession(LoginSession):
         """
         Customized Menu with Manager Options
         """ 
+        
+        while True: 
+            menu_string = "\n######################################################\n"
+            menu_string += "                     Options Menu                      \n"
+            menu_string += "######################################################\n"
+            menu_string += "\nPlease choose one of the available options below:\n"
+            menu_string += "\t 1. Review Mate Application\n"  
+            menu_string += "\t 2. Modify Order\n"
+            menu_string += "\t 3. Overview Activity"
+            menu_string += "\t 4. Overview Activity"
+            print(menu_string) 
+            
+            
+        
         raise NotImplementedError  
         
         
@@ -317,9 +331,9 @@ class MasterSession(LoginSession):
         self.usertype = loginsession.usertype 
         self.usertype_vals = loginsession.usertype_vals 
                 
-        print("CUSTOMER LOGIN: \n", self.login_resp) 
-        print("CUSTOMER TYPE: \n", self.usertype)
-        print("CUSTOMER VALUES: \n", self.usertype_vals)
+        print("LOGIN: \n", self.login_resp) 
+        print("TYPE: \n", self.usertype)
+        print("VALUES: \n", self.usertype_vals)
         
         
     def menu(self): 

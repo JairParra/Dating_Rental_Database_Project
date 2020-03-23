@@ -48,6 +48,7 @@ if __name__ == '__main__':
         
     # Variables to be used by options: 
     login = {} 
+    master_tries = 3
         
     ## LOGIN LOOP ## 
     while True: 
@@ -57,7 +58,8 @@ if __name__ == '__main__':
         login_string += "######################################################\n"
         login_string += "\nPlease choose one of the available options below:\n"
         login_string += "\t 1. Log-in/Register\n"  
-        login_string += "\t 2. Exit" 
+        login_string += "\t 2. Administrator Connection\n"
+        login_string += "\t 3. Exit" 
         print(login_string) 
         
         try: 
@@ -82,15 +84,15 @@ if __name__ == '__main__':
                     print("Usertype values: \n", logses.usertype_vals)  
                     
                     if logses.usertype == 'manager': 
-                        print("******MANAGER ACESS******\n")
+                        print("\n******MANAGER ACESS******\n")
                         mgr_access = ManagerSession(logses) # initialize and copy attributes.  
                         
                     elif logses.usertype == 'mate': 
-                        print("******MATE ACESS******\n")
+                        print("\n******MATE ACESS******\n")
                         mate_access = MateSession(logses) # initialize and copy attributes.  
                         
                     elif logses.usertype == 'customer': 
-                        print("******CUSTOMER ACESS******\n")
+                        print("\n******CUSTOMER ACESS******\n")
                         cust_access = CustomerSession(logses) # initialize and copy attributes.   
                         
                     else: 
@@ -98,8 +100,20 @@ if __name__ == '__main__':
                     
 
             ## 1. Exit log-in menu 
-            elif re.match(r'^2.*', str(user_input)):
-                print("Goodbye")
+            elif re.match(r'^2.*', str(user_input)) and master_tries > 0: 
+                password = getpass("Administrator password:") 
+                if password == 'Jiaozics421g88-': 
+                    print("******ADMIN ACESS******\n")
+                    admin_access =  MasterSession() # initialize full-access session 
+                else:
+                    print("Wrong password")
+                    master_tries -= 1
+                    print("Tries left: {}".format(master_tries))
+                    if master_tries == 0: 
+                        print("WARNING: Administrator access deactivated")
+            
+            elif re.match(r'^3.*', str(user_input)):
+                print("~Goodbye~")
                 sys.exit()
             else: 
                 print("Invalid input") 
