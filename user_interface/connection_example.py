@@ -54,7 +54,7 @@ def connect():
             
         columns = [desc[0] for desc in cur.description] 
         fetched_df = pd.DataFrame(competition, columns=columns)
-            
+                
         print("type(fetchall) : ", type(competition))
         
         print("\nOutput query: \n", fetched_df)

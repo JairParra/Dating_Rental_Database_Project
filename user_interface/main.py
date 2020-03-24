@@ -74,7 +74,7 @@ if __name__ == '__main__':
             if re.match(r'^1.*', str(user_input)): 
                 
                 # fetch username 
-                user = input("Username or email:") 
+                user = input("Username or email: ") 
                 password = getpass() # obtain screen encrypted password
                 logses = LoginSession() # instantiate object
                 login = logses.login(user=user, password=password) # this will return all login info
@@ -102,6 +102,9 @@ if __name__ == '__main__':
                         raise TypeError("Usertype not existent.")
 
             elif re.match(r'^2.*', str(user_input)):
+                
+                ## TODO: Finish implementing login in the LoginSession class
+                
                 # Prompt new username and email
                 print("Register: ") 
                 new_user = input("Please input username")
@@ -118,6 +121,20 @@ if __name__ == '__main__':
                     print("Error: Password muss contain: ")
                     print("1) 1 Uppercase 2) 1 lowercase 3) at least 8 characters") 
                     continue
+                
+                # prompt user first and last name
+                firstname = input("First name:")
+                lastname = input("Lasname: ") 
+                print("Sex:\n  1. Male\n2. Female") 
+                user_input = input()
+                if re.match(r'^1.*', str(user_input)): 
+                    sex =  "Male" 
+                elif re.match(r'^2.*', str(user_input)):
+                    sex = "Female" 
+                else: 
+                    print("Invalid input")
+                    continue 
+                
 
             elif re.match(r'^3.*', str(user_input)) and master_tries > 0: 
                 password = getpass("Administrator password:") 
