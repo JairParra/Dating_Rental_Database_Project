@@ -14,7 +14,12 @@ import re
 import sys
 import time
 import argparse 
-from useroptions import LoginSession, ManagerSession, MateSession, CustomerSession, MasterSession
+from util import query_executer
+from useroptions import LoginSession
+from customer import CustomerSession 
+from manager import ManagerSession 
+from mate import MateSession
+from admin import MasterSession 
 from getpass import getpass
 
 # other
@@ -103,37 +108,8 @@ if __name__ == '__main__':
 
             elif re.match(r'^2.*', str(user_input)):
                 
-                ## TODO: Finish implementing login in the LoginSession class
+                logses = LoginSession() 
                 
-                # Prompt new username and email
-                print("Register: ") 
-                new_user = input("Please input username")
-                new_email = input("Please enter your email")
-                
-                # verify input email is valid
-                if not re.match(EMAIL_REGEX, new_email): 
-                    print("Make sure you input a valid email!")
-                    continue  # go back to main menu 
-                
-                # protmpt and verify password
-                new_pass = getpass("Please input password with 1) 1 Uppercase 2) 1 lowercase 3) at least 8 characters")
-                if not re.match(STRONG_EMAIL, new_pass) :
-                    print("Error: Password muss contain: ")
-                    print("1) 1 Uppercase 2) 1 lowercase 3) at least 8 characters") 
-                    continue
-                
-                # prompt user first and last name
-                firstname = input("First name:")
-                lastname = input("Lasname: ") 
-                print("Sex:\n  1. Male\n2. Female") 
-                user_input = input()
-                if re.match(r'^1.*', str(user_input)): 
-                    sex =  "Male" 
-                elif re.match(r'^2.*', str(user_input)):
-                    sex = "Female" 
-                else: 
-                    print("Invalid input")
-                    continue 
                 
 
             elif re.match(r'^3.*', str(user_input)) and master_tries > 0: 
