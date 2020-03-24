@@ -14,9 +14,12 @@ import re
 import sys
 import time
 import argparse 
-import pandas as pd
 from useroptions import LoginSession, ManagerSession, MateSession, CustomerSession, MasterSession
 from getpass import getpass
+
+# other
+EMAIL_REGEX = r'[\w\.-]+@[\w\.-]+'
+STRONG_EMAIL = r'[A-Za-z0-9@#$%^&+=]{8,}'
 
 ###############################################################################
 
@@ -57,9 +60,10 @@ if __name__ == '__main__':
         login_string += "Welcome to the MateRental database! \n"
         login_string += "######################################################\n"
         login_string += "\nPlease choose one of the available options below:\n"
-        login_string += "\t 1. Log-in/Register\n"  
-        login_string += "\t 2. Administrator Connection\n"
-        login_string += "\t 3. Exit" 
+        login_string += "\t 1. Log-in\n"
+        login_string += "\t 2. Register\n"
+        login_string += "\t 3. Administrator Connection\n"
+        login_string += "\t 4. Exit" 
         print(login_string) 
         
         try: 
@@ -70,8 +74,7 @@ if __name__ == '__main__':
             if re.match(r'^1.*', str(user_input)): 
                 
                 # fetch username 
-                print("Username or email:")
-                user = input() 
+                user = input("Username or email:") 
                 password = getpass() # obtain screen encrypted password
                 logses = LoginSession() # instantiate object
                 login = logses.login(user=user, password=password) # this will return all login info
@@ -97,10 +100,26 @@ if __name__ == '__main__':
                         
                     else: 
                         raise TypeError("Usertype not existent.")
-                    
 
-            ## 1. Exit log-in menu 
-            elif re.match(r'^2.*', str(user_input)) and master_tries > 0: 
+            elif re.match(r'^2.*', str(user_input)):
+                # Prompt new username and email
+                print("Register: ") 
+                new_user = input("Please input username")
+                new_email = input("Please enter your email")
+                
+                # verify input email is valid
+                if not re.match(EMAIL_REGEX, new_email): 
+                    print("Make sure you input a valid email!")
+                    continue  # go back to main menu 
+                
+                # protmpt and verify password
+                new_pass = getpass("Please input password with 1) 1 Uppercase 2) 1 lowercase 3) at least 8 characters")
+                if not re.match(STRONG_EMAIL, new_pass) :
+                    print("Error: Password muss contain: ")
+                    print("1) 1 Uppercase 2) 1 lowercase 3) at least 8 characters") 
+                    continue
+
+            elif re.match(r'^3.*', str(user_input)) and master_tries > 0: 
                 password = getpass("Administrator password:") 
                 if password == 'Jiaozics421g88-': 
                     print("******ADMIN ACESS******\n")
@@ -112,7 +131,7 @@ if __name__ == '__main__':
                     if master_tries == 0: 
                         print("WARNING: Administrator access deactivated")
             
-            elif re.match(r'^3.*', str(user_input)):
+            elif re.match(r'^4.*', str(user_input)):
                 print("~Goodbye~")
                 sys.exit()
             else: 
@@ -128,7 +147,6 @@ if __name__ == '__main__':
             print("Error: ", e)
             print(e.__traceback__)
             print("Context: ", e.__context__)
-
 
 
 

@@ -6,4 +6,3 @@ SELECT * FROM usertable;
 SELECT * FROM manager; 
 SELECT * FROM customer; 
 SELECT * FROM mate; 
-
