@@ -49,7 +49,7 @@
   - `menu(self)`: Main menu for an administrator. 
   - `master_query(self)`: Prompts a custom SQL query and attempts to execute it in the datase. 
   
-### Other scripts 
+### Other scripts and files
   
 ### util.py 
 - `util.py`: Script containing helper functions. 
@@ -57,4 +57,7 @@
   - `query_executer(stmt, verbose=True)`: Accepts a SQL statement as an input, assumed to be correct and end by a semi-colon. If `verbose==True`, it will display the input query along with the output. **returns** a Pandas dataframe with the output query along with the approprite columns. 
   
 ### connection_example.py 
-- `connection_example.py`: Contains an example script showing how to connect to, execute queries in the database and fetch the results. 
+- `connection_example.py`: Contains an example script showing how to connect to, execute queries in the database and fetch the results.
+
+### database.ini 
+- Text file containing database configuration parameters. 
