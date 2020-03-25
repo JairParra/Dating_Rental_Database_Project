@@ -47,7 +47,7 @@ class LoginSession():
         if not bool(newuser): 
             print("Initialization procedure") 
             
-    def _newuser(self, newuser={}):  
+    def newuser(self, newuser={}):  
         """
         Creates and inserts a new user in the database
         """
@@ -117,13 +117,38 @@ class LoginSession():
                 
                 ### 2. Create statement  
                 stmt = "INSERT INTO usertable (username, password, email , firstname, lastname, sex, city , phoneNum, dateOfBirth) "
-                stmt += "VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', {}, '{}') \; ".format(new_user, 
+                stmt += "VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', {}, '{}') ;".format(new_user, 
                                 new_pass, new_email, firstname, lastname, sex, city, phonenum, date)
                 
                 result = query_executer(stmt) 
-                if len(result) > 1:
-                    print("--INFO-- :User succesfully created!")
-                    print(result)
+                
+                while True: 
+                    if len(result) > 1:
+                        print("--INFO-- : User succesfully created! You can now log-in.")
+                        print(result) 
+                        
+                        sub_menu = "############################################################### \n"
+                        sub_menu += "                   New User Registration                   \n"
+                        sub_menu += "###############################################################\n"
+                        sub_menu += "I want to register as a ...\n" 
+                        sub_menu += "1. Customer" 
+                        sub_menu += "2. Mate" 
+                        
+                        user_input = input()
+                        if re.match(r'^1.*', str(user_input)): 
+                            self.usertype =  "Customer" 
+                            preferences = input("Please write your preferences: (max 1000 characters)")
+                            stmt = "INSERT INTO customer (username, preferences) VALUES ('{}','{}')\;".format(new_user, preferences)
+                            query_executer(stmt) # execute insertion. 
+                            break
+                        elif re.match(r'^2.*', str(user_input)):
+                            self.usertype = "Mate"
+                            raise NotImplementedError("Functionality not available yet.")
+                        else: 
+                            print("Invalid input")
+                            continue 
+                    
+                    
                 else: 
                     raise ReferenceError("The record you tried to create raised an error.")
                 
