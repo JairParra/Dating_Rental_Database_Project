@@ -65,5 +65,8 @@ Script 1 is was randomly generated, subsequent table creation scripts were gener
 ![](figs/ER_model.png)
 
 ## User-interface 
-- The relevant files are located under the `user_interface` directory. 
+- The relevant files are located under the `user_interface` directory. Files descriptions can be found in the respective README.md
 - Currently, application will only be emulated locally, but the intention is that it will eventually be available online as well. For this reason, HTML scripts are also placed as well. 
+
+### Demo (Creating a new user, logging-in ) 
+`???`
