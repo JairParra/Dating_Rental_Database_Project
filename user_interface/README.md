@@ -56,8 +56,14 @@
   - `config(filename='database.ini', section='postgresql')`: Provides configurations for database access. the text file `database.ini` must exist under the same directory, and contains database connection parameters. 
   - `query_executer(stmt, verbose=True)`: Accepts a SQL statement as an input, assumed to be correct and end by a semi-colon. If `verbose==True`, it will display the input query along with the output. **returns** a Pandas dataframe with the output query along with the approprite columns. 
   
+### visualizations.py 
+- `visualizations.py`: Contains visualizations on statistics and other interesting analyses of the database. 
+
+  
 ### connection_example.py 
 - `connection_example.py`: Contains an example script showing how to connect to, execute queries in the database and fetch the results.
 
 ### database.ini 
 - Text file containing database configuration parameters. 
+
+
