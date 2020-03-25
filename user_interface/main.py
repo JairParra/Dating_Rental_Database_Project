@@ -21,6 +21,7 @@ from manager import ManagerSession
 from mate import MateSession
 from admin import MasterSession 
 from getpass import getpass
+from visualizations import visualizations_menu
 
 # other
 EMAIL_REGEX = r'[\w\.-]+@[\w\.-]+'
@@ -68,7 +69,8 @@ if __name__ == '__main__':
         login_string += "\t 1. Log-in\n"
         login_string += "\t 2. Register\n"
         login_string += "\t 3. Administrator Connection\n"
-        login_string += "\t 4. Exit" 
+        login_string += "\t 4. Visualizations menu " 
+        login_string += "\t 5. Exit"
         print(login_string) 
         
         try: 
@@ -124,8 +126,11 @@ if __name__ == '__main__':
                     print("Tries left: {}".format(master_tries))
                     if master_tries == 0: 
                         print("WARNING: Administrator access deactivated")
+                        
+            elif re.match(r'^5.*', str(user_input)):
+                visualizations_menu() # Call the visualizations menu 
             
-            elif re.match(r'^4.*', str(user_input)):
+            elif re.match(r'^5.*', str(user_input)):
                 print("~Goodbye~")
                 sys.exit()
             else: 

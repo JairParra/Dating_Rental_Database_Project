@@ -9,6 +9,8 @@ Created on Wed Mar 25 14:34:57 2020
 
 ### 1. Imports 
 
+import re
+import sys
 import numpy as np 
 import pandas as pd 
 import seaborn as sns # easier & prettier visualization 
@@ -25,6 +27,8 @@ sns.set()
 
 ## NOTE: You can use the query_executer function to execute queries which you can pass as a string. 
 ##       This function will return a pandas DataFrame so you can plot stuff easily. 
+## NOTE 2: Please keep the menu function as is, and create other helper functions to do the visualizations. 
+##      Call these from the menu when an option is input :) 
 
 
 ## IDEAS!!! 
@@ -32,6 +36,50 @@ sns.set()
     # 2. Pairplot and distributions of ages vs. hourly rates for Mates 
     # 3. Distribution of statues for applications: active, rejected, pending
     # 4. Be createive and surprise me!! :) 
+    
+def visualization_menu(): 
+    """
+    Provides different visualization options that can be decided via I/O command line interaction
+    """
+    
+    try: 
+        ## options loop
+        while True: 
+            
+            login_string = "\n######################################################\n"
+            login_string += "              Dabase Visualizations Menu              \n"
+            login_string += "######################################################\n"
+            login_string += "\nPlease choose one of the available options below:\n"
+            login_string += "\t 1. Option 1"
+            login_string += "\t 2. Option 2"
+            login_string += "\t 3. Option 2"
+            login_string += "\t 4. Exit" 
+            print(login_string) 
+            
+            # Read input
+            user_input = input()  
+            
+            # Option cases
+            if re.match(r'^1.*', str(user_input)):
+                print("Execute option 1") 
+            
+            elif re.match(r'^2.*', str(user_input)):
+                print("Execute option 2")
+            
+            elif re.match(r'^3.*', str(user_input)):
+                print("~Goodbye~")
+                break
+            else: 
+                print("Invalid input") 
+                continue
+            
+            
+    except Exception as e: 
+        print("I/O error occurred\n")
+        print("ARGS:{}\n".format(e.args))
+        print("Error: ", e)
+        print(e.__traceback__)
+        print("Context: ", e.__context__)
 
 ###############################################################################
 
