@@ -20,20 +20,28 @@ WHERE username IN
 ; 
 
 
-SELECT 
-    m.nickname,
-    u.sex, 
-    DATE_PART('year', CURRENT_DATE) - DATE_PART('year', u.dateofbirth) as age, 
-    m.language, 
-    m.height, 
-    m.weight, 
-    m.hourlyrate, 
-    m.description 
-FROM mate m
-JOIN usertable u 
-    ON m.username = u.username 
-WHERE sex='Male' AND age BETWEEN 20 AND 25
-ORDER BY age
+SELECT * FROM 
+    (
+    SELECT 
+        m.nickname,
+        u.sex, 
+        DATE_PART('year', CURRENT_DATE) - DATE_PART('year', u.dateofbirth) as age, 
+        m.language, 
+        m.height, 
+        m.weight,  
+        m.hourlyrate, 
+        m.description 
+    FROM mate m
+    JOIN usertable u 
+        ON m.username = u.username 
+    WHERE sex='Male' AND (height BETWEEN 1.50 AND 1.75)
+    ORDER BY age
+    ) T 
+WHERE (T.age BETWEEN 20 AND 25)
 ; 
+
+
+
+
 
 

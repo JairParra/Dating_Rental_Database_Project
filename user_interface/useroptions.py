@@ -51,7 +51,6 @@ class LoginSession():
         """
         Creates and inserts a new user in the database
         """
-        ## TODO: Finish implementing login in the LoginSession class
         
         try: 
             while True:    
@@ -60,8 +59,8 @@ class LoginSession():
                 
                 ## 1. Prompt new username and email
                 print("Register: ") 
-                new_user = input("Please input username")
-                new_email = input("Please enter your email")
+                new_user = input("Please input username: ")
+                new_email = input("Please enter your email: ")
                 
                 stmt = "SELECT * FROM usertable WHERE username='{}' or email='{}';".format(new_user, new_email) 
                 output = query_executer(stmt) # there shouldn't be any users in the output 
@@ -75,14 +74,14 @@ class LoginSession():
                     continue  # go back to main menu 
                 
                 ## 3. protmpt and verify password
-                new_pass = getpass("Please input password with 1) 1 Uppercase 2) 1 lowercase 3) at least 8 characters")
+                new_pass = getpass("Please input password with 1) 1 Uppercase 2) 1 lowercase 3) at least 8 characters:\n")
                 if not re.match(STRONG_EMAIL, new_pass) :
                     print("Error: Password muss contain: ")
                     print("1) 1 Uppercase 2) 1 lowercase 3) at least 8 characters") 
                     continue
                 
                 ## 4.  prompt user first and last name
-                firstname = input("First name:")
+                firstname = input("First name: ")
                 lastname = input("Lasname: ") 
                 
                 ## 5. Sex

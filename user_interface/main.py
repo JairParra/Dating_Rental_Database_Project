@@ -108,7 +108,8 @@ if __name__ == '__main__':
 
             elif re.match(r'^2.*', str(user_input)):
                 
-                logses = LoginSession() 
+                logses = LoginSession()  # initialize session  
+                logses.newuser() # create new user
                 
                 
 

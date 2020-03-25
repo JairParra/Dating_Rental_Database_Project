@@ -44,7 +44,7 @@ def connect():
         
         # fetch some more stuff
         print("SELECT * FROM application;\n") 
-        cur.execute("SELECT * FROM application WHERE matename='fefefe' LIMIT 20;")
+        cur.execute("SELECT * FROM application LIMIT 20;")
         
         # display the results
         competition = cur.fetchall() 
