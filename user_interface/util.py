@@ -12,20 +12,41 @@ Created on Tue Mar 24 19:46:08 2020
 import re 
 import psycopg2 
 import pandas as pd
-from config import config 
-
+from configparser import ConfigParser
 
 ###############################################################################
 
 ### 2. Helper Functions 
 
-def query_executer(stmt, fetchall=True, verbose=True): 
+def config(filename='database.ini', section='postgresql'): 
+    """
+    Provides configurations for database access
+    """
+    
+    # create a parser 
+    parser = ConfigParser() 
+    # read config file 
+    parser.read(filename) 
+    
+    # get section, default to postgresql 
+    db = {} 
+    if parser.has_section(section): 
+        params = parser.items(section) # obtain parameters 
+        for param in params: 
+            db[param[0]] = param[1] # assign params to database 
+    else:
+        raise Exception("Section {0} not found in the {1} file".format(section, filename)) 
+        
+    # return the database object 
+    return db 
+
+
+def query_executer(stmt, verbose=True): 
     """
     Helper function to help executing a general quer. 
     @params: 
         @ stmt: A SQL statement. Assumed to be correct and end by a semi-colon. 
         @ fetchall: If True, return all the statements 
-        @ to_df: If True, returns a dataframe of the output query
     """ 
     conn = None # Set up connection 
     
@@ -64,5 +85,4 @@ def query_executer(stmt, fetchall=True, verbose=True):
     
     # Return result
     return output_df
-
 

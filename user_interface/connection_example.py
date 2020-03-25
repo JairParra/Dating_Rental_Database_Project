@@ -12,7 +12,7 @@ Connection script to Postgres SQL database
 
 import psycopg2 
 import pandas as pd
-from config import config 
+from util import config 
 
 
 def connect(): 
@@ -23,15 +23,10 @@ def connect():
     fetched_df = pd.DataFrame() 
     
     try: 
-        # read connection parameters 
-        params = config()
-        
-        # connect to the PostgreSQL server
-        print("Connecting to the PostgreSQL database...") 
-        conn = psycopg2.connect(**params) 
-        
-        # create a cursor 
-        cur = conn.cursor()
+        print("Connecting to the PostgreSQL database...")
+        params = config() # read connection parameters 
+        conn = psycopg2.connect(**params) # connect to the PostgreSQL server
+        cur = conn.cursor() # create a cursor 
         
         # execute a statement 
         print('PostgreSQL database version: ') 
@@ -51,14 +46,13 @@ def connect():
         for row in competition: 
             print(row)
             
-            
+        # Extract columns and convert to df: 
         columns = [desc[0] for desc in cur.description] 
         fetched_df = pd.DataFrame(competition, columns=columns)
         if len(fetched_df) == 0 : 
             print("EMPTY!")
                 
         print("type(fetchall) : ", type(competition))
-        
         print("\nOutput query: \n", fetched_df)
         
         # close the communication with the PostgreSQL 

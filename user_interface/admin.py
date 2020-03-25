@@ -7,7 +7,7 @@ Created on Tue Mar 24 19:43:05 2020
 
 import re
 from util import query_executer
-from useroptions import LoginSession
+from login import LoginSession
            
 ################################################################################3
     
@@ -66,7 +66,7 @@ class MasterSession(LoginSession):
             mgr_input = input() 
         
             if re.match(r'^1[^0-3]+|^1$', str(mgr_input)): 
-                print("Please input any SQL query: ") 
+                print("Please input any SQL query (query will be submitted when ; is entered) ") 
                 
             elif re.match(r'^2.*', str(mgr_input)): 
                 print("See/modify Users")
@@ -106,3 +106,9 @@ class MasterSession(LoginSession):
                 break
             else: 
                 print("Invalid Input") 
+                
+                
+    def master_query(self): 
+        """
+        Prompts a general query to the user and attempts to execute it. 
+        """

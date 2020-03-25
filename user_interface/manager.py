@@ -7,7 +7,7 @@ Created on Tue Mar 24 19:23:34 2020
 
 import re
 from util import query_executer
-from useroptions import LoginSession # parent class 
+from login import LoginSession # parent class 
 
 # other
 EMAIL_REGEX = r'[\w\.-]+@[\w\.-]+'

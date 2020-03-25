@@ -16,7 +16,7 @@ import time
 import datetime
 import psycopg2  # library to connect 
 import pandas as pd 
-from config import config 
+from util import config 
 from getpass import getpass
 from util import query_executer # custom util class
 
@@ -34,20 +34,21 @@ class LoginSession():
     This parent class contains 
     """
     
-    def __init__(self, newuser = {}, verbose=True): 
+    def __init__(self, newuser = False, verbose=True): 
         """
         @args: 
-            @ login_resp: contains logging response (user values + successful login)
+            @ newuser: contains logging response (user values + successful login)
             @ usertype: type of user 
             @ usertype_vals: values of the user type
         """
         self.login_resp = {} # contains logging response (user values + successful login)
         self.usertype = "" # type of user
         self.usertype_vals = {} # values of user type
-        if not bool(newuser): 
+        if newuser: 
             print("Initialization procedure") 
+            self.newuser() # Procedure to create a new user. 
             
-    def newuser(self, newuser={}):  
+    def newuser(self):  
         """
         Creates and inserts a new user in the database
         """
