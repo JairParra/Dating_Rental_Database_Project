@@ -5,11 +5,17 @@ Created on Tue Mar 24 19:40:50 2020
 @author: jairp
 """
 
+#################################################################################
+
+### 1. Imports ### 
+
 import re
 from util import query_executer
 from login import LoginSession
 
+#################################################################################
 
+### 1. Classes ### 
     
 class CustomerSession(LoginSession):
     """ 

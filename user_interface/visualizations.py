@@ -3,6 +3,8 @@
 Created on Wed Mar 25 14:34:57 2020
 
 @author: jairp
+
+NOTE: This part will be finished by Chelly
 """
 
 ###############################################################################
