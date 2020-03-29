@@ -1,0 +1,247 @@
+--- *** INTERESTING QUERIES ***
+
+-------------------------------------------------------------------------------
+
+insteresting_queries.sql
+--1. For customers, they want to find a perfect partner who meets his/her requirements. 
+-- Thus customer will search for mates with cireteria
+-- Let's imitate a customer who wants to date with a male with height greater than 180cm, weight less than 80kg and age less than 40yrs old.
+-- Assume today's date is "2020/02/27"
+
+SELECT mate.username, height, weight, (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) AS age 
+FROM usertable, mate 
+WHERE usertable.username = mate.username AND height > 1.8 AND weight < 80 AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) < 40;
+
+   username    | height | weight | age 
+---------------+--------+--------+-----
+ jballintyne12 |   1.82 |  56.00 |  23
+ poneills      |   1.84 |  73.00 |  21
+ tmccandiex    |   1.90 |  55.00 |  26
+ vissakov9     |   1.85 |  62.00 |  36
+ bmatousl      |   1.85 |  69.00 |  39
+(5 rows)
+
+-------------------------------------------------------------------------------
+
+
+-- 2. For customers, they might want to see his/her requests in the past 90days.
+-- The return result should include matename, request date as well as request status 
+-- Assume today's date is "2020/02/27", this customer's name is chysom17.
+
+SELECT mateName, rdate, rstatus 
+FROM request
+WHERE custName = 'chysom17' AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', rdate)) <= 90;
+
+  matename  |   rdate    | rstatus  
+------------+------------+----------
+ poneills   | 2019-12-15 | accepted
+ estirton3  | 2018-10-22 | accepted
+ tmccandiex | 2020-02-17 | accepted
+ vissakov9  | 2019-02-15 | pending
+(4 rows)
+
+-------------------------------------------------------------------------------
+
+
+--3. For some reason, the manager want to know all the people(both mate and customers) who have performed a specific activity on a specific date
+-- Find name of custsmer and mates who has performed (which mean order status is complete) activity with "aid=1" on date "2020/02/27"
+SELECT DISTINCT custName AS name
+FROM request, ordertable
+WHERE request.rid = ordertable.rid 
+    AND ordertable.ordStatus = 'complete'
+    AND request.rid = (
+        SELECT rid 
+        FROM ordertable, schedule
+        WHERE ordertable.oid = schedule.oid AND schedule.aid = 3 AND ordertable.startdate = '2020-02-14'
+)
+UNION
+SELECT DISTINCT matename AS name
+FROM request, ordertable
+WHERE request.rid = ordertable.rid 
+    AND ordertable.ordStatus = 'complete'
+    AND request.rid = (
+        SELECT rid 
+        FROM ordertable, schedule
+        WHERE ordertable.oid = schedule.oid AND schedule.aid = 3 AND ordertable.startdate = '2020-02-14'
+);
+
+
+   name    
+-----------
+ chysom17
+ estirton3
+(2 rows)
+
+-------------------------------------------------------------------------------
+
+
+-- 4. The manager wants to find out the customers who has not paid for an invoice after the duedate (assume today is "2020/02/27")
+-- and send the customer an email. Thus we need to find out email, order id, invoice id, invoice duedate and invoice amount
+SELECT email, ordertable.oid, inid, invoice.dueDate, invoice.amount
+
+
+FROM usertable, customer, ordertable, request, invoice
+WHERE 
+            usertable.username = customer.username 
+            AND customer.username = request.custName
+            AND ordertable.rid = request.rid
+            AND ordertable.oid = invoice.oid
+            AND invoice.status = 'pending' 
+            AND invoice.dueDate < '2020-02-27';
+			
+
+          email          | oid | inid |  duedate   | amount 
+-------------------------+-----+------+------------+--------
+ hsimmigc@nifty.com      |  19 |    1 | 2018-11-16 | 148.00
+ jrosendale5@salon.com   |  14 |    3 | 2018-04-14 |  95.00
+ chysom17@springer.com   |  20 |    6 | 2019-10-13 | 131.00
+ fhoys2@live.com         |   6 |    7 | 2018-06-02 |  84.00
+ jrosendale5@salon.com   |   4 |    8 | 2019-09-08 | 191.00
+ ngeraldeze@house.gov    |  10 |    9 | 2019-04-26 |  75.00
+ jrosendale5@salon.com   |  15 |   10 | 2019-03-09 | 187.00
+ chysom17@springer.com   |  13 |   12 | 2019-06-19 | 150.00
+ cwhewellg@economist.com |   9 |   13 | 2019-12-02 | 114.00
+ jrosendale5@salon.com   |   7 |   14 | 2019-06-21 | 137.00
+ kmulvyr@qq.com          |  11 |   15 | 2018-02-21 | 113.00
+ cchittem1b@amazon.de    |   5 |   17 | 2018-04-05 |  73.00
+ fhoys2@live.com         |   1 |   20 | 2019-04-25 |  19.00
+(13 rows)
+			
+			
+-------------------------------------------------------------------------------
+
+
+-- 5. Find the most popular activity among male customers with age between 25-35 years old inclusive
+SELECT aid, count(*)
+FROM schedule
+WHERE aid = (
+    SELECT MAX(count)
+    FROM (
+        SELECT count(*) AS count
+        FROM usertable, customer, request, ordertable, schedule
+        WHERE usertable.username = customer.username 
+            AND customer.username = request.custName
+            AND ordertable.rid = request.rid
+            AND ordertable.oid = schedule.oid
+            AND usertable.sex = 'male'
+            AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) >=25
+            AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) <=35
+        GROUP BY aid 
+    ) AS max
+)
+GROUP BY aid
+
+
+ aid | count 
+-----+-------
+   5 |     4
+(1 row)
+
+------------------------------------
+
+-- *** UPDATE/DELETION QUERIES *** 
+
+update_queries.sql
+-- 1. A mate want to accept a request. Assume the request id is 101.
+UPDATE request 
+SET rstatus = 'accepted'
+WHERE rid = 101;
+
+-- 2. A customer pays for an invoice and the invoice status is updated to paid.
+-- Assume the invoice id is 10.
+UPDATE invoice 
+SET status = 'paid'
+WHERE inid = 10;
+
+-- 3. A customer wants to update his/her email to "xzy@mail.mcgill.ca"
+-- Assume the email of this customer account is cchittem1b@amazon.de.
+UPDATE usertable
+SET email = 'xzy@mail.mcgill.ca'
+WHERE email = 'cchittem1b@amazon.de';
+
+-- 4. Because of an term change of ApplePay service, our company is not allowed to keep
+-- any payment data with ApplePay anymore. We want to delete all the invoice that is paid using ApplePay
+
+DELETE FROM invoice
+WHERE method = 'applepay';
+
+-- 5. We have discovered that the customer with custname chysom17 
+-- has been in prison 5 times. We will then reject all his requests.
+UPDATE request 
+SET rstatus = 'rejected' 
+WHERE custname = 'chysom17'; 
+
+
+UPDATE 0
+UPDATE 1
+UPDATE 1
+DELETE 3
+UPDATE 4
+
+------------------------------------
+View1.sql
+--1 VIEW
+--Background: For customers they might want to find the mate with higher rank.
+--Find the all the mate has average rank more than 4.0 
+CREATE VIEW mateRating1 (matename,rating) AS
+(SELECT matename, rating
+FROM 
+(
+    SELECT rid, rating 
+    FROM orderTable
+) as temp, request WHERE temp.rid=request.rid) 
+;
+
+CREATE VIEW mateRating2(matename,average) AS
+SELECT matename, AVG(rating) as average FROM mateRating1 GROUP BY matename;
+
+
+SELECT matename FROM mateRating2 WHERE Average > 4.0;
+   matename    
+---------------
+ estirton3
+ jballintyne12
+(2 rows)
+
+------------------------------------
+View2.sql
+
+--2View
+-- Background: Say system has a bug, the orders has some problem between a certain time if a manager modify the order, the system want to find the cust, mate id to contact and solve the problem for the order)
+-- Find all manager, cust, mate usename of order between some time interval
+
+CREATE VIEW timeRequest 
+    (oid,rid) AS
+SELECT 
+    oid,
+    rid 
+FROM orderTable 
+WHERE ((DATE_PART('year', '2018-02-02'::date) - DATE_PART('year',startDate::date)) * 12 + (DATE_PART('month', '2018-02-02'::date) - DATE_PART('month', startDate::date))) <= 10
+;
+
+SELECT 
+    custname, 
+    matename,
+    mngname
+FROM timeRequest temp
+INNER JOIN request r
+    ON temp.rid = r.rid 
+JOIN modification mod 
+    ON mod.oid = temp.oid 
+; 
+
+
+  custname   |  matename   |   mngname    
+-------------+-------------+--------------
+ cwhewellg   | bmatousl    | tharkes13
+ jrosendale5 | vissakov9   | mickovitzw
+ ngeraldeze  | jpresnall10 | zelsie19
+ fhoys2      | broizin4    | smccomiskieu
+ jrosendale5 | nclapshaw18 | cneumann1c
+ fhoys2      | jspurling0  | lvedyasovp
+ chysom17    | poneills    | candreuttij
+ cchittem1b  | ehamfletto  | cchippq
+ tbampkin6   | vissakov9   | bmccartand
+ chysom17    | vissakov9   | lchadbandh
+(10 rows)
+

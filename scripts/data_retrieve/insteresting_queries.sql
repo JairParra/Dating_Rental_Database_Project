@@ -8,7 +8,7 @@ WHERE usertable.username = mate.username AND height > 1.8 AND weight < 80 AND (D
 
 -- 2. For customers, they might want to see his/her requests in the past 90days.
 -- The return result should include matename, request date as well as request status 
--- Assume today's date is "2020/02/27", this customer's name is bmatousl.
+-- Assume today's date is "2020/02/27", this customer's name is chysom17.
 SELECT mateName, rdate, rstatus 
 FROM request
 WHERE custName = 'chysom17' AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', rdate)) <= 90;
@@ -48,7 +48,7 @@ WHERE
             AND invoice.status = 'pending' 
             AND invoice.dueDate < '2020-02-27';
 
--- 5. Find the most popular activity among male customers with age between 25-35 years old inclusive
+-- 5. Find the most popular activity among female customers with age between 25-35 years old inclusive
 SELECT aid, count(*)
 FROM schedule
 WHERE aid = (
@@ -60,9 +60,9 @@ WHERE aid = (
             AND customer.username = request.custName
             AND ordertable.rid = request.rid
             AND ordertable.oid = schedule.oid
-            -- AND usertable.sex = 'male'
-            AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) >=10
-            -- AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) <=40
+            AND usertable.sex = 'Female'
+            AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) >=25
+            AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) <=35
         GROUP BY aid 
     ) AS max
 )

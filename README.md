@@ -1,7 +1,7 @@
 [![Generic badge](https://img.shields.io/badge/Database_Project-blue.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/Contributors-4-<COLOR>.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/COMP421_Databases_Systems-red.svg)](https://shields.io/)
-[![Generic badge](https://img.shields.io/badge/Status-<Building>.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Status-Building-<COLOR>.svg)](https://shields.io/)
 
 
 ![](figs/database-blue.png)
@@ -60,14 +60,13 @@ Database information:
 where the first script is in `scripts/database_creation/` and the rest are in `scripts/table_insertions/` . 
 Script 1 is was randomly generated, subsequent table creation scripts were generated using the `table_insertions_script.py` script.
 
-## Announcements 
-- Group on MyCourses: 88 
-- Languages used: Java, Python?, PostgreSQL, HTML/CSS/Javascript?
-
-
 ## ER-diagram 
 
 ![](figs/ER_model.png)
 
 ## User-interface 
-- Building 
+- The relevant files are located under the `user_interface` directory. Files descriptions can be found in the respective README.md
+- Currently, application will only be emulated locally, but the intention is that it will eventually be available online as well. For this reason, HTML scripts are also placed as well. 
+
+### Demo (Creating a new user, logging-in ) 
+`???`
