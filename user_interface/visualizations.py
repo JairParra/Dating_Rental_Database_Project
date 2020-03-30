@@ -27,7 +27,6 @@ sns.set()
 
 ### 2. Functions 
 
-### IMPLEMENT YOUR FUNCTIONS HERE ###
 ## NOTE: You can use the query_executer function to execute queries which you can pass as a string. 
 ##       This function will return a pandas DataFrame so you can plot stuff easily. 
 ## NOTE 2: Please keep the menu function as is, and create other helper functions to do the visualizations. 
@@ -98,11 +97,88 @@ def visualization2():
 def visualization3():
     # Bussiness idea 2: Distribution of the hourly pay, mean value/Outliers- monitorning usage, to check
     # the hourly pay is not overprice. Also, check those outliers to better understand user behaviours.
-    pass
+    stmt= "SELECT username, hourlyRate " \
+          "FROM mate;"
+    df = util.query_executer(stmt)
+    f, (ax_box, ax_hist) = plt.subplots(2, sharex=True, gridspec_kw={"height_ratios": (.15, .85)})
+
+    # Add a graph in each part
+    sns.boxplot(df["hourlyRate"], ax=ax_box)
+    sns.distplot(df["hourlyRate"], ax=ax_hist)
+
+    # Remove x axis name for the boxplot
+    ax_box.set(xlabel='')
+    plt.show()
+    plt.savefig('../figs/visual3.png')
 
 def visualization4():
     # Bussiness idea 3: check which age interval, most interested in which activities, better recommandations
-    pass
+    # Age interval :  1)<25 applicaiton should handle >=20 2) 25~30 3) 30~35
+    stmt1 = "SELECT a.aid, COALESCE(count,0) count " \
+            "FROM activity OUTER LEFT JOIN (" \
+                " SELECT aid,COUNT(aid) count" \
+                "FROM usertable u,invoice i,schedule s" \
+                "WHERE  u.username = i.custName" \
+                "   AND i.oid = s.oid" \
+                "   AND age<25" \
+                "GROUP BY aid) temp " \
+            "ON a.aid = temp.aid" \
+            "GROUP BY aid;"
+
+    stmt2 = "SELECT a.aid, COALESCE(count,0) count" \
+            "FROM activity OUTER LEFT JOIN (" \
+                "SELECT  aid, COUNT(aid) count"\
+                "FROM usertable u,invoice i,schedule s" \
+                "WHERE  u.username = i.custName" \
+                "   AND i.oid = s.oid" \
+                "   AND age>=25" \
+                "   AND age<30" \
+                "GROUP BY aid) temp" \
+            "ON a.aid = temp.aid" \
+            "OURDER BY aid;"
+    stmt3 = "SELECT a.aid, COALESCE(count,0) count" \
+            "FROM activity OUTER LEFT JOIN (" \
+                "SELECT aid, COUNT(aid) count" \
+                "FROM usertable u,invoice i,schedule s" \
+                "WHERE  u.username = i.custName" \
+                "   AND i.oid = s.oid" \
+                "   AND age>=30" \
+                "GROUP BY aid) temp" \
+            "ON a.aid = temp.aid" \
+            "ORDER BY aid;"
+    stmt4 = "SELECT aid" \
+            "FROM activity" \
+            "ORDER BY aid;"
+
+    df_a = util.query_executer(stmt1)
+    df_b = util.query_executer(stmt2)
+    df_c = util.query_executer(stmt3)
+    df_d = util.query_executer(stmt4)
+
+    # The position of the bars on the x-axis
+    r = range(len(df_d['aid'].tolist()))
+
+    # Names of group and bar width
+    names = df_d['aid'].tolist()
+    barWidth = 1
+
+    # Create brown bars
+    plt.bar(r, df_a['count'].tolist(), color='#7f6d5f', edgecolor='white', width=barWidth, label='<25')
+    # Create green bars (middle), on top of the firs ones
+    plt.bar(r, df_b['count'].tolist(), bottom=df_a['count'].tolist(), color='#557f2d', edgecolor='white',
+            width=barWidth, label='25~40')
+    # Create green bars (top)
+    plt.bar(r, df_c['count'].tolist(), bottom=df_b['count'].tolist(), color='#2d7f5e', edgecolor='white',
+            width=barWidth, label='>40')
+
+    # Custom X axis
+    plt.xticks(r, names, fontweight='bold')
+    plt.xlabel("group")
+
+    # Show graphic
+    plt.legend()
+    plt.show()
+    plt.savefig('../figs/visual4.png')
 
 def visualization5():
     # 5. Distribution of statues for applications: Pending, Approved, Rejected
