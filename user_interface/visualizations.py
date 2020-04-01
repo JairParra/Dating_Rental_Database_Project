@@ -33,8 +33,7 @@ sns.set()
 ##      Call these from the menu when an option is input :)
 
 def visualization1():
-    # 1. Distribution of Male/Female current Users for Customers, Mates and Managers , all at the same time
-    # Bussiness idea 1: many help balance male/female user ,find the target user, advertisement user
+
     stmt1 = "SELECT sex,COUNT(m.username) count " \
             " FROM mate m" \
             " JOIN usertable u ON m.username= u.username" \
@@ -88,7 +87,7 @@ def visualization1():
     plt.savefig('../figs/visual1.png')
 
 def visualization2():
-    # 2. Pairplot and distributions of ages vs. hourly rates for Mates
+
     stmt = "SELECT hourlyRate, date_part('year',age('2020-03-31', dateOfBirth)) age " \
             "FROM mate m" \
             " JOIN usertable u ON m.username= u.username;"
@@ -102,8 +101,7 @@ def visualization2():
     sns_plot.savefig('../figs/visual_2.png')
 
 def visualization3():
-    # Bussiness idea 2: Distribution of the hourly pay, mean value/Outliers- monitorning usage, to check
-    # the hourly pay is not overprice. Also, check those outliers to better understand user behaviours.
+
     stmt= "SELECT hourlyRate " \
           "FROM mate;"
     df = util.query_executer(stmt)
@@ -120,8 +118,7 @@ def visualization3():
     plt.show()
 
 def visualization4():
-    # Bussiness idea 3: check which age interval, most interested in which activities, better recommandations
-    # Age interval :  1)<25 applicaiton should handle >=20 2) 25~30 3) 30~35
+
     stmt1 ="SELECT COALESCE(a.aid,a.aid) aid, COALESCE (temp.count,0) count " \
            "FROM activity a LEFT OUTER JOIN " \
            "(SELECT s.aid, COUNT(s.aid) count " \
@@ -192,7 +189,7 @@ def visualization4():
     plt.show()
 
 def visualization5():
-    # 5. Distribution of statues for applications: Pending, Approved, Rejected
+
 
     stmt = "SELECT appStatus, COUNT(appid) count " \
            "FROM application" \

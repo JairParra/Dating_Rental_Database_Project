@@ -68,5 +68,19 @@ Script 1 is was randomly generated, subsequent table creation scripts were gener
 - The relevant files are located under the `user_interface` directory. Files descriptions can be found in the respective README.md
 - Currently, application will only be emulated locally, but the intention is that it will eventually be available online as well. For this reason, HTML scripts are also placed as well. 
 
+### Visualization
+1. Visualization_1:  Distribution of Male/Female current Users for Customers, Mates and Managers
+Rationale: the distribution graph reveal about important info on sex, which might helps finding the target users, and for advertisement purpose.
+
+2. Visualization_2:  Pairplot and distributions of ages vs. hourly rates for Mates
+Rationale: the pair plot provide the relateness between age and hourly rate, which contributes in finding target user since people tends to find similar age friends
+
+3. Visualization_3: Box/Distributional plot of the hourlyRate, mean value/Outliers
+Rationale：This combination of plots helps the company to monitor the hourly pay. (not overprice) Also, check those outliers to identify the popular ones or abnormal one.
+
+4. Visualization_4: Stacked Histogram for age interval and activites. The compnay might be instersted in investigating for a certain age interval, which activities is the most popular. This can help the company to form a better recommendations schema for website.  Age interval :  1)20~25 2) 25~30 3) 30~35
+
+5. Visualization_5: Donut Plot of statues for applications: Pending, Approved, Rejected, which helps to monitor managers’ workload.
+
 ### Demo (Creating a new user, logging-in ) 
 `???`
