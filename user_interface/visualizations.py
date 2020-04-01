@@ -119,46 +119,49 @@ def visualization3():
     plt.title("Boxplot and distributional plot for hourlyRate")
     plt.show()
 
-
 def visualization4():
     # Bussiness idea 3: check which age interval, most interested in which activities, better recommandations
     # Age interval :  1)<25 applicaiton should handle >=20 2) 25~30 3) 30~35
-    stmt1 = "SELECT a.aid, COALESCE(count,0) count " \
-            "FROM activity LEFT JOIN (" \
-                " SELECT aid,COUNT(aid) count " \
-                "FROM usertable u,invoice i,schedule s " \
-                "WHERE  u.username = i.custName" \
-                "   AND i.oid = s.oid" \
-                "   AND age<25 " \
-                "GROUP BY aid) temp " \
-            "ON a.aid = temp.aid " \
-            "GROUP BY aid;"
+    stmt1 ="SELECT COALESCE(a.aid,a.aid) aid, COALESCE (temp.count,0) count " \
+           "FROM activity a LEFT OUTER JOIN " \
+           "(SELECT s.aid, COUNT(s.aid) count " \
+           "FROM usertable u,invoice i,schedule s " \
+           "WHERE  u.username = i.custName " \
+           "AND i.oid = s.oid " \
+           "AND date_part('year',age('2020-03-31',dateOfBirth))<25 " \
+           "GROUP BY s.aid ) temp " \
+           "ON a.aid = temp.aid " \
+           "ORDER BY aid;"
 
-    stmt2 = "SELECT a.aid, COALESCE(count,0) count" \
-            "FROM activity OUTER LEFT JOIN (" \
-                "SELECT  aid, COUNT(aid) count"\
-                "FROM usertable u,invoice i,schedule s" \
-                "WHERE  u.username = i.custName" \
-                "   AND i.oid = s.oid" \
-                "   AND age>=25" \
-                "   AND age<30" \
-                "GROUP BY aid) temp" \
-            "ON a.aid = temp.aid" \
-            "OURDER BY aid;"
 
-    stmt3 = "SELECT a.aid, COALESCE(count,0) count" \
-            "FROM activity OUTER LEFT JOIN (" \
-                "SELECT aid, COUNT(aid) count" \
-                "FROM usertable u,invoice i,schedule s" \
-                "WHERE  u.username = i.custName" \
-                "   AND i.oid = s.oid" \
-                "   AND age>=30" \
-                "GROUP BY aid) temp" \
-            "ON a.aid = temp.aid" \
+    stmt2= "SELECT COALESCE(a.aid,a.aid) aid, COALESCE (temp.count,0) count " \
+           "FROM activity a LEFT OUTER JOIN " \
+           "(SELECT s.aid, COUNT(s.aid) count " \
+           "FROM usertable u,invoice i,schedule s " \
+           "WHERE  u.username = i.custName " \
+           "AND i.oid = s.oid " \
+           "AND date_part('year',age('2020-03-31',dateOfBirth))<30 " \
+           "AND date_part('year',age('2020-03-31',dateOfBirth))>=25 " \
+           "GROUP BY s.aid ) temp " \
+           "ON a.aid = temp.aid " \
+           "ORDER BY aid;"
+
+    stmt3 = "SELECT COALESCE(a.aid,a.aid) aid, COALESCE (temp.count,0) count " \
+           "FROM activity a LEFT OUTER JOIN " \
+           "(SELECT s.aid, COUNT(s.aid) count " \
+           "FROM usertable u,invoice i,schedule s " \
+           "WHERE  u.username = i.custName " \
+           "AND i.oid = s.oid " \
+           "AND date_part('year',age('2020-03-31',dateOfBirth))<35 " \
+           "AND date_part('year',age('2020-03-31',dateOfBirth))>=35 " \
+           "GROUP BY s.aid ) temp " \
+           "ON a.aid = temp.aid " \
             "ORDER BY aid;"
+
+
     stmt4 = "SELECT aid" \
-            "FROM activity" \
-            "ORDER BY aid;"
+            " FROM activity" \
+            " ORDER BY aid;"
 
     df_a = util.query_executer(stmt1)
     df_b = util.query_executer(stmt2)
@@ -176,10 +179,10 @@ def visualization4():
     plt.bar(r, df_a['count'].tolist(), color='#7f6d5f', edgecolor='white', width=barWidth, label='<25')
     # Create green bars (middle), on top of the firs ones
     plt.bar(r, df_b['count'].tolist(), bottom=df_a['count'].tolist(), color='#557f2d', edgecolor='white',
-            width=barWidth, label='25~40')
+            width=barWidth, label='25~30')
     # Create green bars (top)
     plt.bar(r, df_c['count'].tolist(), bottom=df_b['count'].tolist(), color='#2d7f5e', edgecolor='white',
-            width=barWidth, label='>40')
+            width=barWidth, label='30~35')
 
     # Custom X axis
     plt.xticks(r, names, fontweight='bold')
@@ -187,7 +190,6 @@ def visualization4():
     # Show graphic
     plt.legend()
     plt.show()
-
 
 def visualization5():
     # 5. Distribution of statues for applications: Pending, Approved, Rejected
@@ -229,10 +231,12 @@ def visualization_menu():
             login_string += "######################################################\n"
             login_string += "\nPlease choose one of the available options below:\n"
 
-            login_string += "\t 1. Ratio of male/female user"
-            login_string += "\t 2. Distribution of hourly payment"
-            login_string += "\t 3. Age/Activities Plot"
-            login_string += "\t 4. Exit" 
+            login_string += "\t 1. Histogram of Ratio of male/female user"
+            login_string += "\t 2. Pair Plot between age and hourlyrate"
+            login_string += "\t 3. Box/Distributional Plot for hourlyrate"
+            login_string += "\t 4. Stacked Bar plot for age and acitivity"
+            login_string += "\t 5. Donut chart for status of application"
+            login_string += "\t 6. Exit"
             print(login_string) 
             
             # Read input
@@ -246,7 +250,13 @@ def visualization_menu():
                 print("Execute option 2")
             
             elif re.match(r'^3.*', str(user_input)):
-                print("~Goodbye~")
+                print("Execute option 3")
+                break
+            elif re.match(r'^4.*', str(user_input)):
+                print("Execute option 4")
+                break
+            elif re.match(r'^5.*', str(user_input)):
+                print("Execute option 5")
                 break
             else: 
                 print("Invalid input") 
@@ -259,10 +269,6 @@ def visualization_menu():
         print("Error: ", e)
         print(e.__traceback__)
         print("Context: ", e.__context__)
-
-
-if __name__ == '__main__':
-    visualization3()
 
 
 
