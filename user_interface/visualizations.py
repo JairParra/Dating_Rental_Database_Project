@@ -36,21 +36,23 @@ def visualization1():
     # 1. Distribution of Male/Female current Users for Customers, Mates and Managers , all at the same time
     # Bussiness idea 1: many help balance male/female user ,find the target user, advertisement user
     stmt1 = "SELECT sex,COUNT(m.username) count " \
-            "FROM mate m" \
-            "JOIN usertable u ON m.username= u.username" \
-            "GROUP BY sex;"
+            " FROM mate m" \
+            " JOIN usertable u ON m.username= u.username" \
+            " GROUP BY sex;"
     stmt2 = "SELECT sex,COUNT(m.username) " \
             "FROM customer m" \
-            "JOIN usertable u ON m.username= u.username" \
-            "GROUP BY sex;"
+            " JOIN usertable u ON m.username= u.username" \
+            " GROUP BY sex;"
     stmt3 = "SELECT sex,COUNT(m.username) " \
             "FROM manager m" \
-            "JOIN usertable u ON m.username= u.username" \
-            "GROUP BY sex;"
+            " JOIN usertable u ON m.username= u.username" \
+            " GROUP BY sex;"
     df_a = util.query_executer(stmt1)
     df_b = util.query_executer(stmt2)
     df_c= util.query_executer(stmt3)
-
+    print(df_a)
+    print(df_b)
+    print(df_c)
     n_groups = 3
     fig, ax = plt.subplots()
     # parameter for drawing
@@ -87,42 +89,49 @@ def visualization1():
 
 def visualization2():
     # 2. Pairplot and distributions of ages vs. hourly rates for Mates
-    stmt = "SELECT m.username, hourlyRate, sex  " \
+    stmt = "SELECT hourlyRate, date_part('year',age('2020-03-31', dateOfBirth)) age " \
             "FROM mate m" \
-            "JOIN usertable u ON m.username= u.username;"
+            " JOIN usertable u ON m.username= u.username;"
     df = util.query_executer(stmt)
-    sns_plot= sns.pairplot(df, vars=["sex", "hourlyRate"])
-    sns_plot.savefig('../figs/visual2.png')
+    df["hourlyrate"]=df["hourlyrate"].apply(lambda x: int(x))
+    df["age"] = df["age"].apply(lambda x: int(x))
+    #print(df.to_numpy())
+    #print(df.astype({'hourlyrate': 'int64','age': 'int64'}).dtypes)
+    sns_plot= sns.pairplot(df, vars=["age", "hourlyrate"])
+    plt.title("Pair plot for age and hourlyRate")
+    sns_plot.savefig('../figs/visual_2.png')
 
 def visualization3():
     # Bussiness idea 2: Distribution of the hourly pay, mean value/Outliers- monitorning usage, to check
     # the hourly pay is not overprice. Also, check those outliers to better understand user behaviours.
-    stmt= "SELECT username, hourlyRate " \
+    stmt= "SELECT hourlyRate " \
           "FROM mate;"
     df = util.query_executer(stmt)
+    df["hourlyrate"]=df["hourlyrate"].apply(lambda x: int(x))
     f, (ax_box, ax_hist) = plt.subplots(2, sharex=True, gridspec_kw={"height_ratios": (.15, .85)})
 
     # Add a graph in each part
-    sns.boxplot(df["hourlyRate"], ax=ax_box)
-    sns.distplot(df["hourlyRate"], ax=ax_hist)
+    sns.boxplot(df["hourlyrate"], ax=ax_box, showmeans= True)
+    sns.distplot(df["hourlyrate"], ax=ax_hist,kde = True,bins=100)
 
     # Remove x axis name for the boxplot
     ax_box.set(xlabel='')
+    plt.title("Boxplot and distributional plot for hourlyRate")
     plt.show()
-    plt.savefig('../figs/visual3.png')
+
 
 def visualization4():
     # Bussiness idea 3: check which age interval, most interested in which activities, better recommandations
     # Age interval :  1)<25 applicaiton should handle >=20 2) 25~30 3) 30~35
     stmt1 = "SELECT a.aid, COALESCE(count,0) count " \
-            "FROM activity OUTER LEFT JOIN (" \
-                " SELECT aid,COUNT(aid) count" \
-                "FROM usertable u,invoice i,schedule s" \
+            "FROM activity LEFT JOIN (" \
+                " SELECT aid,COUNT(aid) count " \
+                "FROM usertable u,invoice i,schedule s " \
                 "WHERE  u.username = i.custName" \
                 "   AND i.oid = s.oid" \
-                "   AND age<25" \
+                "   AND age<25 " \
                 "GROUP BY aid) temp " \
-            "ON a.aid = temp.aid" \
+            "ON a.aid = temp.aid " \
             "GROUP BY aid;"
 
     stmt2 = "SELECT a.aid, COALESCE(count,0) count" \
@@ -136,6 +145,7 @@ def visualization4():
                 "GROUP BY aid) temp" \
             "ON a.aid = temp.aid" \
             "OURDER BY aid;"
+
     stmt3 = "SELECT a.aid, COALESCE(count,0) count" \
             "FROM activity OUTER LEFT JOIN (" \
                 "SELECT aid, COUNT(aid) count" \
@@ -174,30 +184,37 @@ def visualization4():
     # Custom X axis
     plt.xticks(r, names, fontweight='bold')
     plt.xlabel("group")
-
     # Show graphic
     plt.legend()
     plt.show()
-    plt.savefig('../figs/visual4.png')
+
 
 def visualization5():
     # 5. Distribution of statues for applications: Pending, Approved, Rejected
 
     stmt = "SELECT appStatus, COUNT(appid) count " \
-           "FROM applicaiton" \
-           "GROUP BY appStatus"
+           "FROM application" \
+           " GROUP BY appStatus"
     df = util.query_executer(stmt)
 
-    names = df['appStatus'].to_numpy()
+    names = df['appstatus'].to_numpy()
 
     # Create a circle for the center of the plot
     my_circle = plt.Circle((0, 0), 0.7, color='white')
-    plt.pie(df['count'].to_numpy(), labels=names, colors=['red', 'green', 'blue', 'skyblue'])
+    plt.pie(df['count'].to_numpy(), labels=names, colors=['red', 'green', 'blue', 'skyblue'],autopct=make_autopct(df['count'].to_numpy()))
     p = plt.gcf()
     p.gca().add_artist(my_circle)
+    plt.title("Ratio of status of application")
     plt.show()
-    plt.savefig('../figs/visual5.png')
-    
+
+
+def make_autopct(values):
+    def my_autopct(pct):
+        total = sum(values)
+        val = int(round(pct*total/100.0))
+        return '{p:.2f}%  ({v:d})'.format(p=pct,v=val)
+    return my_autopct
+
 def visualization_menu(): 
     """
     Provides different visualization options that can be decided via I/O command line interaction
@@ -243,43 +260,9 @@ def visualization_menu():
         print(e.__traceback__)
         print("Context: ", e.__context__)
 
-###############################################################################
-
-### 3. DEMO (delete when not needed anymore) 
-def demo():
-## Executing a query 
-    stmt = "SELECT * FROM application LIMIT 20;"
-    df = util.query_executer(stmt) # execute query on our database, return results as a dataframe
-    print(df) # print query
-
-    ## Reading the file
-    red_wine_df = pd.read_csv('../data_raw/winequality-red.csv', sep = ';')  # Load csv file
-    red_wine_df_stats = red_wine_df.drop('quality', axis=1).describe() # describe and obtain stats
-    red_wine_df_cols = list(red_wine_df.columns)[:-1] # obtain column names
-
-
-    ## Descriptive Statistics
-    print("Red wine df shape: {}".format(red_wine_df.shape))  # shape
-    print("Red wine 'Good' counts: ", red_wine_df['quality'][red_wine_df['quality'] == 1].count() ) # count
-    print("Red wine 'Bad' counds: ", red_wine_df['quality'][red_wine_df['quality'] == 0].count() )# count
-    red_wine_df_stats = red_wine_df.drop('quality', axis=1).describe() # descriptive statistics
-    print(red_wine_df_stats)
-
-
-    ## Common plots
-    #plt.figure(1) # enumerate figures
-    #plt.title("Plot Title")
-    #plt.xlabel("X-axis")
-    #plt.ylabel("y-axis")
-    sns.countplot(red_wine_df['quality']) # countplot
-    sns.pairplot(red_wine_df.drop('quality', axis= 1), diag_kind='kde') # pairplot
-    #plt.savefig('../figs/redwine_countplot.png') # Save a sex plot
-    redwine_corr = red_wine_df.corr()['quality'].drop('quality') # obtain correlations with target
-    sns.heatmap(red_wine_df.corr(), cmap='Blues') # heatmap of correlations
-    plt.show() # show heatmap
 
 if __name__ == '__main__':
-    visualization1()
+    visualization3()
 
 
 
