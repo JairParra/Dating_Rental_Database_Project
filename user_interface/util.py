@@ -41,7 +41,7 @@ def config(filename='database.ini', section='postgresql'):
     return db 
 
 
-def query_executer(stmt, verbose=True): 
+def query_executer(stmt, verbose=True, insert=False): 
     """
     Helper function to help executing a general quer. 
     @params: 
@@ -58,25 +58,38 @@ def query_executer(stmt, verbose=True):
         
         ### 2. Execute query and fetch results 
         cur.execute(stmt) 
-        query_colnames = [desc[0] for desc in cur.description] # fetched colnames
-        query_result = cur.fetchall() # result is a list of tuples, the whole relation 
+        output_df = pd.DataFrame()
+        if not insert:
+            query_colnames = [desc[0] for desc in cur.description] # fetched colnames
+            query_result = cur.fetchall() # result is a list of tuples, the whole relation 
         
-        ### 3. Construct dataframe if required
-        output_df = pd.DataFrame(query_result, columns=query_colnames) 
+            ### 3. Construct dataframe if required
+            output_df = pd.DataFrame(query_result, columns=query_colnames) 
             
         ### 4. Verbose: Output query and result 
         if verbose: 
             print("*****************************SQL*****************************")
             print(stmt) 
-            print("***************************OUTPUT****************************")
-            print(output_df)
+            if not insert:
+                print("***************************OUTPUT****************************")
+                print(output_df)
+            print("*************************MESSAGES****************************") 
+            print(cur.statusmessage)
         
         # close the communication with the PostgreSQL 
+        conn.commit()
         cur.close()
+        conn.close()
+        
         return output_df
 
     except (Exception, psycopg2.DatabaseError) as error: 
         print(error) 
+        print("error occurred\n")
+        print("ARGS:{}\n".format(error.args))
+        print("Error: ", error)
+        print(error.__traceback__)
+        print("Context: ", error.__context__)
         
     finally: 
         # verify connection is not empty 

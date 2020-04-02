@@ -25,7 +25,7 @@ CREATE TABLE usertable --entity
     lastname VARCHAR(100) NOT NULL, 
     sex VARCHAR(100) NOT NULL,
     city VARCHAR(30) NOT NULL, 
-    phoneNum INTEGER NOT NULL, 
+    phoneNum BIGINT NOT NULL, 
     dateOfBirth DATE,  -- Can be null, but will control minimum age at application level
     PRIMARY KEY (username)
 ); 

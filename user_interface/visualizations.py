@@ -285,7 +285,7 @@ def visualizations_menu():
                 visualization5()
                 continue 
             
-            elif re.match(r'^5.*', str(user_input)):
+            elif re.match(r'^6.*', str(user_input)):
                 print("Exiting visualizations menu...")
                 break   
             

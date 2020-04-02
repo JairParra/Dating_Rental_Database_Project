@@ -64,7 +64,7 @@ class LoginSession():
                 new_email = input("Please enter your email: ")
                 
                 stmt = "SELECT * FROM usertable WHERE username='{}' or email='{}';".format(new_user, new_email) 
-                output = query_executer(stmt) # there shouldn't be any users in the output 
+                output = query_executer(stmt, verbose=False) # there shouldn't be any users in the output 
                 if len(output) > 0: 
                     print("Error: A user with the same username or email already exists.") 
                     continue
@@ -78,7 +78,7 @@ class LoginSession():
                 new_pass = getpass("Please input password with 1) 1 Uppercase 2) 1 lowercase 3) at least 8 characters:\n")
                 if not re.match(STRONG_EMAIL, new_pass) :
                     print("Error: Password muss contain: ")
-                    print("1) 1 Uppercase 2) 1 lowercase 3) at least 8 characters") 
+                    print(" 1 Uppercase, 1 lowercase, at least 8 characters") 
                     continue
                 
                 ## 4.  prompt user first and last name
@@ -86,7 +86,7 @@ class LoginSession():
                 lastname = input("Lasname: ") 
                 
                 ## 5. Sex
-                print("Sex:\n  1. Male\n2. Female") 
+                print("Sex:\n1. Male\n2. Female") 
                 user_input = input()
                 if re.match(r'^1.*', str(user_input)): 
                     sex =  "Male" 
@@ -109,21 +109,28 @@ class LoginSession():
                 year = input("year (YYYY): ")
                 month = input("month (MM): ")
                 day = input("day (DD): ") 
+                
                 if not (year.isnumeric() and month.isnumeric() and day.isnumeric() 
-                        and (int(str(datetime.date.today().year)) - year) > 18 ): 
+                        and (int(str(datetime.date.today().year)) - int(year)) > 18 ): 
                     print("Invalid input or age: you must be at least 18 years old to use the service.") 
                     
-                date = str(datetime.date(year=int(year),mont=int(month),day=int(day))) 
+                date = str(datetime.date(year=int(year),month=int(month),day=int(day))) 
                 
                 ### 2. Create statement  
                 stmt = "INSERT INTO usertable (username, password, email , firstname, lastname, sex, city , phoneNum, dateOfBirth) "
                 stmt += "VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', {}, '{}') ;".format(new_user, 
                                 new_pass, new_email, firstname, lastname, sex, city, phonenum, date)
                 
-                result = query_executer(stmt) 
+                # Execute insertion 
+                result = query_executer(stmt, insert=True) 
+                
+                # Verify insertion worked
+                stmt = "SELECT * FROM usertable "
+                stmt += "WHERE username='{}' ;\n".format(new_user)
+                result = query_executer(stmt)
                 
                 while True: 
-                    if len(result) > 1:
+                    if len(result) >= 1:
                         print("--INFO-- : User succesfully created! You can now log-in.")
                         print(result) 
                         
@@ -138,7 +145,7 @@ class LoginSession():
                         if re.match(r'^1.*', str(user_input)): 
                             self.usertype =  "Customer" 
                             preferences = input("Please write your preferences: (max 1000 characters)")
-                            stmt = "INSERT INTO customer (username, preferences) VALUES ('{}','{}')\;".format(new_user, preferences)
+                            stmt = "INSERT INTO customer (username, preferences) VALUES ('{}','{}')\n;".format(new_user, preferences)
                             query_executer(stmt) # execute insertion. 
                             break
                         elif re.match(r'^2.*', str(user_input)):
@@ -151,6 +158,7 @@ class LoginSession():
                     
                 else: 
                     raise ReferenceError("The record you tried to create raised an error.")
+                    
                 
         except Exception as e: 
             print("I/O error occurred\n")
