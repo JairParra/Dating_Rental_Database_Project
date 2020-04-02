@@ -59,15 +59,6 @@
 ### visualizations.py 
 - `visualizations.py`: Contains visualizations on statistics and other interesting analyses of the database. 
 
-### connection_example.py 
-- `connection_example.py`: Contains an example script showing how to connect to, execute queries in the database and fetch the results.
-
-### database.ini 
-- Text file containing database configuration parameters. 
-
-### Visualization.py 
-- Contains different data visualizations for out database. 
-
   1. *Visualization_1*:  Distribution of Male/Female current Users for Customers, Mates and Managers  
   Rationale: the distribution graph reveal about important info on sex, which might helps finding the target users, and for 
   advertisement purpose.
@@ -85,6 +76,13 @@
   Age interval :  1)20~25 2) 25~30 3) 30~35
 
   5. *Visualization_5*: Donut Plot of statues for applications: Pending, Approved, Rejected, which helps to monitor managers’ workload.
+
+
+### connection_example.py 
+- `connection_example.py`: Contains an example script showing how to connect to, execute queries in the database and fetch the results.
+
+### database.ini 
+- Text file containing database configuration parameters. 
 
 
 
