@@ -69,4 +69,68 @@ Script 1 is was randomly generated, subsequent table creation scripts were gener
 - Currently, application will only be emulated locally, but the intention is that it will eventually be available online as well. For this reason, HTML scripts are also placed as well. 
 
 ### Demo (Creating a new user, logging-in ) 
-`???`
+```
+python main.py
+
+######################################################
+Welcome to the MateRental database!
+######################################################
+
+Please choose one of the available options below:
+         1. Log-in
+         2. Register
+         3. Administrator Connection
+         4. Visualizations menu
+         5. Exit
+
+2
+Register:
+Please input username: user1
+Please enter your email: mfsdsd@fdfds.com
+Please input password with 1) 1 Uppercase 2) 1 lowercase 3) at least 8 characters:
+
+Error: Password muss contain:
+ 1 Uppercase, 1 lowercase, at least 8 characters
+Register:
+Please input username: fdsf
+Please enter your email: ewtew
+Make sure you input a valid email!
+Register:
+Please input username: fdsf
+Please enter your email: fsf@fdsf.com
+Please input password with 1) 1 Uppercase 2) 1 lowercase 3) at least 8 characters:
+
+First name: fdfds
+Lasname: ggf
+Sex:
+1. Male
+2. Female
+2
+City: gfgdfgdf
+Please input your phone number with no spaces or special characters432432432
+Date of birth:
+year (YYYY): 1995
+month (MM): 1
+day (DD): 1
+*****************************SQL*****************************
+INSERT INTO usertable (username, password, email , firstname, lastname, sex, city , phoneNum, dateOfBirth) VALUES ('fdsf', 'Hfdfd789789', 'fsf@fdsf.com', 'fdfds', 'ggf', 'Female', 'gfgdfgdf', 432432432, '1995-01-01') ;
+*************************MESSAGES****************************
+INSERT 0 1
+*****************************SQL*****************************
+SELECT * FROM usertable WHERE username='fdsf' ;
+
+***************************OUTPUT****************************
+Empty DataFrame
+Columns: [username, password, email, firstname, lastname, sex, city, phonenum, dateofbirth]
+Index: []
+*************************MESSAGES****************************
+SELECT 0
+--INFO-- : User succesfully created! You can now log-in.
+Empty DataFrame
+Columns: [username, password, email, firstname, lastname, sex, city, phonenum, dateofbirth]
+Index: []
+```
+
+## Visualizations 
+
+![](figs/visual_5.png)
