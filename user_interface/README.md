@@ -59,11 +59,32 @@
 ### visualizations.py 
 - `visualizations.py`: Contains visualizations on statistics and other interesting analyses of the database. 
 
-  
 ### connection_example.py 
 - `connection_example.py`: Contains an example script showing how to connect to, execute queries in the database and fetch the results.
 
 ### database.ini 
 - Text file containing database configuration parameters. 
+
+### Visualization.py 
+- Contains different data visualizations for out database. 
+
+  1. *Visualization_1*:  Distribution of Male/Female current Users for Customers, Mates and Managers  
+  Rationale: the distribution graph reveal about important info on sex, which might helps finding the target users, and for 
+  advertisement purpose.
+
+  2. *Visualization_2*:  Pairplot and distributions of ages vs. hourly rates for Mates
+  Rationale: the pair plot provide the relateness between age and hourly rate, which contributes in finding target user since people
+  tends to find similar age friends
+
+  3. *Visualization_3*: Box/Distributional plot of the hourlyRate, mean value/Outliers
+  Rationale：This combination of plots helps the company to monitor the hourly pay. (not overprice) Also, check those outliers to
+  identify the popular ones or abnormal one.
+
+  4. *Visualization_4*: Stacked Histogram for age interval and activites. The compnay might be instersted in investigating for a certain
+  age interval, which activities is the most popular. This can help the company to form a better recommendations schema for website. 
+  Age interval :  1)20~25 2) 25~30 3) 30~35
+
+  5. *Visualization_5*: Donut Plot of statues for applications: Pending, Approved, Rejected, which helps to monitor managers’ workload.
+
 
 
