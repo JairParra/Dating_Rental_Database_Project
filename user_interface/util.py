@@ -48,8 +48,7 @@ def query_executer(stmt, verbose=True):
         @ stmt: A SQL statement. Assumed to be correct and end by a semi-colon. 
         @ fetchall: If True, return all the statements 
     """ 
-    conn = None # Set up connection 
-    
+    conn = None # Set up connection
     try: 
         
         ## 1. Set up configurations
@@ -73,16 +72,17 @@ def query_executer(stmt, verbose=True):
             print(output_df)
         
         # close the communication with the PostgreSQL 
-        cur.close() 
-        
+        cur.close()
+        return output_df
+
     except (Exception, psycopg2.DatabaseError) as error: 
         print(error) 
         
     finally: 
         # verify connection is not empty 
         if conn is not None:  
-            conn.close() 
-    
+            conn.close()
+
     # Return result
-    return output_df
+
 
