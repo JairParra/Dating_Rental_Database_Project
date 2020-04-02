@@ -122,6 +122,7 @@ def visualization5():
     plt.show()
     plt.savefig('../figs/visual5.png')
     
+    
 def visualization_menu(): 
     """
     Provides different visualization options that can be decided via I/O command line interaction
