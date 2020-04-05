@@ -140,6 +140,7 @@ class LoginSession():
                         sub_menu += "I want to register as a ...\n" 
                         sub_menu += "1. Customer" 
                         sub_menu += "2. Mate" 
+                        print(sub_menu)
                         
                         user_input = input()
                         if re.match(r'^1.*', str(user_input)): 
