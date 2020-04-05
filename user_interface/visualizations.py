@@ -43,7 +43,7 @@ def visualization1():
             " FROM mate m" \
             " JOIN usertable u ON m.username= u.username" \
             " GROUP BY sex;"
-    stmt2 = "SELECT sex,COUNT(m.username) " \   
+    stmt2 = "SELECT sex,COUNT(m.username) " \
             "FROM customer m" \
             " JOIN usertable u ON m.username= u.username" \
             " GROUP BY sex;"
@@ -58,11 +58,11 @@ def visualization1():
     print(df_b)
     print(df_c)
     n_groups = 3
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(6,4))
     # parameter for drawing
     bar_width = 0.35
     opacity = 0.8
-    index = 0;
+    index = 0
 
     group1 = [index, index + bar_width]
     rects1 = plt.bar(group1, df_a['count'].to_numpy(), bar_width,
@@ -81,7 +81,6 @@ def visualization1():
                      alpha=opacity,
                      color='y',
                      label='manager')
-
     plt.xlabel('Sex')
     plt.ylabel('Count')
     plt.title('Histogram of female/male ratio for users')
@@ -107,10 +106,10 @@ def visualization2():
     df["age"] = df["age"].apply(lambda x: int(x))
     #print(df.to_numpy())
     #print(df.astype({'hourlyrate': 'int64','age': 'int64'}).dtypes)
-    sns_plot= sns.pairplot(df, vars=["age", "hourlyrate"])
+    sns_plot = sns.pairplot(df, vars=["age", "hourlyrate"], height=2, aspect=4/2)
     plt.title("Mates age vs. hourly rate")
     sns_plot.savefig('../figs/visual_2.png')
-
+    
 def visualization3():
     """
     Box/Distributional plot of the hourlyRate, mean value/Outliers 
@@ -122,7 +121,8 @@ def visualization3():
           "FROM mate;"
     df = util.query_executer(stmt)
     df["hourlyrate"]=df["hourlyrate"].apply(lambda x: int(x))
-    f, (ax_box, ax_hist) = plt.subplots(2, sharex=True, gridspec_kw={"height_ratios": (.15, .85)})
+    f, (ax_box, ax_hist) = plt.subplots(2, sharex=True, 
+       figsize=(7,5) , gridspec_kw={"height_ratios": (.15, .85)})
 
     # Add a graph in each part
     sns.boxplot(df["hourlyrate"], ax=ax_box, showmeans= True)
@@ -196,7 +196,8 @@ def visualization4():
     # Names of group and bar width
     names = df_d['aid'].tolist()
     barWidth = 1
-
+    
+    plt.figure(figsize=(7,5))
     # Create brown bars
     plt.bar(r, df_a['count'].tolist(), color='#7f6d5f', edgecolor='white', width=barWidth, label='<25')
     # Create green bars (middle), on top of the firs ones
