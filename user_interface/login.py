@@ -53,8 +53,9 @@ class LoginSession():
         Creates and inserts a new user in the database
         """
         
+        operating = True
         try: 
-            while True:    
+            while operating:    
                 
                 ### 1.Prompt values 
                 
@@ -147,7 +148,9 @@ class LoginSession():
                             self.usertype =  "Customer" 
                             preferences = input("Please write your preferences: (max 1000 characters)")
                             stmt = "INSERT INTO customer (username, preferences) VALUES ('{}','{}')\n;".format(new_user, preferences)
-                            query_executer(stmt) # execute insertion. 
+                            query_executer(stmt,insert=True) # execute insertion. 
+                            print("Thank you! You can now log-in in the main menu")
+                            operating = False # finish
                             break
                         elif re.match(r'^2.*', str(user_input)):
                             self.usertype = "Mate"
