@@ -67,6 +67,7 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
@@ -84,6 +85,9 @@ coverage.xml
 # Translations
 *.mo
 *.pot
+
+# VS Code Config
+.vscode
 
 # Django stuff:
 *.log
