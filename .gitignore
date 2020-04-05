@@ -87,7 +87,7 @@ coverage.xml
 *.pot
 
 # VS Code Config
-.vscode
+.vscode/*
 
 # Django stuff:
 *.log
