@@ -74,3 +74,4 @@ Script 1 is was randomly generated, subsequent table creation scripts were gener
 ## Visualizations 
 
 ![](figs/visual_5.png)
+![](figs/visual_4.png)
