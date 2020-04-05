@@ -58,7 +58,7 @@ def visualization1():
     print(df_b)
     print(df_c)
     n_groups = 3
-    fig, ax = plt.subplots(figsize=(6,4))
+    fig, ax = plt.subplots(figsize=(5,3))
     # parameter for drawing
     bar_width = 0.35
     opacity = 0.8
