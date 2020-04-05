@@ -73,7 +73,7 @@
 
   4. *Visualization_4*: Stacked Histogram for age interval and activites. The compnay might be instersted in investigating for a certain
   age interval, which activities is the most popular. This can help the company to form a better recommendations schema for website. 
-  Age interval :  1)20~25 2) 25~30 3) 30~35
+  Age interval :  1)20-25 2) 25-30 3) 30-35
 
   5. *Visualization_5*: Donut Plot of statues for applications: Pending, Approved, Rejected, which helps to monitor managers’ workload.
 
