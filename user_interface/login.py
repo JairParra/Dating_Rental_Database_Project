@@ -148,7 +148,7 @@ class LoginSession():
                         if re.match(r'^1.*', str(user_input)): 
                             self.usertype =  "Customer" 
                             preferences = input("Please write your preferences: (max 1000 characters)\n")
-                            stmt = "INSERT INTO customer (username, preferences) VALUES ('{}','{}')\n;".format(new_user, preferences)
+                            stmt = "INSERT INTO customer (username, preferences)    VALUES ('{}','{}')\n;".format(new_user, preferences)
                             query_executer(stmt,insert=True) # execute insertion. 
                             print("Thank you! You can now log-in in the main menu")
                             operating = False # finish

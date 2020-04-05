@@ -109,10 +109,8 @@ if __name__ == '__main__':
                         raise TypeError("Usertype not existent.")
 
             elif re.match(r'^2.*', str(user_input)):
-                
                 logses = LoginSession()  # initialize session  
                 logses.newuser() # create new user
-                
                 
 
             elif re.match(r'^3.*', str(user_input)) and master_tries > 0: 

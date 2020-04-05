@@ -112,3 +112,31 @@ class MasterSession(LoginSession):
         """
         Prompts a general query to the user and attempts to execute it. 
         """
+        
+        while True: 
+            menu_string = "\n######################################################\n"
+            menu_string += "                     Custom Query                      \n"
+            menu_string += "######################################################\n"
+            menu_string += "\nPlease select eh type of custom query you intend to input:\n"
+            menu_string += "\t 1. SELECTION query\n"  
+            menu_string += "\t 2. INSERT/UPDATE/DELETE query\n"
+            menu_string += "\t 3. Exit"
+            print(menu_string) 
+            
+            mgr_input = input() 
+            
+            if re.match(r'^1.*', str(mgr_input)): 
+                stmt = input("Please type your query:") 
+                query_executer(stmt)
+                
+            elif re.match(r'^2.*', str(mgr_input)): 
+                stmt = input("Please type your query") 
+                query_executer(stmt) 
+            
+            elif re.match(r'^3.*', str(mgr_input)): 
+                print("Exiting...")
+                break
+            else: 
+                print("Invalid Input")
+        
+        return
