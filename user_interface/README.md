@@ -71,9 +71,9 @@
   Rationale：This combination of plots helps the company to monitor the hourly pay. (not overprice) Also, check those outliers to
   identify the popular ones or abnormal one.
 
-  4. *Visualization_4*: Stacked Histogram for age interval and activites. The compnay might be instersted in investigating for a certain
-  age interval, which activities is the most popular. This can help the company to form a better recommendations schema for website. 
-  Age interval :  1)20-25 2) 25-30 3) 30-35
+  4. *Visualization_4*: Stacked Histogram for age interval and activites. The company might be instersted in investigating for a certain
+  age interval, which activities are the most popular. This can help the company to form a better recommendation schema for the website. 
+  The age intervals are :  1)20-25  2)25-30  3)30-35
 
   5. *Visualization_5*: Donut Plot of statues for applications: Pending, Approved, Rejected, which helps to monitor managers’ workload.
 
