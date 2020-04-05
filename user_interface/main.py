@@ -13,9 +13,19 @@ import os
 import re
 import sys
 import time
-import useroptions 
 import argparse 
-import pandas as pd
+from getpass import getpass
+from util import query_executer
+from login import LoginSession
+from customer import CustomerSession 
+from manager import ManagerSession 
+from mate import MateSession
+from admin import MasterSession 
+from visualizations import visualizations_menu
+
+# other
+EMAIL_REGEX = r'[\w\.-]+@[\w\.-]+'
+STRONG_EMAIL = r'[A-Za-z0-9@#$%^&+=]{8,}'
 
 ###############################################################################
 
@@ -44,42 +54,98 @@ if __name__ == '__main__':
         print("Chosen option = ", args.option)
     if args.demo: 
         print("Running demo...")
-    
-    ## Main Loop 
+        
+    # Variables to be used by options: 
+    login = {} 
+    master_tries = 3
+        
+    ## LOGIN LOOP ## 
     while True: 
         
-        # Menu display 
-        options_string = "Welcome to the MateRental database! \n"
-        options_string += "Please choose one of the available options below:\n"
-        options_string += "\t 1. Option1\n" 
-        options_string += "\t 2. Option2\n" 
-        options_string += "\t 3. Option3\n" 
-        options_string += "\t 4. Option4\n" 
-        options_string += "\t 5. Option5\n" 
-        options_string += "\t 6. Quit\n" 
-        print(options_string) 
+        login_string = "\n######################################################\n"
+        login_string += "Welcome to the MateRental database! \n"
+        login_string += "######################################################\n"
+        login_string += "\nPlease choose one of the available options below:\n"
+        login_string += "\t 1. Log-in\n"
+        login_string += "\t 2. Register\n"
+        login_string += "\t 3. Administrator Connection\n"
+        login_string += "\t 4. Visualizations menu \n" 
+        login_string += "\t 5. Exit\n"
+        print(login_string) 
         
-        if args.demo: 
-            print("Running demo...")
-        
-        # Obtain user options
         try: 
             # Prompt and parse input
-            print("Please select an option by selecting a number")
             user_input = input() 
-            print("Your input: ", user_input) 
             
-            if re.match(r'^6.*', str(user_input)): 
-                print("Good bye! :) ")
-                sys.exit() 
-                break 
+            ## 1. Log-in menu 
+            if re.match(r'^1.*', str(user_input)): 
+                
+                # fetch username 
+                user = input("Username or email: ") 
+                password = getpass() # obtain screen encrypted password
+                logses = LoginSession() # instantiate object
+                login = logses.login(user=user, password=password) # this will return all login info
+                
+                # If login was successful
+                if login['login_status'] == True: 
+                    print("Successful login!")
+                    print("Login response: \n", login, "\n")
+                    logses.fetch_usertype() # retrieve values for usertype
+                    print("Usertype values: \n", logses.usertype_vals)  
+                    
+                    if logses.usertype == 'manager': 
+                        print("\n******MANAGER ACESS******\n")
+                        mgr_access = ManagerSession(logses) # initialize and copy attributes.  
+                        
+                    elif logses.usertype == 'mate': 
+                        print("\n******MATE ACESS******\n")
+                        mate_access = MateSession(logses) # initialize and copy attributes.  
+                        
+                    elif logses.usertype == 'customer': 
+                        print("\n******CUSTOMER ACESS******\n")
+                        cust_access = CustomerSession(logses) # initialize and copy attributes.   
+                        
+                    else: 
+                        raise TypeError("Usertype not existent.")
+
+            elif re.match(r'^2.*', str(user_input)):
+                
+                logses = LoginSession()  # initialize session  
+                logses.newuser() # create new user
+                
+                
+
+            elif re.match(r'^3.*', str(user_input)) and master_tries > 0: 
+                password = getpass("Administrator password:") 
+                if password == 'Jiaozics421g88-': 
+                    print("******ADMIN ACESS******\n")
+                    admin_access =  MasterSession() # initialize full-access session 
+                else:
+                    print("Wrong password")
+                    master_tries -= 1
+                    print("Tries left: {}".format(master_tries))
+                    if master_tries == 0: 
+                        print("WARNING: Administrator access deactivated")
+                        
+            elif re.match(r'^4.*', str(user_input)):
+                visualizations_menu() # Call the visualizations menu 
             
+            elif re.match(r'^5.*', str(user_input)):
+                print("~Goodbye~")
+                sys.exit()
+            else: 
+                print("Invalid input") 
+                
+                
+            ## 2. Options menu for customer: 
+            
+                
         except Exception as e: 
             print("I/O error occurred\n")
             print("ARGS:{}\n".format(e.args))
-            e.with_traceback() # output traceback 
-
-
+            print("Error: ", e)
+            print(e.__traceback__)
+            print("Context: ", e.__context__)
 
 
 

@@ -18,5 +18,3 @@ INSERT INTO manager VALUES('mcosker1k');
 INSERT INTO manager VALUES('tseneschal48'); 
 INSERT INTO manager VALUES('ciannuzzelli2a'); 
 INSERT INTO manager VALUES('mdoig1w'); 
-
-SELECT *  FROM manager LIMIT 10; 

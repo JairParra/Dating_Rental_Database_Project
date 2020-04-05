@@ -171,3 +171,7 @@ chelly Session.sql
 comp421 Session.sql
 .idea/
 scripts/tables_insertions/copy_test.py
+####################################################
+
+### Other 
+database.ini

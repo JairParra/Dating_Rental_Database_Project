@@ -25,7 +25,7 @@ CREATE TABLE usertable --entity
     lastname VARCHAR(100) NOT NULL, 
     sex VARCHAR(100) NOT NULL,
     city VARCHAR(30) NOT NULL, 
-    phoneNum INTEGER NOT NULL, 
+    phoneNum BIGINT NOT NULL, 
     dateOfBirth DATE,  -- Can be null, but will control minimum age at application level
     PRIMARY KEY (username)
 ); 
@@ -97,7 +97,7 @@ CREATE TABLE orderTable --entity
 (
   oid SERIAL NOT NULL, 
   startDate DATE NOT NULL, -- format: 'YYYY-MM-DD'
-  ordStatus VARCHAR(20) NOT NULL DEFAULT 'pending', -- {active, pending, complete}
+  ordStatus  VARCHAR(20) NOT NULL DEFAULT 'pending', -- {active, pending, complete}
   rid INTEGER NOT NULL,  --request id
   ratingDate DATE, -- can be null if no rating
   comment VARCHAR(100), -- can be null 

@@ -35,10 +35,12 @@ managers = list(np.random.choice(usernames, size=20, replace=False)) # select 10
 ## list of Mates 
 usernames2 = [name for name in usernames if name not in managers] # substract mates
 possible_male_mates = [username for username in usernames2 if 
-                       userdict['dateofbirth'][username] < '2000-01-01' and  # mates must be at least 20yo
+                       userdict['dateofbirth'][username] < '2000-01-01' and
+                       userdict['dateofbirth'][username] > '1990-01-01' and# mates must be at least 20yo
                        userdict['sex'][username] == 'Male']
 possible_female_mates = [username for username in usernames2 if 
                        userdict['dateofbirth'][username] < '2000-01-01' and 
+                       userdict['dateofbirth'][username] > '1990-01-01' and
                        userdict['sex'][username] == 'Female']
 male_mates = list(np.random.choice(possible_male_mates,size=20,replace=False)) 
 female_mates = list(np.random.choice(possible_female_mates,size=20,replace=False)) 
