@@ -243,3 +243,38 @@ class CustomerSession(LoginSession):
             print(e.__traceback__)
             print("Context: ", e.__context__)
                         
+            
+    def see_orders(self): 
+        """
+        Display orders for the customer 
+        """
+        raise NotImplementedError 
+        
+        
+    def rate_order(self): 
+        """ 
+        Allows the customer to rate an order. This should also be linked to 
+        the function see_orders(self). 
+        """
+        
+        
+    def pay_invoice(self): 
+        """
+        Allows the customer to pay an invoice on an order 
+        """ 
+        
+        raise NotImplementedError 
+        
+    def update_preferences(self): 
+        """
+        Allows the customer to update it's preferences by replacing the existing 
+        ones with a new string
+        """
+        
+        raise NotImplementedError 
+        
+        
+        
+        
+        
+        

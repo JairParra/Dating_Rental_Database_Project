@@ -43,7 +43,7 @@ WHERE (T.age BETWEEN 20 AND 25)
 DELETE FROM usertable WHERE username='username1'; 
 
 INSERT INTO usertable (username, password, email , firstname, lastname, sex, city , phoneNum, dateOfBirth) VALUES ('username1', 'Asderx890', 'username@mail.com', 'Name', 'Last', 'Female', 'Bogota', 4342890890, '1995-04-04') ;
-SELECT * FROM usertable WHERE username='username1' ;
+SELECT * FROM usertable WHERE username='username1';
 
 SELECT * FROM usertable; 
 

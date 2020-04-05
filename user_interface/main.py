@@ -136,10 +136,7 @@ if __name__ == '__main__':
             else: 
                 print("Invalid input") 
                 
-                
-            ## 2. Options menu for customer: 
-            
-                
+                                
         except Exception as e: 
             print("I/O error occurred\n")
             print("ARGS:{}\n".format(e.args))
