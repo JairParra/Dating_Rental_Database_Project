@@ -74,3 +74,11 @@ class MateSession(LoginSession):
                 break
             else: 
                 print("Invalid Input")
+                
+                
+    def application(self): 
+    """ 
+    For new mates, allows the user to apply to be a mate in the system.
+    """ 
+    raise NotImplementedError 
+        

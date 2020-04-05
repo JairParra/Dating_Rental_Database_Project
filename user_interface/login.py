@@ -18,6 +18,7 @@ import psycopg2  # library to connect
 import pandas as pd 
 from util import config 
 from getpass import getpass
+from mate import MateSession
 from util import query_executer # custom util class
 
 
@@ -101,7 +102,7 @@ class LoginSession():
                 city = input("City: ") 
                 
                 ## 7. Phonenumber
-                phonenum = input("Please input your phone number with no spaces or special characters") 
+                phonenum = input("Please input your phone number with no spaces or special characters: ") 
                 if not (phonenum.isdigit() and len(phonenum) > 6 and len(phonenum) < 15): 
                     print("Invalid input") 
                     
@@ -139,14 +140,14 @@ class LoginSession():
                         sub_menu += "                   New User Registration                   \n"
                         sub_menu += "###############################################################\n"
                         sub_menu += "I want to register as a ...\n" 
-                        sub_menu += "1. Customer" 
-                        sub_menu += "2. Mate" 
+                        sub_menu += "1. Customer\n" 
+                        sub_menu += "2. Mate\n" 
                         print(sub_menu)
                         
                         user_input = input()
                         if re.match(r'^1.*', str(user_input)): 
                             self.usertype =  "Customer" 
-                            preferences = input("Please write your preferences: (max 1000 characters)")
+                            preferences = input("Please write your preferences: (max 1000 characters)\n")
                             stmt = "INSERT INTO customer (username, preferences) VALUES ('{}','{}')\n;".format(new_user, preferences)
                             query_executer(stmt,insert=True) # execute insertion. 
                             print("Thank you! You can now log-in in the main menu")
@@ -154,6 +155,7 @@ class LoginSession():
                             break
                         elif re.match(r'^2.*', str(user_input)):
                             self.usertype = "Mate"
+                            mate_access = MateSession(self) # Initialize a MateSession with current login session
                             raise NotImplementedError("Functionality not available yet.")
                         else: 
                             print("Invalid input")
