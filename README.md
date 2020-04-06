@@ -68,9 +68,113 @@ Script 1 is was randomly generated, subsequent table creation scripts were gener
 - The relevant files are located under the `user_interface` directory. Files descriptions can be found in the respective README.md
 - Currently, application will only be emulated locally, but the intention is that it will eventually be available online as well. For this reason, HTML scripts are also placed as well. 
 
-### Demo (Creating a new user, logging-in ) 
-``
 
 ## Visualizations 
 
-![](figs/visual_5.png)
+  1. *Visualization_1*:  Distribution of Male/Female current Users for Customers, Mates and Managers  
+  Rationale: the distribution graph reveal about important info on sex, which might helps finding the target users, and for 
+  advertisement purpose.
+  
+  ![](figs/visual_1.png)
+
+  2. *Visualization_2*:  Pairplot and distributions of ages vs. hourly rates for Mates
+  Rationale: the pair plot provide the relateness between age and hourly rate, which contributes in finding target user since people
+  tends to find similar age friends
+  
+  ![](figs/visual_2.png)
+
+  3. *Visualization_3*: Box/Distributional plot of the hourlyRate, mean value/Outliers
+  Rationale：This combination of plots helps the company to monitor the hourly pay. (not overprice) Also, check those outliers to
+  identify the popular ones or abnormal one.
+  
+  ![](figs/visual_3.png)
+
+  - Stacked Histogram for age interval and activites. The compnay might be instersted in investigating for a certain
+  age interval, which activities is the most popular. This can help the company to form a better recommendations schema for website. 
+  Age interval :  1)20-25 2) 25-30 3) 30-35
+  
+  ![](figs/visual_4.png)
+
+  - Donut Plot of statues for applications: Pending, Approved, Rejected, which helps to monitor managers’ workload.
+  
+  ![](figs/visual_5.png)
+
+### Demo (Creating a new user, logging-in ) 
+
+```
+cd COMP421_Database_Project\user_interface 
+python main.py 
+
+######################################################
+Welcome to the MateRental database!
+######################################################
+
+Please choose one of the available options below:
+         1. Log-in
+         2. Register
+         3. Administrator Connection
+         4. Visualizations menu
+         5. Exit
+
+2
+Register:
+Please input username: newusername
+Please enter your email: newuser@gmail/com
+Please input password with 1) 1 Uppercase 2) 1 lowercase 3) at least 8 characters:
+
+First name: User
+Lasname: Name
+Sex:
+1. Male
+2. Female
+1
+City: Usercity
+Please input your phone number with no spaces or special characters5417894329
+Date of birth:
+year (YYYY): 1996
+month (MM): 10
+day (DD): 01
+*****************************SQL*****************************
+INSERT INTO usertable (username, password, email , firstname, lastname, sex, city , phoneNum, dateOfBirth) VALUES ('newusername', '5467354477', 'newuser@gmail/com', 'User', 'Name', 'Male', 'Usercity', 5417894329, '1996-10-01') ;
+*************************MESSAGES****************************
+INSERT 0 1
+*****************************SQL*****************************
+SELECT * FROM usertable WHERE username='newusername' ;
+
+***************************OUTPUT****************************
+      username    password              email firstname lastname   sex      city    phonenum dateofbirth
+0  newusername  5467354477  newuser@gmail/com      User     Name  Male  Usercity  5417894329  1996-10-01
+*************************MESSAGES****************************
+SELECT 1
+--INFO-- : User succesfully created! You can now log-in.
+      username    password              email firstname lastname   sex      city    phonenum dateofbirth
+0  newusername  5467354477  newuser@gmail/com      User     Name  Male  Usercity  5417894329  1996-10-01
+###############################################################
+                   New User Registration
+###############################################################
+I want to register as a ...
+1. Customer2. Mate
+1
+Please write your preferences: (max 1000 characters)I want a sandwich!!!
+*****************************SQL*****************************
+INSERT INTO customer (username, preferences) VALUES ('newusername','I want a sandwich!!! ')
+;
+*************************MESSAGES****************************
+INSERT 0 1
+Thank you! You can now log-in in the main menu
+
+######################################################
+Welcome to the MateRental database!
+######################################################
+
+Please choose one of the available options below:
+         1. Log-in
+         2. Register
+         3. Administrator Connection
+         4. Visualizations menu
+         5. Exit
+
+5
+~Goodbye~
+
+```

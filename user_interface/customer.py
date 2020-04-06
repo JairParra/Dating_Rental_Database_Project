@@ -70,15 +70,19 @@ class CustomerSession(LoginSession):
                 
             elif re.match(r'^2.*', str(mgr_input)): 
                 print("See my orders")
+                self.see_orders()
             
             elif re.match(r'^3.*', str(mgr_input)): 
                 print("Rate Order")
+                self.rate_order()
                 
             elif re.match(r'^4.*', str(mgr_input)): 
                 print("Pay Invoice")
+                self.pay_invoice()
                 
             elif re.match(r'^5.*', str(mgr_input)): 
                 print("Update preferences")
+                self.update_preferences() 
                 
             elif re.match(r'^6.*', str(mgr_input)): 
                 print("Exit")
@@ -243,3 +247,40 @@ class CustomerSession(LoginSession):
             print(e.__traceback__)
             print("Context: ", e.__context__)
                         
+            
+    def see_orders(self): 
+        """
+        Display orders for the customer 
+        """
+        raise NotImplementedError 
+        
+        
+    def rate_order(self): 
+        """ 
+        Allows the customer to rate an order. This should also be linked to 
+        the function see_orders(self). 
+        """
+        
+        raise NotImplementedError
+        
+        
+    def pay_invoice(self): 
+        """
+        Allows the customer to pay an invoice on an order 
+        """ 
+        
+        raise NotImplementedError 
+        
+    def update_preferences(self): 
+        """
+        Allows the customer to update it's preferences by replacing the existing 
+        ones with a new string
+        """
+        
+        raise NotImplementedError 
+        
+        
+        
+        
+        
+        

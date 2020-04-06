@@ -424,7 +424,7 @@ def create_activity(managers): # argument is a list of manager
 
     records = []  # store the records
     
-    size = len(managers)
+    size = int(len(managers)/2)
     descriptions = ["description" + str(i + 1) for i in range(size)]  # dreate artificial
     managersNames = np.random.choice(managers, size=size, replace=True)
     aids = []

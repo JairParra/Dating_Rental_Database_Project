@@ -109,10 +109,8 @@ if __name__ == '__main__':
                         raise TypeError("Usertype not existent.")
 
             elif re.match(r'^2.*', str(user_input)):
-                
                 logses = LoginSession()  # initialize session  
                 logses.newuser() # create new user
-                
                 
 
             elif re.match(r'^3.*', str(user_input)) and master_tries > 0: 
@@ -136,10 +134,7 @@ if __name__ == '__main__':
             else: 
                 print("Invalid input") 
                 
-                
-            ## 2. Options menu for customer: 
-            
-                
+                                
         except Exception as e: 
             print("I/O error occurred\n")
             print("ARGS:{}\n".format(e.args))

@@ -77,4 +77,29 @@ class ManagerSession(LoginSession):
                 break
             else: 
                 print("Invalid Input")
+                
+        
+        def review_application(self): 
+            """ 
+            Allows the manager to see some application from a customer to a mate
+            """
+            
+            raise NotImplementedError  
+            
+        def modify_order(self): 
+            """ 
+            Allows the manager to modify an existing order 
+            """
+            
+            raise NotImplementedError 
+            
+        def overview_activity(self): 
+            """ 
+            Allows the manager to see and modify some activity (insert, delete, udpate)
+            """
+            
+            raise NotImplementedError 
+            
+            
+        
 
