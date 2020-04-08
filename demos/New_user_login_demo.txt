@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 (base) C:\Users\jairp\Desktop\BackUP\McGill-20180719T015111Z-001\McGill\8. Winter 2020\COMP 421\Project\COMP421_Database_Project\user_interface>python main.py
 
 ######################################################
@@ -71,3 +72,78 @@ Please choose one of the available options below:
 
 5
 ~Goodbye~
+=======
+(base) C:\Users\jairp\Desktop\BackUP\McGill-20180719T015111Z-001\McGill\8. Winter 2020\COMP 421\Project\COMP421_Database_Project\user_interface>python main.py
+
+######################################################
+Welcome to the MateRental database!
+######################################################
+
+Please choose one of the available options below:
+         1. Log-in
+         2. Register
+         3. Administrator Connection
+         4. Visualizations menu
+         5. Exit
+
+2
+Register:
+Please input username: newusername
+Please enter your email: newuser@gmail/com
+Please input password with 1) 1 Uppercase 2) 1 lowercase 3) at least 8 characters:
+
+First name: User
+Lasname: Name
+Sex:
+1. Male
+2. Female
+1
+City: Usercity
+Please input your phone number with no spaces or special characters5417894329
+Date of birth:
+year (YYYY): 1996
+month (MM): 10
+day (DD): 01
+*****************************SQL*****************************
+INSERT INTO usertable (username, password, email , firstname, lastname, sex, city , phoneNum, dateOfBirth) VALUES ('newusername', '5467354477', 'newuser@gmail/com', 'User', 'Name', 'Male', 'Usercity', 5417894329, '1996-10-01') ;
+*************************MESSAGES****************************
+INSERT 0 1
+*****************************SQL*****************************
+SELECT * FROM usertable WHERE username='newusername' ;
+
+***************************OUTPUT****************************
+      username    password              email firstname lastname   sex      city    phonenum dateofbirth
+0  newusername  5467354477  newuser@gmail/com      User     Name  Male  Usercity  5417894329  1996-10-01
+*************************MESSAGES****************************
+SELECT 1
+--INFO-- : User succesfully created! You can now log-in.
+      username    password              email firstname lastname   sex      city    phonenum dateofbirth
+0  newusername  5467354477  newuser@gmail/com      User     Name  Male  Usercity  5417894329  1996-10-01
+###############################################################
+                   New User Registration
+###############################################################
+I want to register as a ...
+1. Customer2. Mate
+1
+Please write your preferences: (max 1000 characters)I want a sandwich!!!
+*****************************SQL*****************************
+INSERT INTO customer (username, preferences) VALUES ('newusername','I want a sandwich!!! ')
+;
+*************************MESSAGES****************************
+INSERT 0 1
+Thank you! You can now log-in in the main menu
+
+######################################################
+Welcome to the MateRental database!
+######################################################
+
+Please choose one of the available options below:
+         1. Log-in
+         2. Register
+         3. Administrator Connection
+         4. Visualizations menu
+         5. Exit
+
+5
+~Goodbye~
+>>>>>>> acf4cde9bc9ca849c9cb8af0690bfac93efbf4ee
