@@ -83,7 +83,7 @@ if __name__ == '__main__':
                 # fetch username 
                 user = input("Username or email: ") 
                 password = getpass() # obtain screen encrypted password
-                logses = LoginSession() # instantiate object
+                logses = LoginSession(newuser=False) # instantiate object
                 login = logses.login(user=user, password=password) # this will return all login info
                 
                 # If login was successful
