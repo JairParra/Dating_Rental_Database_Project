@@ -1,70 +1,97 @@
 Without Index
 indexTest1_noIndex.sql
 ------------------------------------------
+DROP INDEX IF EXISTS i;
+--CREATE INDEX i ON mate (height);
+
+EXPLAIN ANALYSE
+SELECT mate.username, height, weight, (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) AS age 
+FROM usertable, mate 
+WHERE usertable.username = mate.username AND height > 1.8 AND weight < 80 AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) < 40;
+
 DROP INDEX
                                                                  QUERY PLAN                                                                  
 ---------------------------------------------------------------------------------------------------------------------------------------------
- Hash Join  (cost=1.65..8.92 rows=1 width=146) (actual time=0.279..0.593 rows=13 loops=1)
+ Hash Join  (cost=1.65..8.92 rows=1 width=146) (actual time=0.119..0.229 rows=13 loops=1)
    Hash Cond: ((usertable.username)::text = (mate.username)::text)
-   ->  Seq Scan on usertable  (cost=0.00..7.00 rows=67 width=14) (actual time=0.071..0.340 rows=133 loops=1)
+   ->  Seq Scan on usertable  (cost=0.00..7.00 rows=67 width=14) (actual time=0.026..0.116 rows=133 loops=1)
          Filter: (('2020'::double precision - date_part('year'::text, (dateofbirth)::timestamp without time zone)) < '40'::double precision)
          Rows Removed by Filter: 67
-   ->  Hash  (cost=1.60..1.60 rows=4 width=142) (actual time=0.089..0.089 rows=13 loops=1)
+   ->  Hash  (cost=1.60..1.60 rows=4 width=142) (actual time=0.045..0.045 rows=13 loops=1)
          Buckets: 1024  Batches: 1  Memory Usage: 9kB
-         ->  Seq Scan on mate  (cost=0.00..1.60 rows=4 width=142) (actual time=0.055..0.068 rows=13 loops=1)
+         ->  Seq Scan on mate  (cost=0.00..1.60 rows=4 width=142) (actual time=0.033..0.037 rows=13 loops=1)
                Filter: ((height > 1.8) AND (weight < '80'::numeric))
                Rows Removed by Filter: 27
- Planning time: 2.148 ms
- Execution time: 0.722 ms
+ Planning time: 0.787 ms
+ Execution time: 0.279 ms
 (12 rows)
 
 With Index
 indexTest1_index.sql
 ------------------------------------------
-DROP INDEX
+DROP INDEX IF EXISTS i;
+CREATE INDEX i ON mate (height);
+CLUSTER mate USING i;
+
+EXPLAIN ANALYSE
+SELECT mate.username, height, weight, (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) AS age 
+FROM usertable, mate 
+WHERE usertable.username = mate.username AND height > 1.8 AND weight < 80 AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', dateofbirth)) < 40;DROP INDEX
 CREATE INDEX
 CLUSTER
                                                                  QUERY PLAN                                                                  
 ---------------------------------------------------------------------------------------------------------------------------------------------
- Hash Join  (cost=1.65..8.92 rows=1 width=146) (actual time=0.233..0.583 rows=13 loops=1)
+ Hash Join  (cost=1.65..8.92 rows=1 width=146) (actual time=0.091..0.200 rows=13 loops=1)
    Hash Cond: ((usertable.username)::text = (mate.username)::text)
-   ->  Seq Scan on usertable  (cost=0.00..7.00 rows=67 width=14) (actual time=0.050..0.355 rows=133 loops=1)
+   ->  Seq Scan on usertable  (cost=0.00..7.00 rows=67 width=14) (actual time=0.020..0.116 rows=133 loops=1)
          Filter: (('2020'::double precision - date_part('year'::text, (dateofbirth)::timestamp without time zone)) < '40'::double precision)
          Rows Removed by Filter: 67
-   ->  Hash  (cost=1.60..1.60 rows=4 width=142) (actual time=0.081..0.081 rows=13 loops=1)
+   ->  Hash  (cost=1.60..1.60 rows=4 width=142) (actual time=0.027..0.027 rows=13 loops=1)
          Buckets: 1024  Batches: 1  Memory Usage: 9kB
-         ->  Seq Scan on mate  (cost=0.00..1.60 rows=4 width=142) (actual time=0.037..0.051 rows=13 loops=1)
+         ->  Seq Scan on mate  (cost=0.00..1.60 rows=4 width=142) (actual time=0.014..0.021 rows=13 loops=1)
                Filter: ((height > 1.8) AND (weight < '80'::numeric))
                Rows Removed by Filter: 27
- Planning time: 1.762 ms
- Execution time: 0.711 ms
+ Planning time: 0.648 ms
+ Execution time: 0.253 ms
 (12 rows)
 
 Without Index
 indexTest2_noIndex.sql
 ------------------------------------------
-DROP INDEX
+DROP INDEX IF EXISTS i;
+
+EXPLAIN ANALYSE
+SELECT mateName, rdate, rstatus 
+FROM request
+WHERE custName = 'chysom17' AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', rdate)) <= 90;DROP INDEX
                                                                                   QUERY PLAN                                                                                  
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- Seq Scan on request  (cost=0.00..1.67 rows=1 width=180) (actual time=0.057..0.065 rows=2 loops=1)
+ Seq Scan on request  (cost=0.00..1.67 rows=1 width=180) (actual time=0.024..0.027 rows=2 loops=1)
    Filter: (((custname)::text = 'chysom17'::text) AND (('2020'::double precision - date_part('year'::text, (rdate)::timestamp without time zone)) <= '90'::double precision))
    Rows Removed by Filter: 28
- Planning time: 1.249 ms
- Execution time: 0.102 ms
+ Planning time: 0.471 ms
+ Execution time: 0.042 ms
 (5 rows)
 
 With Index
 indexTest2_index.sql
 ------------------------------------------
-DROP INDEX
+DROP INDEX IF EXISTS i;
+CREATE INDEX i ON request (custName);
+CLUSTER request USING i;
+
+EXPLAIN ANALYSE
+SELECT mateName, rdate, rstatus 
+FROM request
+WHERE custName = 'chysom17' AND (DATE_PART('year', '2020-02-27'::date) - DATE_PART('year', rdate)) <= 90;DROP INDEX
 CREATE INDEX
 CLUSTER
                                                                                   QUERY PLAN                                                                                  
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- Seq Scan on request  (cost=0.00..1.67 rows=1 width=180) (actual time=0.027..0.036 rows=2 loops=1)
+ Seq Scan on request  (cost=0.00..1.67 rows=1 width=180) (actual time=0.011..0.014 rows=2 loops=1)
    Filter: (((custname)::text = 'chysom17'::text) AND (('2020'::double precision - date_part('year'::text, (rdate)::timestamp without time zone)) <= '90'::double precision))
    Rows Removed by Filter: 28
- Planning time: 0.911 ms
- Execution time: 0.074 ms
+ Planning time: 0.336 ms
+ Execution time: 0.029 ms
 (5 rows)
 
