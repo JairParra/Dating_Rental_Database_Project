@@ -1,0 +1,76 @@
+(base) C:\Users\jairp\Desktop\BackUP\McGill-20180719T015111Z-001\McGill\8. Winter 2020\COMP 421\Project\COMP421_Database_Project\user_interface>python main.py
+
+######################################################
+Welcome to the MateRental database!
+######################################################
+
+Please choose one of the available options below:
+         1. Log-in
+         2. Register
+         3. Administrator Connection
+         4. Visualizations menu
+         5. Exit
+
+1
+Username or email: zelsie19
+Password:
+Logging in...
+Connecting to the PostgreSQL database...
+Fetching user credentials...
+USER=
+ {'username': 'zelsie19', 'password': '7CnRvDeVL', 'email': 'zelsie19@arstechnica.com', 'firstname': 'Zane', 'lastname': 'Elsie', 'sex': 'Female', 'city': 'Grzęska', 'phonenum': 947821163, 'dateofbirth': datetime.date(1983, 10, 7)}
+
+--INFO-- Database connection closed.
+
+Successful login!
+Login response:
+ {'login_status': True, 'username': 'zelsie19', 'password': '7CnRvDeVL', 'email': 'zelsie19@arstechnica.com', 'firstname': 'Zane', 'lastname': 'Elsie', 'sex': 'Female', 'city': 'Grzęska', 'phonenum': 947821163, 'dateofbirth': datetime.date(1983, 10, 7)}
+
+--INFO-- User type: manager
+Usertype values:
+ {'username': 'zelsie19'}
+
+******MANAGER ACESS******
+
+MANAGER LOGIN:
+ {'login_status': True, 'username': 'zelsie19', 'password': '7CnRvDeVL', 'email': 'zelsie19@arstechnica.com', 'firstname': 'Zane', 'lastname': 'Elsie', 'sex': 'Female', 'city': 'Grzęska', 'phonenum': 947821163, 'dateofbirth': datetime.date(1983, 10, 7)}
+MANAGER TYPE:
+ manager
+MANAGER VALUES:
+ {'username': 'zelsie19'}
+
+######################################################
+                     Options Menu
+######################################################
+
+Please choose one of the available options below:
+         1. Review Mate Application
+         2. Modify Order
+         3. Overview Activity    4. Exit
+3
+Overview Activity
+
+######################################################
+                     Options Menu
+######################################################
+
+Please choose one of the available options below:
+         1. Review Mate Application
+         2. Modify Order
+         3. Overview Activity    4. Exit
+4
+Exiting...
+
+######################################################
+Welcome to the MateRental database!
+######################################################
+
+Please choose one of the available options below:
+         1. Log-in
+         2. Register
+         3. Administrator Connection
+         4. Visualizations menu
+         5. Exit
+
+5
+~Goodbye~

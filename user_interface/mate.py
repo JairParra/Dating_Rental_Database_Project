@@ -19,14 +19,14 @@ class MateSession(LoginSession):
     Inherits from the LoginSession class and implements extra methods
     appropriate to Mate Functions and permissions. 
     """ 
-    def __init__(self, loginsession, verbose=True): 
+    def __init__(self, loginsession, newuser=False, verbose=True): 
         """
         @args: 
             @ loginsession: an instance of the LoginSession class. Will throw an error 
             if wrong type input. 
         """
         # Initialize and typecheck
-        super().__init__(verbose) # call super constructor 
+        super().__init__(newuser=newuser, verbose=verbose) # call super constructor 
         if not isinstance(loginsession, LoginSession):
             raise TypeError("Constructor argument should be of type 'LoginSession'")
             
@@ -75,10 +75,25 @@ class MateSession(LoginSession):
             else: 
                 print("Invalid Input")
                 
-                
-    def application(self): 
-    """ 
-    For new mates, allows the user to apply to be a mate in the system.
-    """ 
-    raise NotImplementedError 
+                    
+    def application(self):
+        """
+        Allows the potential mate to apply to be one
+        """
+        raise NotImplementedError 
         
+        
+    def decide_request(self): 
+        """ 
+        Allows the mate to accept or reject a request on his name
+        """
+        raise NotImplementedError 
+        
+        
+    def modify_profile(self): 
+        """
+        Allows the mate to modify his/her own mate fields.
+        """
+        
+        raise NotImplementedError 
+            

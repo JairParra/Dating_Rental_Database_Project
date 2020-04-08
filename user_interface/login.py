@@ -18,9 +18,7 @@ import psycopg2  # library to connect
 import pandas as pd 
 from util import config 
 from getpass import getpass
-from mate import MateSession
 from util import query_executer # custom util class
-
 
 # other
 EMAIL_REGEX = r'[\w\.-]+@[\w\.-]+'
@@ -28,14 +26,13 @@ STRONG_EMAIL = r'[A-Za-z0-9@#$%^&+=]{8,}'
 
 ###############################################################################
 
-### 2. Main Class ### 
 
 class LoginSession(): 
     """ 
     This parent class contains 
     """
     
-    def __init__(self, newuser = False, verbose=True): 
+    def __init__(self, newuser = True, verbose=True): 
         """
         @args: 
             @ newuser: contains logging response (user values + successful login)
@@ -45,11 +42,13 @@ class LoginSession():
         self.login_resp = {} # contains logging response (user values + successful login)
         self.usertype = "" # type of user
         self.usertype_vals = {} # values of user type
+        self.newuser = newuser  
         if newuser: 
             print("Initialization procedure") 
-            self.newuser() # Procedure to create a new user. 
+            self.new_user() # Procedure to create a new user. 
             
-    def newuser(self):  
+            
+    def new_user(self):  
         """
         Creates and inserts a new user in the database
         """
@@ -155,7 +154,9 @@ class LoginSession():
                             break
                         elif re.match(r'^2.*', str(user_input)):
                             self.usertype = "Mate"
-                            mate_access = MateSession(self) # Initialize a MateSession with current login session
+                            #TODO: Implement filling infomration for a new mate
+                            print("--INFO--: Information complete. You may now log-in an apply to be a mate\\")
+                            print("\t\t You cannot work as a mate until a manager reviews and accepts your application.")
                             raise NotImplementedError("Functionality not available yet.")
                         else: 
                             print("Invalid input")
@@ -174,8 +175,7 @@ class LoginSession():
             print("Context: ", e.__context__)
             print("Cause: ", e.__cause__)
 
-        
-        
+
     def login(self, user="", password="", verbose=True): 
         """
         Validates user log-in credentials in the database. 
@@ -246,6 +246,7 @@ class LoginSession():
         
         self.login_resp = login_resp # update login_response 
         return login_resp 
+    
     
     
     def fetch_usertype(self, fetch_all=True, verbose=False): 
@@ -336,10 +337,3 @@ class LoginSession():
                     print("\n--INFO-- Database connection closed.\n ")
         
         return 
-        
-
-
-            
-
-    
-   

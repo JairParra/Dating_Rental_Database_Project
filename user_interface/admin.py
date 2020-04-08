@@ -22,7 +22,7 @@ class MasterSession(LoginSession):
             if wrong type input. 
         """
         # Initialize and typecheck
-        super().__init__(verbose) # call super constructor 
+        super().__init__(newuser=False, verbose=verbose) # call super constructor 
 #        if not isinstance(loginsession, LoginSession):
 #            raise TypeError("Constructor argument should be of type 'LoginSession'")
             
