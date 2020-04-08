@@ -12,6 +12,7 @@ Created on Tue Mar 24 19:40:50 2020
 import re
 from util import query_executer
 from login import LoginSession
+from datetime import date
 
 #################################################################################
 
@@ -70,19 +71,15 @@ class CustomerSession(LoginSession):
                 
             elif re.match(r'^2.*', str(mgr_input)): 
                 print("See my orders")
-                self.see_orders()
             
             elif re.match(r'^3.*', str(mgr_input)): 
                 print("Rate Order")
-                self.rate_order()
                 
             elif re.match(r'^4.*', str(mgr_input)): 
                 print("Pay Invoice")
-                self.pay_invoice()
                 
             elif re.match(r'^5.*', str(mgr_input)): 
-                print("Update preferences")
-                self.update_preferences() 
+                self.edit_preference()
                 
             elif re.match(r'^6.*', str(mgr_input)): 
                 print("Exit")
@@ -91,6 +88,123 @@ class CustomerSession(LoginSession):
                 print("Invalid Input")
                 
     
+    def see_orders(self):
+        """
+        Function for menu option 2
+        """
+
+        try:
+            username = self.login_resp['username']
+            get_order_sql = "SELECT * FROM orderTable WHERE rid IN "
+            get_order_sql += "(SELECT rid FROM request WHERE custname = {});".format(username)
+
+            result = query_executer(get_order_sql)
+            response_top = result.head()
+            print(response_top)
+            size = result.shape[0]
+            for i in range(size):
+                print("{}\t{}\n".format(i,result[i]))
+
+            print("To continue:\n")
+            print("1. Make change to an order\n")
+            print("2. Go back\n")
+            user_input = input()
+
+            if re.match(r'^1', str(user_input)): 
+                '''to edit order'''
+                self.edit_order()
+            elif re.match(r'^2', str(user_input)):
+                '''goes back to previous level'''
+
+        except Exception as e: 
+            print("I/O error occurred\n")
+            print("ARGS:{}\n".format(e.args))
+            print("Error: ", e)
+            print(e.__traceback__)
+            print("Context: ", e.__context__)
+
+    def edit_order(self):
+        """
+        cancel/rate an order
+        """
+        try:
+            print("Please enter the order number\n")
+            oid= input()
+
+            get_order_sql = "SELECT * FROM orderTable WHERE oid = {};".format(oid)
+
+            order_response = query_executer(get_order_sql)
+            
+            if(order_response.empty()):
+                print("Order not found\n")
+            else:   
+                order = {order_response.head[i]: order_response[0][i] for i in range(len(order_response.head))}
+                get_request_sql = "(SELECT * FROM request WHERE rid = {});".format(order['rid'])
+                request_response = query_executer(get_request_sql)
+                request = {request_response.head[i]: request_response[0][i] for i in range(len(request_response.head))}
+
+                if(request['custname'] == self.login_resp['username']):
+                    while True:
+                        print(request)
+                        print("Would you like to\n")
+                        print("1. Cancel this order\n")
+                        print("2. Rate this order\n")
+                        print("3. Go back\n")
+                        user_input = input()
+                        if re.match(r'^1', str(user_input)): 
+                            '''to edit order'''
+                            self.cancel_order(order['oid'])
+
+                        elif re.match(r'^2', str(user_input)):
+                            '''Rate this order'''
+                            if order['ordStatus'] != 'complete':
+                                print("Cannot rate an unfinished order\n")
+                                continue
+                            print("From 1-5, how would you like to rate this order?\n")
+                            rate = int(input())
+                            if rate <=0 or rate >5:
+                                print("Invalid rating\n")
+                                continue 
+                            self.rate_order(order['oid'], rate)
+                            print("Please leave your comment.\n")
+                            comment = str(input())
+                            self.comment_order(order['oid'],comment)
+
+                            date_str = self.get_current_date()
+                            self.edit_rate_date(order['oid'],date_str)
+                        
+
+
+                else:
+                    print("Order not found\n")
+
+
+        except Exception as e: 
+            print("I/O error occurred\n")
+            print("ARGS:{}\n".format(e.args))
+            print("Error: ", e)
+            print(e.__traceback__)
+            print("Context: ", e.__context__)
+
+    def rate_order(self, oid,rate):
+        rate_order_sql = "UPDATE order SET rating = {} WHERE oid = {};".format(rate,oid)
+        query_executer(rate_order_sql)
+    
+    def comment_order(self, oid,comment):
+        comment_order_sql = "UPDATE order SET comment = {} WHERE oid = {};".format(comment,oid)
+        query_executer(comment_order_sql)
+
+    def cancel_order(self, oid):
+        cancel_order_sql = "UPDATE order SET ordStatus = 'complete' WHERE oid = {};".format(oid)
+        query_executer(cancel_order_sql)
+
+    def edit_rate_date(self, oid, date):
+        edit_sql = "UPDATE order SET ratingDate = {} WHERE oid = {};".format(date, oid)
+        query_executer(edit_sql)
+
+    def get_current_date(self):
+        return str(date.today())
+
     def see_mates(self): 
         """
         Function for menu option 1. 
@@ -158,7 +272,6 @@ class CustomerSession(LoginSession):
                     if lower_age < 18: 
                         print("I'm calling the police...")
                         raise ValueError("WARNING: Pedophile spotted")
-                        break
                     
                     ### 1.3 Languages
                     print("**Languages spoken:**")
@@ -246,41 +359,14 @@ class CustomerSession(LoginSession):
             print("Error: ", e)
             print(e.__traceback__)
             print("Context: ", e.__context__)
+
+    def edit_preference(self):
+        username = self.login_resp['username']
+        print("Please enter your new preference\n")
+        preference = str(input())
+        edit_preference_sql = "UPDATE order SET preference = {} WHERE username = {};".format(preference,username)
+        query_executer(edit_preference_sql)
+
+
+
                         
-            
-    def see_orders(self): 
-        """
-        Display orders for the customer 
-        """
-        raise NotImplementedError 
-        
-        
-    def rate_order(self): 
-        """ 
-        Allows the customer to rate an order. This should also be linked to 
-        the function see_orders(self). 
-        """
-        
-        raise NotImplementedError
-        
-        
-    def pay_invoice(self): 
-        """
-        Allows the customer to pay an invoice on an order 
-        """ 
-        
-        raise NotImplementedError 
-        
-    def update_preferences(self): 
-        """
-        Allows the customer to update it's preferences by replacing the existing 
-        ones with a new string
-        """
-        
-        raise NotImplementedError 
-        
-        
-        
-        
-        
-        
