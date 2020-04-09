@@ -174,8 +174,8 @@ def create_application(mates, managers): # arguments are a list of mate and a li
         aTime = str(fake_time.date_between(start_date=start_date, end_date='today')) # random date from 2018
         appStatus = np.random.choice(approved) # randomly choose one 
         
-        stmt = "INSERT INTO application VALUES({},'{}','{}','{}','{}');\n".format(
-                        i+1,mateName, mngName, aTime, appStatus) 
+        stmt = "INSERT INTO application VALUES(DEFAULT,'{}','{}','{}','{}');\n".format(
+                        mateName, mngName, aTime, appStatus) 
         # SQL: INSERT INTO application VALUES(appid, username, aTime, isApproved, mngName)
         
         records += [stmt]  # save statements to list
@@ -242,12 +242,12 @@ def create_request(mates, customers, size=30):
         
         # add don't add info for some requests
         if i % 6 != 0: 
-            stmt = "INSERT INTO request VALUES({},'{}','{}','{}','{}','{}','{}');\n".format(
-                rid,rinfo,rstatus,custName,mateName,rdate,decDate)  
+            stmt = "INSERT INTO request VALUES(DEFAULT,'{}','{}','{}','{}','{}','{}');\n".format(
+                rinfo,rstatus,custName,mateName,rdate,decDate)  
             #SQL: INSERT INTO request VALUES(rid, rinfo, rstatus, custName, mateName, decTime)
         else: 
-            stmt = "INSERT INTO request VALUES({},'{}',DEFAULT,'{}','{}','{}','{}');\n".format(
-                rid,rinfo,custName,mateName,rdate,decDate)              
+            stmt = "INSERT INTO request VALUES(DEFAULT,'{}',DEFAULT,'{}','{}','{}','{}');\n".format(
+                rinfo,custName,mateName,rdate,decDate)              
             #SQL: INSERT INTO request VALUES(rid, rinfo, DEFAULT, custName, mateName, decTime)
         rids += [rid]
         custnames += [custName]
@@ -300,13 +300,13 @@ def create_order(rids): #argument is a list of request id
         
         # some orders will have no rating
         if( i % 3 != 0 ):
-            stmt = "INSERT INTO orderTable VALUES ({},'{}','{}',{},'{}','{}',{});\n".format(
-                oid, str(start_date), ordstatus, rid, rate_date, comment, rating)
+            stmt = "INSERT INTO orderTable VALUES (DEFAULT,'{}','{}',{},'{}','{}',{});\n".format(
+                 str(start_date), ordstatus, rid, rate_date, comment, rating)
             #SQL: INSERT INTO orderTable VALUES (oid, startDate, ordStatus, rid, ratingDate, comment, rating)
         else:
             stmt = """INSERT INTO orderTable (oid, startDate, ordStatus,rid) 
-                VALUES({},'{}','{}','{}');\n""".format(
-                oid, str(start_date),  ordstatus,  rid)
+                VALUES(DEFAULT,'{}','{}','{}');\n""".format(
+                str(start_date),  ordstatus,  rid)
             #SQL:  INSERT INTO orderTable (oid, startDate, ordStatus, rid) VALUES (-,-,-,-,-)
             # represent requests without rating
             
@@ -361,8 +361,8 @@ def create_invoice(customers, oids): # arguments are a list of customer and a li
         custName = customerNames[i]
         due_date = due_dates[i]
         amount = round(random.uniform(15.00, 200.00))
-        stmt = "INSERT INTO invoice VALUES({},{},'{}','{}','{}','{}','{}','{}');\n".format(
-            inid, oid, descriptions[i], due_date, amount, custName, method, status)
+        stmt = "INSERT INTO invoice VALUES(DEFAULT,{},'{}','{}','{}','{}','{}','{}');\n".format(
+             oid, descriptions[i], due_date, amount, custName, method, status)
         #SQL: INSERT INTO invoice VALUES(inid, oid, description, dueDate, amount,custName , method, status) 
 
         records += [stmt] # save statements to list
@@ -432,7 +432,7 @@ def create_activity(managers): # argument is a list of manager
     # create size number of records
     for i in range(size):
         aid = i+1
-        stmt = "INSERT INTO activity VALUES({},'{}','{}');\n".format(aid, descriptions[i],managersNames[i])
+        stmt = "INSERT INTO activity VALUES(DEFAULT,'{}','{}');\n".format( descriptions[i],managersNames[i])
         #SQL: INSERT INTO activity VALUES(aid, descriptions, managerName)
 
         records += [stmt] # save statements to list
