@@ -58,10 +58,9 @@ class CustomerSession(LoginSession):
             menu_string += "\nPlease choose one of the available options below:\n"
             menu_string += "\t 1. See Mates\n" # will have a sub menu to see available mates --> extra menu, new order 
             menu_string += "\t 2. See my orders\n" # will have an option to : Modify order, cancel order
-            menu_string += "\t 3. Rate Order\n"
-            menu_string += "\t 4. Pay Invoice\n"
-            menu_string += "\t 5. Update preferences\n"
-            menu_string += "\t 6. Exit\n"
+            menu_string += "\t 3. Pay Invoice\n"
+            menu_string += "\t 4. Update preferences\n"
+            menu_string += "\t 5. Exit\n"
             print(menu_string) 
             
             mgr_input = input() 
@@ -70,18 +69,15 @@ class CustomerSession(LoginSession):
                 self.see_mates() 
                 
             elif re.match(r'^2.*', str(mgr_input)): 
-                print("See my orders")
-            
-            elif re.match(r'^3.*', str(mgr_input)): 
-                print("Rate Order")
+                self.see_orders()
                 
-            elif re.match(r'^4.*', str(mgr_input)): 
+            elif re.match(r'^3.*', str(mgr_input)): 
                 print("Pay Invoice")
                 
-            elif re.match(r'^5.*', str(mgr_input)): 
+            elif re.match(r'^4.*', str(mgr_input)): 
                 self.edit_preference()
                 
-            elif re.match(r'^6.*', str(mgr_input)): 
+            elif re.match(r'^5.*', str(mgr_input)): 
                 print("Exit")
                 break
             else: 
@@ -93,17 +89,17 @@ class CustomerSession(LoginSession):
         Function for menu option 2
         """
 
-        try:
-            username = self.login_resp['username']
-            get_order_sql = "SELECT * FROM orderTable WHERE rid IN "
-            get_order_sql += "(SELECT rid FROM request WHERE custname = {});".format(username)
+        username = self.login_resp['username']
+        get_order_sql = "SELECT * FROM orderTable WHERE rid IN "
+        get_order_sql += "(SELECT rid FROM request WHERE custname = '{}');".format(username)
 
-            result = query_executer(get_order_sql)
-            response_top = result.head()
-            print(response_top)
-            size = result.shape[0]
-            for i in range(size):
-                print("{}\t{}\n".format(i,result[i]))
+        while True:
+            query_executer(get_order_sql)
+            # response_top = result.head()
+            # print(response_top)
+            # size = result.shape[0]
+            # for i in range(size):
+            #     print("{}\t{}\n".format(i,result[i]))
 
             print("To continue:\n")
             print("1. Make change to an order\n")
@@ -115,95 +111,100 @@ class CustomerSession(LoginSession):
                 self.edit_order()
             elif re.match(r'^2', str(user_input)):
                 '''goes back to previous level'''
+                break
 
-        except Exception as e: 
-            print("I/O error occurred\n")
-            print("ARGS:{}\n".format(e.args))
-            print("Error: ", e)
-            print(e.__traceback__)
-            print("Context: ", e.__context__)
 
     def edit_order(self):
         """
         cancel/rate an order
         """
-        try:
-            print("Please enter the order number\n")
-            oid= input()
+        
+        print("Please enter the order number\n")
+        oid= input()
 
-            get_order_sql = "SELECT * FROM orderTable WHERE oid = {};".format(oid)
+        get_order_sql = "SELECT * FROM orderTable WHERE oid = {};".format(oid)
 
-            order_response = query_executer(get_order_sql)
-            
-            if(order_response.empty()):
+        order_response = query_executer(get_order_sql)
+        if(order_response.shape[0] == 0):
+            print("Order not found\n")
+        else:   
+            get_request_sql = "(SELECT * FROM request WHERE rid = {});".format(order_response['rid'][0])
+
+            request_response = query_executer(get_request_sql)
+
+            if(request_response['custname'][0] == self.login_resp['username']):
+                while True:
+                    # print(request)
+                    print("Would you like to\n")
+                    print("1. Cancel this order\n")
+                    print("2. Rate this order\n")
+                    print("3. Go back\n")
+                    user_input = input()
+                    if re.match(r'^1', str(user_input)): 
+                        '''to edit order'''
+                        self.cancel_order(order_response['oid'][0])
+                        print('Order cancelled')
+
+                    elif re.match(r'^2', str(user_input)):
+                        '''Rate this order'''
+                        get_order_sql = "SELECT * FROM orderTable WHERE oid = {};".format(oid)
+
+                        order_response = query_executer(get_order_sql)
+                        if order_response['ordstatus'][0] != 'complete':
+                            print("Cannot rate an unfinished order\n")
+                            continue
+                        print("From 1-5, how would you like to rate this order?\n")
+                        rate = int(input())
+                        if rate <=0 or rate >5:
+                            print("Invalid rating\n")
+                            continue 
+                        self.rate_order(order_response['oid'][0], rate)
+                        print("Please leave your comment.\n")
+                        comment = str(input())
+                        self.comment_order(order_response['oid'][0],comment)
+
+                        date_str = self.get_current_date()
+                        self.edit_rate_date(order_response['oid'][0],date_str)
+                        break
+                    else:
+                        break
+            else:
                 print("Order not found\n")
-            else:   
-                order = {order_response.head[i]: order_response[0][i] for i in range(len(order_response.head))}
-                get_request_sql = "(SELECT * FROM request WHERE rid = {});".format(order['rid'])
-                request_response = query_executer(get_request_sql)
-                request = {request_response.head[i]: request_response[0][i] for i in range(len(request_response.head))}
-
-                if(request['custname'] == self.login_resp['username']):
-                    while True:
-                        print(request)
-                        print("Would you like to\n")
-                        print("1. Cancel this order\n")
-                        print("2. Rate this order\n")
-                        print("3. Go back\n")
-                        user_input = input()
-                        if re.match(r'^1', str(user_input)): 
-                            '''to edit order'''
-                            self.cancel_order(order['oid'])
-
-                        elif re.match(r'^2', str(user_input)):
-                            '''Rate this order'''
-                            if order['ordStatus'] != 'complete':
-                                print("Cannot rate an unfinished order\n")
-                                continue
-                            print("From 1-5, how would you like to rate this order?\n")
-                            rate = int(input())
-                            if rate <=0 or rate >5:
-                                print("Invalid rating\n")
-                                continue 
-                            self.rate_order(order['oid'], rate)
-                            print("Please leave your comment.\n")
-                            comment = str(input())
-                            self.comment_order(order['oid'],comment)
-
-                            date_str = self.get_current_date()
-                            self.edit_rate_date(order['oid'],date_str)
-                        
-
-
-                else:
-                    print("Order not found\n")
-
-
-        except Exception as e: 
-            print("I/O error occurred\n")
-            print("ARGS:{}\n".format(e.args))
-            print("Error: ", e)
-            print(e.__traceback__)
-            print("Context: ", e.__context__)
 
     def rate_order(self, oid,rate):
-        rate_order_sql = "UPDATE order SET rating = {} WHERE oid = {};".format(rate,oid)
-        query_executer(rate_order_sql)
+        rate_order_sql = "UPDATE orderTable SET rating = {} WHERE oid = {};".format(rate,oid)
+        query_executer(rate_order_sql,insert = True)
     
     def comment_order(self, oid,comment):
-        comment_order_sql = "UPDATE order SET comment = {} WHERE oid = {};".format(comment,oid)
-        query_executer(comment_order_sql)
+        comment_order_sql = "UPDATE orderTable SET comment = '{}' WHERE oid = {};".format(comment,oid)
+        query_executer(comment_order_sql,insert = True)
 
     def cancel_order(self, oid):
-        cancel_order_sql = "UPDATE order SET ordStatus = 'complete' WHERE oid = {};".format(oid)
-        query_executer(cancel_order_sql)
+        cancel_order_sql = "UPDATE orderTable SET ordStatus = 'complete' WHERE oid = {};".format(oid)
+        query_executer(cancel_order_sql,insert = True)
 
     def edit_rate_date(self, oid, date):
-        edit_sql = "UPDATE order SET ratingDate = {} WHERE oid = {};".format(date, oid)
-        query_executer(edit_sql)
+        edit_sql = "UPDATE orderTable SET ratingDate = '{}' WHERE oid = {};".format(date, oid)
+        query_executer(edit_sql,insert = True)
 
     def get_current_date(self):
         return str(date.today())
+
+    def edit_preference(self):
+        username = self.login_resp['username']
+        get_customer_sql = "SELECT * FROM customer WHERE username = '{}'".format(username)
+
+        while True:
+            customer_response = query_executer(get_customer_sql)
+
+            print('Your current preference is \n \"{}\"'.format(customer_response['preferences'][0]))
+            print('please enter your new preference')
+            user_input = input()
+
+            edit_preference_sql = "UPDATE customer SET preferences = '{}' WHERE username = '{}';".format(user_input, username)
+            query_executer(edit_preference_sql,insert = True)
+            print("Preference editted successfully")
+            break
 
     def see_mates(self): 
         """
@@ -360,12 +361,7 @@ class CustomerSession(LoginSession):
             print(e.__traceback__)
             print("Context: ", e.__context__)
 
-    def edit_preference(self):
-        username = self.login_resp['username']
-        print("Please enter your new preference\n")
-        preference = str(input())
-        edit_preference_sql = "UPDATE order SET preference = {} WHERE username = {};".format(preference,username)
-        query_executer(edit_preference_sql)
+
 
 
 
