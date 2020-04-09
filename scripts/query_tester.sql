@@ -55,8 +55,18 @@ SELECT * FROM customer;
 
 
 
+SELECT * 
+FROM usertable u
+JOIN manager m
+    ON u.username = m.username 
+; 
+
+
+
+
 
 SELECT * FROM mate; 
+
 
 
 
