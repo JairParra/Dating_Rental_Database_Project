@@ -59,7 +59,7 @@ class ManagerSession(LoginSession):
             menu_string += "\nPlease choose one of the available options below:\n"
             menu_string += "\t 1. Review Mate Application\n"  
             menu_string += "\t 2. Modify Order\n"
-            menu_string += "\t 3. Overview Activity"
+            menu_string += "\t 3. Overview Activity\n"
             menu_string += "\t 4. Exit"
             print(menu_string) 
             
