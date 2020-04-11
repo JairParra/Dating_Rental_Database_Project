@@ -175,43 +175,48 @@ class ManagerSession(LoginSession):
                     print("Enter the your user name")
                     mgnName = str(input())
                     print("Enter the status of order you want to change 1)active 2)pending 3) complete")
-                    if re.match(r'^1', str(input())):
+                    choice = str(input())
+                    if re.match(r'^1', choice):
                         status = "active"
-                    elif re.match(r'^2', str(sub_input1)):
+                    elif re.match(r'^2', choice):
                         status = "pending"
-                    elif re.match(r'^3', str(sub_input1)):
+                    elif re.match(r'^3', choice):
                         status = 'complete'
                     else:
                         print("Invalid input")
                         continue
-                    stmt = "UPDATE order\n"
-                    stmt +="SET ordstatus=" + status+"\n"
+                    stmt = "UPDATE ordertable\n"
+                    stmt +="SET ordstatus=" +"\'" +status+"\'" +"\n"
                     stmt += "WHERE oid=" +oid +";"
                     today = date.today()
-                    d1= today.strftime("%Y-%m/%d")
-                    query_executer(stmt)  # execute and display query and result
-                    stmt1 = "INSERT INTO modification VALUES("++ "\'"+mgnName+ "\'"+"," +oid+","+ "\'" +d1 + "\'" +";"
-                    query_executer(stmt1)
+                    d1= today.strftime("%Y-%m-%d")
+                    query_executer(stmt,insert = True)  # execute and display query and result
+                    stmt1 = "INSERT INTO modification VALUES("+ "\'"+mgnName+ "\'"+"," +oid+","+ "\'" +d1 + "\'" +");"
+                    query_executer(stmt1,insert = True)
                 elif re.match(r'^2', str(sub_input1)):
                     print("Enter the id of order you want to modified")
                     oid = str(input())
-                    stmt = "DELETE FROM order WHERE oid="+oid+";"
-                    query_executer(stmt)
+                    stmt = "DELETE FROM modification WHERE oid=" + oid + ";"
+                    query_executer(stmt,insert = True)
+                    stmt1 = "DELETE FROM ordertable WHERE oid="+oid+";"
+                    query_executer(stmt1,insert = True)
                 elif re.match(r'^3', str(sub_input1)):
                     print("Enter the id of order you want to insert")
                     oid = str(input())
                     print("Enter the start day in from of YY-MM-DD")
                     startDate = str(input())
-                    if re.match(r'^1', str(input())):
+                    print("Enter the status of the order1)active 2) pending 3) complete")
+                    choice = str(input())
+                    if re.match(r'^1', choice):
                         status = "active"
-                    elif re.match(r'^2', str(sub_input1)):
+                    elif re.match(r'^2', choice):
                         status = "pending"
-                    elif re.match(r'^3', str(sub_input1)):
+                    elif re.match(r'^3', choice):
                         status = 'complete'
                     else:
                         print("Invalid input")
                         continue
-                    print("Enter the id of order you want to insert")
+                    print("Enter the id of request you want to insert")
                     rid = str(input())
                     # Those attribute should be insert by costumer
                     # print("Enter the rating day in from of YY-MM-DD")
@@ -221,7 +226,7 @@ class ManagerSession(LoginSession):
                     # print("Enter the rating")
                     # rating = str(input())
                     stmt = "INSERT INTO orderTable (oid, startDate, ordStatus,rid) " \
-                           "VALUES("+oid+"," +startDate+","+status+","+rid+");"
+                           "VALUES("+oid+"," +"\'"+startDate+"\'"+","+"\'"+status+"\'"+","+rid+");"
                     query_executer(stmt,insert=True)
 
                 elif re.match(r'^4', str(sub_input1)):
