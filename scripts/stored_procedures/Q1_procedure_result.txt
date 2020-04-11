@@ -1,0 +1,144 @@
+cancel_orders.sql
+----------------------------------
+Description: 
+Due to Covid-19 crisis, our company has decided to cancel all dates which starts after March 15th. All orders with startdate after '2020-03-15' will automaticly be cancelled (ordStatus becomes 'complete'). For customers who have already paid their orders but not had the date yet, they will receive a full amount refund. Which means that a new invoice will be automativally generated with the amount be the negative of paid amount. 
+
+----------------------------------
+SQL:
+    CREATE OR REPLACE PROCEDURE CancelOrders()
+    LANGUAGE PLPGSQL
+    AS $$
+        DECLARE 
+        ordStatus VARCHAR(20) := 'complete';
+        oid INTEGER;
+        amount DECIMAL(100,2);
+        description VARCHAR(100) :='Automatic refund';
+        duedate DATE := '2020-03-20';
+        custName VARCHAR(50);
+        method VARCHAR(20) ;
+        status VARCHAR(20) := 'paid';
+        order_row RECORD;
+        invoice_row RECORD;
+
+        OrderCursor CURSOR(p INTEGER   )
+            FOR SELECT * FROM orderTable WHERE startDate > '2019-12-08';
+        BEGIN
+
+        OPEN OrderCursor(1);
+        
+        LOOP
+                -- PRINT 'Processing OrderID:' +Cast(@oid as VARCHAR);
+
+                FETCH OrderCursor INTO order_row;
+                EXIT WHEN NOT FOUND;
+                    
+                UPDATE orderTable
+                SET ordStatus = 'complete'
+                WHERE CURRENT OF OrderCursor;
+
+                SELECT INTO invoice_row * FROM invoice WHERE invoice.oid = order_row.oid ;
+                IF invoice_row.status = 'paid' THEN
+                    INSERT INTO invoice(oid, description,duedate, amount, custName, method, status) 
+                    VALUES (order_row.oid, description, duedate, -1 * invoice_row.amount, invoice_row.custName, invoice_row.method, status);
+                
+                END IF;
+                
+        END LOOP;
+        CLOSE OrderCursor;
+        END
+    $$
+    ;
+
+
+    CALL CancelOrders();
+---------------------------------------------------------
+Result:
+
+Before cancel orders:
+
+cs421=> SELECT * FROM ordertable WHERE startdate > '2020-3-15' ;
+
+Result:
+ oid | startdate  | ordstatus | rid | ratingdate |  comment   | rating
+-----+------------+-----------+-----+------------+------------+--------
+
+  21 | 2020-04-07 | pending  |  22 | 	 |             |
+  22 | 2020-03-26 | pending  |  28 |           |            |
+  26 | 2020-03-16 | active      |  13 | 	 |             |   
+
+
+
+After cancel orders:
+
+cs421=> SELECT * FROM ordertable WHERE startdate > '2020-3-15' ;
+
+Result:
+ oid | startdate  | ordstatus | rid | ratingdate |  comment   | rating
+-----+------------+-----------+-----+------------+------------+--------
+
+  21 | 2020-04-07 | complete  |  22 | 	 | 	| 
+  22 | 2020-03-26 | complete  |  28 |         |              |
+  26 | 2020-03-06 | complete  |  13 |         |              | 
+
+Notice that order 21, 22 and 26 have become "complete". They were 'pending' or 'active' before we cancel the order
+
+Before cancel orders:
+
+cs421=> SELECT * FROM invoice;
+
+Result:
+
+inid | oid |   description    |  duedate   | amount |    custname    |     method      | status
+------+-----+------------------+------------+--------+----------------+-----------------+---------
+    1 |  17 | description1     | 2019-11-18 |  78.00 | jpresnall10    | americanexpress | paid
+    2 |  15 | description2     | 2019-04-04 |  50.00 | cmurtagh4v     | visa            | pending
+    3 |  12 | description3     | 2019-07-04 |  93.00 | jrosendale5    | visa            | paid
+    4 |  28 | description4     | 2019-07-29 |  61.00 | tharkes13      | debit           | paid
+    5 |   8 | description5     | 2019-06-22 | 164.00 | rbazek3c       | debit           | pending
+    6 |  25 | description6     | 2018-04-10 | 136.00 | mclohessy5e    | mastercard      | pending
+    7 |   6 | description7     | 2018-09-06 | 186.00 | rpetett4c      | mastercard      | pending
+    8 |  18 | description8     | 2018-08-06 |  90.00 | pisaaksohn2l   | visa            | pending
+    9 |   1 | description9     | 2018-05-06 | 175.00 | aburehill3g    | visa            | paid
+   10 |  22 | description10    | 2020-02-08 |  85.00 | slavies2u      | visa            | pending
+   11 |   9 | description11    | 2019-03-23 | 186.00 | dkender1p      | E-T             | paid
+   12 |   2 | description12    | 2020-03-19 |  93.00 | nbareham5a     | E-T             | paid
+   13 |  19 | description13    | 2019-09-14 |  50.00 | cneumann1c     | visa            | paid
+   14 |  11 | description14    | 2019-03-01 | 122.00 | rbrandenburg2t | mastercard      | pending
+   15 |  26 | description15    | 2019-12-07 |  73.00 | rhebbesm       | americanexpress | pending
+   16 |  20 | description16    | 2018-03-18 | 103.00 | jbenger4b      | paypal          | pending
+   17 |   3 | description17    | 2019-11-14 | 193.00 | sbrittin3p     | mastercard      | pending
+   18 |   5 | description18    | 2019-12-14 |  49.00 | tstopp3o       | applepay        | pending
+   19 |  14 | description19    | 2018-03-16 | 174.00 | rhebbesm       | americanexpress | pending
+   20 |  24 | description20    | 2018-04-11 | 189.00 | dmellody1g     | mastercard      | paid
+   21 |  10 | description21    | 2020-02-20 | 125.00 | aackeroyd51    | paypal          | pending
+   22 |  30 | description22    | 2019-07-22 | 137.00 | aackeroyd51    | debit           | pending
+   23 |  13 | description23    | 2019-06-10 |  53.00 | mgrishagin2d   | E-T             | paid
+   24 |   7 | description24    | 2019-11-20 |  64.00 | lstairs2g      | visa            | paid
+   25 |  16 | description25    | 2018-08-24 | 134.00 | cbalstone53    | americanexpress | pending
+   26 |  23 | description26    | 2019-07-01 | 187.00 | bwhetnall46    | E-T             | paid
+   27 |  29 | description27    | 2018-09-21 | 100.00 | jspurling0     | mastercard      | pending
+   29 |  21 | description29    | 2020-03-25 | 188.00 | mcobden3s      | visa            | paid
+   30 |  27 | description30    | 2020-03-02 |  83.00 | adewey4i       | visa            | pending
+   31 |  26 | Automatic refund | 2020-03-20 | 188.00 | mcobden3s      | visa            | paid
+
+After cancel orders:
+
+cs421=> SELECT * FROM invoice;
+
+Result:
+
+inid | oid |   description    |  duedate   | amount |    custname    |     method      | status
+------+-----+------------------+------------+--------+----------------+-----------------+---------
+                                                                ...
+                                                                ...
+   26 |  23 | description26    | 2019-07-01 | 187.00 | bwhetnall46    | E-T             | paid
+   27 |  29 | description27    | 2018-09-21 | 100.00 | jspurling0     | mastercard      | pending
+   29 |  21 | description29    | 2020-03-25 | 188.00 | mcobden3s      | visa            | paid
+   30 |  27 | description30    | 2020-03-02 |  83.00 | adewey4i       | visa            | pending
+   31 |  26 | Automatic refund | 2020-03-20 | -188.00 | mcobden3s      | visa            | paid
+
+Notice that a new invoice 31 is created with the amount be -188. It is the refund of order 29.
+
+
+
+
