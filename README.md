@@ -178,3 +178,250 @@ Please choose one of the available options below:
 ~Goodbye~
 
 ```
+### Demo (Customer: search mates, see my orders, make change to orders, make change to preference)
+
+```
+######################################################
+                  Customer Options Menu
+######################################################
+
+Please choose one of the available options below:
+         1. See Mates
+         2. See my orders
+         3. Pay Invoice
+         4. Update preferences
+         5. Exit
+
+1
+######################################################
+                    Look for a Mate
+######################################################
+1. See all mates
+2. Custom search
+3. Exit
+
+1
+**Order by**
+1.Hourly Rate
+2.Age
+3.Nickname
+4.None
+1
+*****************************SQL*****************************
+SELECT nickname,
+         description
+        , sex,
+         language,
+         height,
+         weight,
+         hourlyrate
+FROM mate m
+JOIN usertable u
+         ON m.username = u.username
+ORDER BY hourlyrate
+;
+
+***************************OUTPUT****************************
+      nickname    description     sex      language height weight hourlyrate
+0   nickname34  description34  Female       English   1.76  74.00         52
+1    nickname4   description4    Male  Eng & French   1.61  65.00         56
+2   nickname14  description14    Male        French   1.79  69.00         61
+3   nickname22  description22  Female  Eng & French   1.61  61.00         64
+4   nickname19  description19    Male  Eng & French   1.85  69.00         68
+5   nickname15  description15    Male  Eng & French   1.83  70.00         70
+6    nickname2   description2    Male       English   1.84  73.00         72
+7    nickname3   description3    Male       English   1.80  56.00         73
+8    nickname9   description9    Male        French   1.61  70.00         76
+9    nickname1   description1    Male        French   1.62  58.00         76
+10  nickname31  description31  Female        French   1.55  56.00         78
+11   nickname8   description8    Male  Eng & French   1.85  62.00         89
+12   nickname7   description7    Male  Eng & French   1.90  55.00         90
+13  nickname29  description29  Female  Eng & French   1.95  63.00        106
+14  nickname20  description20  Female  Eng & French   1.80  58.00        112
+15  nickname38  description38  Female  Eng & French   1.50  69.00        117
+16  nickname18  description18    Male        French   1.58  62.00        118
+17   nickname0   description0    Male        French   1.82  56.00        120
+18   nickname6   description6    Male       English   1.71  64.00        121
+19  nickname23  description23  Female       English   1.61  56.00        130
+20  nickname36  description36  Female  Eng & French   1.88  70.00        137
+21  nickname10  description10    Male  Eng & French   1.55  57.00        138
+22  nickname13  description13    Male       English   1.54  61.00        142
+23  nickname17  description17    Male  Eng & French   1.64  68.00        143
+24  nickname12  description12    Male       English   1.77  74.00        146
+25  nickname16  description16    Male  Eng & French   1.93  72.00        147
+26  nickname32  description32  Female  Eng & French   1.58  58.00        158
+27  nickname28  description28  Female  Eng & French   1.77  70.00        159
+28  nickname37  description37  Female  Eng & French   1.56  64.00        166
+29  nickname26  description26  Female       English   1.70  73.00        167
+30  nickname11  description11    Male       English   1.80  71.00        167
+31  nickname33  description33  Female       English   1.80  63.00        169
+32  nickname30  description30  Female       English   2.00  58.00        176
+33  nickname25  description25  Female  Eng & French   1.94  61.00        177
+34  nickname39  description39  Female  Eng & French   1.99  70.00        179
+35  nickname35  description35  Female  Eng & French   1.84  57.00        187
+36   nickname5   description5    Male        French   1.78  69.00        189
+37  nickname21  description21  Female        French   1.58  63.00        192
+38  nickname27  description27  Female        French   1.57  58.00        193
+39  nickname24  description24  Female       English   1.70  56.00        195
+*************************MESSAGES****************************
+SELECT 40
+
+######################################################
+                    Look for a Mate
+######################################################
+1. See all mates
+2. Custom search
+3. Exit
+
+3
+Exit
+
+######################################################
+                  Customer Options Menu
+######################################################
+
+Please choose one of the available options below:
+         1. See Mates
+         2. See my orders
+         3. Pay Invoice
+         4. Update preferences
+         5. Exit
+
+2
+*****************************SQL*****************************
+SELECT * FROM orderTable WHERE rid IN (SELECT rid FROM request WHERE custname = 'agiven2o');
+***************************OUTPUT****************************
+   oid   startdate ordstatus  rid  ratingdate    comment rating
+0    6  2018-11-08   pending   30  2019-03-27  comments6    4.8
+*************************MESSAGES****************************
+SELECT 1
+To continue:
+
+1. Make change to an order
+
+2. Go back
+
+1
+Please enter the order number
+
+6
+*****************************SQL*****************************
+SELECT * FROM orderTable WHERE oid = 6;
+***************************OUTPUT****************************
+   oid   startdate ordstatus  rid  ratingdate    comment rating
+0    6  2018-11-08   pending   30  2019-03-27  comments6    4.8
+*************************MESSAGES****************************
+SELECT 1
+*****************************SQL*****************************
+(SELECT * FROM request WHERE rid = 30);
+***************************OUTPUT****************************
+   rid          rinfo   rstatus  custname   matename       rdate     decdate
+0   30  Information63  accepted  agiven2o  tstobbs2x  2018-07-06  2018-10-21
+*************************MESSAGES****************************
+SELECT 1
+Would you like to
+
+1. Cancel this order
+
+2. Rate this order
+
+3. Go back
+
+1
+*****************************SQL*****************************
+UPDATE orderTable SET ordStatus = 'complete' WHERE oid = 6;
+*************************MESSAGES****************************
+UPDATE 1
+Order cancelled
+Would you like to
+
+1. Cancel this order
+
+2. Rate this order
+
+3. Go back
+
+2
+*****************************SQL*****************************
+SELECT * FROM orderTable WHERE oid = 6;
+***************************OUTPUT****************************
+   oid   startdate ordstatus  rid  ratingdate    comment rating
+0    6  2018-11-08  complete   30  2019-03-27  comments6    4.8
+*************************MESSAGES****************************
+SELECT 1
+From 1-5, how would you like to rate this order?
+
+4
+*****************************SQL*****************************
+UPDATE orderTable SET rating = 4 WHERE oid = 6;
+*************************MESSAGES****************************
+UPDATE 1
+Please leave your comment.
+
+good
+*****************************SQL*****************************
+UPDATE orderTable SET comment = 'good ' WHERE oid = 6;
+*************************MESSAGES****************************
+UPDATE 1
+*****************************SQL*****************************
+UPDATE orderTable SET ratingDate = '2020-04-11' WHERE oid = 6;
+*************************MESSAGES****************************
+UPDATE 1
+*****************************SQL*****************************
+SELECT * FROM orderTable WHERE rid IN (SELECT rid FROM request WHERE custname = 'agiven2o');
+***************************OUTPUT****************************
+   oid   startdate ordstatus  rid  ratingdate comment rating
+0    6  2018-11-08  complete   30  2020-04-11   good     4.0
+*************************MESSAGES****************************
+SELECT 1
+To continue:
+
+1. Make change to an order
+
+2. Go back
+
+2
+
+######################################################
+                  Customer Options Menu
+######################################################
+
+Please choose one of the available options below:
+         1. See Mates
+         2. See my orders
+         3. Pay Invoice
+         4. Update preferences
+         5. Exit
+
+4
+*****************************SQL*****************************
+SELECT * FROM customer WHERE username = 'agiven2o'
+***************************OUTPUT****************************
+   username   preferences
+0  agiven2o  preference66
+*************************MESSAGES****************************
+SELECT 1
+Your current preference is
+ "preference66"
+please enter your new preference
+movie, talk, cooking, dance
+*****************************SQL*****************************
+UPDATE customer SET preferences = 'movie, talk, cooking, dance' WHERE username = 'agiven2o';
+*************************MESSAGES****************************
+UPDATE 1
+Preference editted successfully
+
+######################################################
+                  Customer Options Menu
+######################################################
+
+Please choose one of the available options below:
+         1. See Mates
+         2. See my orders
+         3. Pay Invoice
+         4. Update preferences
+         5. Exit
+
+5
+Exit
+```
