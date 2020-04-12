@@ -4,7 +4,7 @@ Group 88
 COMP 421
 
 ## Question 1 
-- This question can be found under the ./scripts/stored_procedures directory. 
+- This question can be found under the ./scripts/stored_procedures directory. The file Q1_procedure_result.txt shows the script in action. 
 
 ## Question 2 
 - All the implementations of the application can be found with detailed documentation under ./user_interface 
