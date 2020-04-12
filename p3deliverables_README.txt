@@ -17,7 +17,7 @@ COMP 421
 ## Question 4 
 - The database also includes dynamic visualizations integrated in the main application, which call the script user_interface/visualizations.py, 
 which uses Python Pandas, numpy, matplotlib and seaborn along with database interaction to output the figures. These output figures can be 
-found under the repository main README, as well as in ./figs , and also make part of the \demos directory. 
+found under the repository main README, as well as in ./figs , and also make part of the /demos directory. 
 
 ## Question 5 
 - See above. 
