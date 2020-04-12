@@ -1,0 +1,316 @@
+######################################################
+Welcome to the MateRental database! 
+######################################################
+
+Please choose one of the available options below:
+         1. Log-in
+         2. Register
+         3. Administrator Connection
+         4. Visualizations menu 
+         5. Exit
+
+1
+Username or email: ayardy56
+Password: 
+Logging in...
+Connecting to the PostgreSQL database...
+Fetching user credentials... 
+Incorrect login
+
+--INFO-- Database connection closed.
+ 
+
+######################################################
+Welcome to the MateRental database! 
+######################################################
+
+Please choose one of the available options below:
+         1. Log-in
+         2. Register
+         3. Administrator Connection
+         4. Visualizations menu 
+         5. Exit
+
+1
+Username or email: ayardy56
+Password: 
+Logging in...
+Connecting to the PostgreSQL database...
+Fetching user credentials... 
+USER=
+ {'username': 'ayardy56', 'password': '8PhzGGb', 'email': 'ayardy56@comsenz.com', 'firstname': 'Alec', 'lastname': 'Yardy', 'sex': 'Male', 'city': 'Barrunchal', 'phonenum': 978978456, 'dateofbirth': datetime.date(1972, 12, 5)}
+
+--INFO-- Database connection closed.
+ 
+Successful login!
+Login response: 
+ {'login_status': True, 'username': 'ayardy56', 'password': '8PhzGGb', 'email': 'ayardy56@comsenz.com', 'firstname': 'Alec', 'lastname': 'Yardy', 'sex': 'Male', 'city': 'Barrunchal', 'phonenum': 978978456, 'dateofbirth': datetime.date(1972, 12, 5)} 
+
+--INFO-- User type: manager
+Usertype values: 
+ {'username': 'ayardy56'}
+
+******MANAGER ACESS******
+
+MANAGER LOGIN: 
+ {'login_status': True, 'username': 'ayardy56', 'password': '8PhzGGb', 'email': 'ayardy56@comsenz.com', 'firstname': 'Alec', 'lastname': 'Yardy', 'sex': 'Male', 'city': 'Barrunchal', 'phonenum': 978978456, 'dateofbirth': datetime.date(1972, 12, 5)}
+MANAGER TYPE: 
+ manager
+MANAGER VALUES: 
+ {'username': 'ayardy56'}
+
+######################################################
+                     Options Menu                      
+######################################################
+
+Please choose one of the available options below:
+         1. Review Mate Application
+         2. Modify Order
+         3. Overview Activity
+         4. Exit
+1
+Review application
+
+######################################################
+                Look for an Application                
+######################################################
+1. See all applications
+2. Custom search
+3. Exit
+
+1
+**You username**
+ayardy56
+*****************************SQL*****************************
+SELECT *FROM application
+WHERE mngname= 'ayardy56';
+***************************OUTPUT****************************
+   appid   matename   mngname       adate appstatus
+0     16  dtookey1f  ayardy56  2019-02-19   Pending
+*************************MESSAGES****************************
+SELECT 1
+
+######################################################
+                Look for an Application                
+######################################################
+1. See all applications
+2. Custom search
+3. Exit
+
+2
+**You username**
+ayardy56
+Custom search: Choose custom preferences for your application :) 
+Status:
+ 1) Pending 2)Approved 3)Rejected
+1
+*****************************SQL*****************************
+SELECT *
+FROM application WHERE mngname='ayardy56'
+AND appStatus='Pending';
+***************************OUTPUT****************************
+   appid   matename   mngname       adate appstatus
+0     16  dtookey1f  ayardy56  2019-02-19   Pending
+*************************MESSAGES****************************
+SELECT 1
+
+######################################################
+                Look for an Application                
+######################################################
+1. See all applications
+2. Custom search
+3. Exit
+
+
+######################################################
+                Overview for an Activity                
+######################################################
+1. Update
+2. Delete
+3. Insert
+4. Exit
+
+4
+Exit
+
+######################################################
+                     Options Menu                      
+######################################################
+
+Please choose one of the available options below:
+         1. Review Mate Application
+         2. Modify Order
+         3. Overview Activity
+         4. Exit
+2
+Modify Order
+
+######################################################
+                     Modify the Order                  
+######################################################
+1. Update
+2. Delete
+3. Insert
+4. Exit
+
+3
+Enter the id of order you want to insert
+DEFAULT
+Enter the start day in from of YY-MM-DD
+2018-03-18
+"Enter the status of the order1)active 2) pending 3) complete"
+3
+Enter the id of order you want to insert
+4
+*****************************SQL*****************************
+INSERT INTO orderTable (oid, startDate, ordStatus,rid) VALUES(DEFAULT,'2018-03-18','complete',4);
+*************************MESSAGES****************************
+INSERT 0 1
+
+######################################################
+                     Modify the Order                  
+######################################################
+1. Update
+2. Delete
+3. Insert
+4. Exit
+
+1
+Enter the id of order you want to modified
+31
+Enter the your user name
+ayardy56
+Enter the status of order you want to change 1)active 2)pending 3) complete
+1
+*****************************SQL*****************************
+UPDATE ordertable
+SET ordstatus='active'
+WHERE oid=31;
+*************************MESSAGES****************************
+UPDATE 1
+*****************************SQL*****************************
+INSERT INTO modification VALUES('ayardy56',31,'2020-04-10');
+*************************MESSAGES****************************
+INSERT 0 1
+
+######################################################
+                     Modify the Order                  
+######################################################
+1. Update
+2. Delete
+3. Insert
+4. Exit
+
+######################################################
+                     Modify the Order                  
+######################################################
+1. Update
+2. Delete
+3. Insert
+4. Exit
+
+2
+Enter the id of order you want to modified
+31
+*****************************SQL*****************************
+DELETE FROM modification WHERE oid=31;
+*************************MESSAGES****************************
+DELETE 1
+*****************************SQL*****************************
+DELETE FROM ordertable WHERE oid=31;
+*************************MESSAGES****************************
+DELETE 1
+
+######################################################
+                     Modify the Order                  
+######################################################
+1. Update
+2. Delete
+3. Insert
+4. Exit
+
+4
+S
+######################################################
+                     Options Menu                      
+######################################################
+
+Please choose one of the available options below:
+         1. Review Mate Application
+         2. Modify Order
+         3. Overview Activity
+         4. Exit
+3
+Overview Activity
+
+######################################################
+                Overview for an Activity                
+######################################################
+1. Update
+2. Delete
+3. Insert
+4. Exit
+
+1
+Enter the id of activity you want to modified
+3
+You enter:3
+Enter the description you want to update
+moive
+You enter:moive
+UPDATE activity
+SET description='moive'
+WHERE aid=3;
+*****************************SQL*****************************
+UPDATE activity
+SET description='moive'
+WHERE aid=3;
+*************************MESSAGES****************************
+UPDATE 1
+
+######################################################
+                Overview for an Activity                
+######################################################
+1. Update
+2. Delete
+3. Insert
+4. Exit
+
+3
+Enter the id of activity you want to insert
+DEFAULT
+Enter the description
+coffee
+Enter the mngName
+ayardy56
+*****************************SQL*****************************
+INSERT INTO activity VALUES(DEFAULT,'coffee','ayardy56');
+*************************MESSAGES****************************
+INSERT 0 1
+
+######################################################
+                Overview for an Activity                
+######################################################
+1. Update
+2. Delete
+3. Insert
+4. Exit
+
+2
+Enter the id of activity you want to delete
+11
+*****************************SQL*****************************
+DELETE FROM activity WHERE aid=11;
+*************************MESSAGES****************************
+DELETE 0
+
+######################################################
+                Overview for an Activity                
+######################################################
+1. Update
+2. Delete
+3. Insert
+4. Exit
+
+
+

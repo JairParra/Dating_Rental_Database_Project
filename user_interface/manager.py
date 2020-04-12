@@ -66,14 +66,15 @@ class ManagerSession(LoginSession):
             mgr_input = input() 
             
             if re.match(r'^1.*', str(mgr_input)): 
-                print("Review application") 
+                print("Review application")
+                self.review_application()
                 
             elif re.match(r'^2.*', str(mgr_input)): 
                 print("Modify Order")
-            
+                self.modify_order()
             elif re.match(r'^3.*', str(mgr_input)): 
                 print("Overview Activity")
-                
+                self.overview_activity()
             elif re.match(r'^4.*', str(mgr_input)): 
                 print("Exiting...")
                 break
@@ -81,221 +82,229 @@ class ManagerSession(LoginSession):
                 print("Invalid Input")
                 
         
-        def review_application(self): 
-            """ 
-            Allows the manager to see some application from a customer to a mate
-            """
-            try:
+    def review_application(self):
+        """
+        Allows the manager to see some application from a customer to a mate
+        """
+        try:
 
-                while True:
-                    menu_string = "\n######################################################\n"
-                    menu_string += "                Look for an Application                \n"
-                    menu_string += "######################################################\n"
-                    menu_string += "1. See all applications\n"
-                    menu_string += "2. Custom search\n"
-                    menu_string += "3. Exit\n"
-                    print(menu_string)
+            while True:
+                menu_string = "\n######################################################\n"
+                menu_string += "                Look for an Application                \n"
+                menu_string += "######################################################\n"
+                menu_string += "1. See all applications\n"
+                menu_string += "2. Custom search\n"
+                menu_string += "3. Exit\n"
+                print(menu_string)
 
-                    sub_input1 = input()
+                sub_input1 = input()
 
-                    if re.match(r'^1', str(sub_input1)):
+                if re.match(r'^1', str(sub_input1)):
 
-                        ## Manager only allow to see the order in his charge
-                        print("**You username**")
-                        mngName = input()
+                    ## Manager only allow to see the order in his charge
+                    print("**You username**")
+                    mngname = str(input())
 
-                        stmt = "SELECT *"
-                        stmt += "FROM application\n"
-                        stmt += "WHERE mngName=" +mngName +";"
-                        query_executer(stmt) # execute and display query and result
+                    stmt = "SELECT *"
+                    stmt += "FROM application\n"
+                    stmt += "WHERE mngname= " + "\'"+mngname + "\'"+";"
+                    query_executer(stmt) # execute and display query and result
 
+                elif re.match(r'^2', str(sub_input1)):
+
+                    ## 1. Custom search according to different attributes
+                    print("**You username**")
+                    mngname = input()
+                    print("Custom search: Choose custom preferences for your application :) ")
+
+                    ### 1.1 status:Pending, Approved, Rejected
+                    print("Status:\n 1) Pending 2)Approved 3)Rejected")
+                    if re.match(r'^1', str(input())):
+                        status = "Pending"
                     elif re.match(r'^2', str(sub_input1)):
-
-                        ## 1. Custom search according to different attributes
-                        print("**You username**")
-                        mngName = input()
-                        print("Custom search: Choose custom preferences for your application :) ")
-
-                        ### 1.1 status:Pending, Approved, Rejected
-                        print("Status:\n 1) Pending 2)Approved 3)Rejected")
-                        if re.match(r'^1', str(input())):
-                            status = "pending"
-                        elif re.match(r'^2', str(sub_input1)):
-                            status = "approved"
-                        elif re.match(r'^3', str(sub_input1)):
-                            status = "rejected"
-                        else:
-                            print("Invalid input")
-                            continue
-
-                        stmt = "SELECT *\n"
-                        stmt += "FROM aplication "
-                        stmt += "WHERE mngName=" + mngName + "\n"
-                        stmt += "AND status=" + status+";"
-
-
+                        status = "Approved"
                     elif re.match(r'^3', str(sub_input1)):
-                        print("Exit")
-                        break
+                        status = "Rejected"
                     else:
-                        print("Invalid Input")
+                        print("Invalid input")
+                        continue
 
-            except Exception as e:
-                print("I/O error occurred\n")
-                print("ARGS:{}\n".format(e.args))
-                print("Error: ", e)
-                print(e.__traceback__)
-                print("Context: ", e.__context__)
-            
-        def modify_order(self): 
-            """ 
-            Allows the manager to modify an existing order 
-            """
-            try:
+                    stmt = "SELECT *\n"
+                    stmt += "FROM application "
+                    stmt += "WHERE mngname=" + "\'"+ mngname + "\'" +"\n"
+                    stmt += "AND appStatus=" +"\'" +status +"\'"+";"
+                    query_executer(stmt)
 
-                while True:
-                    menu_string = "\n######################################################\n"
-                    menu_string += "                     Modify the Order                  \n"
-                    menu_string += "######################################################\n"
-                    menu_string += "1. Update\n"
-                    menu_string += "2. Delete\n"
-                    menu_string += "3. Insert\n"
-                    menu_string += "4. Exit\n"
-                    print(menu_string)
+                elif re.match(r'^3', str(sub_input1)):
+                    print("Exit")
+                    break
+                else:
+                    print("Invalid Input")
 
-                    sub_input1 = input()
+        except Exception as e:
+            print("I/O error occurred\n")
+            print("ARGS:{}\n".format(e.args))
+            print("Error: ", e)
+            print(e.__traceback__)
+            print("Context: ", e.__context__)
 
-                    if re.match(r'^1', str(sub_input1)):
+    def modify_order(self):
+        """
+        Allows the manager to modify an existing order
+        """
+        try:
 
-                        # Check the value that manager want to update
-                        # Insert the new record in to the modification table
-                        print("Enter the id of order you want to modified")
-                        oid = str(input())
-                        print("Enter the your user name")
-                        mgnName = str(input())
-                        print("Enter the status of order you want to change 1)active 2)pending 3) complete")
-                        if re.match(r'^1', str(input())):
-                            status = "active"
-                        elif re.match(r'^2', str(sub_input1)):
-                            status = "pending"
-                        elif re.match(r'^3', str(sub_input1)):
-                            status = 'complete'
-                        else:
-                            print("Invalid input")
-                            continue
-                        stmt = "UPDATE order\n"
-                        stmt +="SET ordStatus=" + status+"\n"
-                        stmt += "WHERE oid=" +oid +";"
-                        today = date.today()
-                        d1= today.strftime("%Y-%m/%d")
-                        query_executer(stmt)  # execute and display query and result
-                        stmt1 = "INSERT INTO modification VALUES("+mgnName+"," +oid+","+ d1 +";"
-                        query_executer(stmt1)
-                    elif re.match(r'^2', str(sub_input1)):
-                        print("Enter the id of order you want to modified")
-                        oid = str(input())
-                        stmt = "DELETE FROM order WHERE oid="+oid+";"
-                        query_executer(stmt)
-                    elif re.match(r'^3', str(sub_input1)):
-                        print("Enter the id of order you want to insert")
-                        oid = str(input())
-                        print("Enter the start day in from of YY-MM-DD")
-                        startDate = str(input())
-                        if re.match(r'^1', str(input())):
-                            status = "active"
-                        elif re.match(r'^2', str(sub_input1)):
-                            status = "pending"
-                        elif re.match(r'^3', str(sub_input1)):
-                            status = 'complete'
-                        else:
-                            print("Invalid input")
-                            continue
-                        print("Enter the id of order you want to insert")
-                        rid = str(input())
-                        # Those attribute should be insert by costumer
-                        # print("Enter the rating day in from of YY-MM-DD")
-                        # ratingDate = str(input())
-                        # print("Enter the comment")
-                        # comment = str(input())
-                        # print("Enter the rating")
-                        # rating = str(input())
-                        stmt = "INSERT INTO orderTable (oid, startDate, ordStatus,rid) " \
-                               "VALUES("+oid+"," +startDate+","+status+","+rid+");"
-                        query_executer(stmt)
+            while True:
+                menu_string = "\n######################################################\n"
+                menu_string += "                     Modify the Order                  \n"
+                menu_string += "######################################################\n"
+                menu_string += "1. Update\n"
+                menu_string += "2. Delete\n"
+                menu_string += "3. Insert\n"
+                menu_string += "4. Exit\n"
+                print(menu_string)
 
-                    elif re.match(r'^4', str(sub_input1)):
-                        print("Exit")
-                        break
+                sub_input1 = input()
+
+                if re.match(r'^1', str(sub_input1)):
+
+                    # Check the value that manager want to update
+                    # Insert the new record in to the modification table
+                    print("Enter the id of order you want to modified")
+                    oid = str(input())
+                    print("Enter the your user name")
+                    mgnName = str(input())
+                    print("Enter the status of order you want to change 1)active 2)pending 3) complete")
+                    choice = str(input())
+                    if re.match(r'^1', choice):
+                        status = "active"
+                    elif re.match(r'^2', choice):
+                        status = "pending"
+                    elif re.match(r'^3', choice):
+                        status = 'complete'
                     else:
-                        print("Invalid Input")
-
-            except Exception as e:
-                print("I/O error occurred\n")
-                print("ARGS:{}\n".format(e.args))
-                print("Error: ", e)
-                print(e.__traceback__)
-                print("Context: ", e.__context__)
-
-            
-        def overview_activity(self): 
-            """ 
-            Allows the manager to see and modify some activity (insert, delete, udpate)
-            """
-            try:
-
-                while True:
-                    menu_string = "\n######################################################\n"
-                    menu_string += "                Overview for an Activity                \n"
-                    menu_string += "######################################################\n"
-                    menu_string += "1. Update\n"
-                    menu_string += "2. Delete\n"
-                    menu_string += "3. Insert\n"
-                    menu_string += "4. Exit\n"
-                    print(menu_string)
-
-                    sub_input1 = input()
-
-                    if re.match(r'^1', str(sub_input1)):
-
-                        # Check the value that manager want to update
-                        # Insert the new record in to the modification table
-                        print("Enter the id of order you want to modified")
-                        aid = str(input())
-                        print("Enter the description you want to update")
-                        description = str(input())
-                        stmt = "UPDATE activityr\n"
-                        stmt +="SET description=" + description+"\n"
-                        stmt += "WHERE aid=" +aid +";"
-                        query_executer(stmt)  # execute and display query and result
-
-                    elif re.match(r'^2', str(sub_input1)):
-                        print("Enter the id of order you want to modified")
-                        aid = str(input())
-                        stmt = "DELETE FROM activity WHERE aid="+aid+";"
-                        query_executer(stmt)
-                    elif re.match(r'^3', str(sub_input1)):
-                        print("Enter the id of activity you want to insert")
-                        aid = str(input())
-                        print("Enter the description")
-                        description = str(input())
-                        print("Enter the mngName")
-                        mngName = str(input())
-                        stmt = "INSERT INTO activity " \
-                               "VALUES("+aid+"," +description+","+mngName+");"
-                        query_executer(stmt)
-
-                    elif re.match(r'^4', str(sub_input1)):
-                        print("Exit")
-                        break
+                        print("Invalid input")
+                        continue
+                    stmt = "UPDATE ordertable\n"
+                    stmt +="SET ordstatus=" +"\'" +status+"\'" +"\n"
+                    stmt += "WHERE oid=" +oid +";"
+                    today = date.today()
+                    d1= today.strftime("%Y-%m-%d")
+                    query_executer(stmt,insert = True)  # execute and display query and result
+                    stmt1 = "INSERT INTO modification VALUES("+ "\'"+mgnName+ "\'"+"," +oid+","+ "\'" +d1 + "\'" +");"
+                    query_executer(stmt1,insert = True)
+                elif re.match(r'^2', str(sub_input1)):
+                    print("Enter the id of order you want to modified")
+                    oid = str(input())
+                    stmt = "DELETE FROM modification WHERE oid=" + oid + ";"
+                    query_executer(stmt,insert = True)
+                    stmt1 = "DELETE FROM ordertable WHERE oid="+oid+";"
+                    query_executer(stmt1,insert = True)
+                elif re.match(r'^3', str(sub_input1)):
+                    print("Enter the id of order you want to insert")
+                    oid = str(input())
+                    print("Enter the start day in from of YY-MM-DD")
+                    startDate = str(input())
+                    print("Enter the status of the order1)active 2) pending 3) complete")
+                    choice = str(input())
+                    if re.match(r'^1', choice):
+                        status = "active"
+                    elif re.match(r'^2', choice):
+                        status = "pending"
+                    elif re.match(r'^3', choice):
+                        status = 'complete'
                     else:
-                        print("Invalid Input")
+                        print("Invalid input")
+                        continue
+                    print("Enter the id of request you want to insert")
+                    rid = str(input())
+                    # Those attribute should be insert by costumer
+                    # print("Enter the rating day in from of YY-MM-DD")
+                    # ratingDate = str(input())
+                    # print("Enter the comment")
+                    # comment = str(input())
+                    # print("Enter the rating")
+                    # rating = str(input())
+                    stmt = "INSERT INTO orderTable (oid, startDate, ordStatus,rid) " \
+                           "VALUES("+oid+"," +"\'"+startDate+"\'"+","+"\'"+status+"\'"+","+rid+");"
+                    query_executer(stmt,insert=True)
 
-            except Exception as e:
-                print("I/O error occurred\n")
-                print("ARGS:{}\n".format(e.args))
-                print("Error: ", e)
-                print(e.__traceback__)
-                print("Context: ", e.__context__)
+                elif re.match(r'^4', str(sub_input1)):
+                    print("Exit")
+                    break
+                else:
+                    print("Invalid Input")
+
+        except Exception as e:
+            print("I/O error occurred\n")
+            print("ARGS:{}\n".format(e.args))
+            print("Error: ", e)
+            print(e.__traceback__)
+            print("Context: ", e.__context__)
+
+
+    def overview_activity(self):
+        """
+        Allows the manager to see and modify some activity (insert, delete, udpate)
+        """
+        try:
+
+            while True:
+                menu_string = "\n######################################################\n"
+                menu_string += "                Overview for an Activity                \n"
+                menu_string += "######################################################\n"
+                menu_string += "1. Update\n"
+                menu_string += "2. Delete\n"
+                menu_string += "3. Insert\n"
+                menu_string += "4. Exit\n"
+                print(menu_string)
+
+                sub_input1 = input()
+
+                if re.match(r'^1', str(sub_input1)):
+
+                    # Check the value that manager want to update
+                    # Insert the new record in to the modification table
+                    print("Enter the id of activity you want to modified")
+                    aid = str(input())
+                    #print("You enter:"+aid);
+                    print("Enter the description you want to update")
+                    description = str(input()).strip()
+                    #print("You enter:"+description)
+                    stmt = "UPDATE activity\n"
+                    stmt +="SET description=" +"\'"+ description+"\'"+"\n"
+                    stmt += "WHERE aid=" + aid +";"
+                    print(stmt)
+                    query_executer(stmt,insert = True)  # execute and display query and result
+
+                elif re.match(r'^2', str(sub_input1)):
+                    print("Enter the id of activity you want to delete")
+                    aid = str(input())
+                    stmt = "DELETE FROM activity WHERE aid="+aid+";"
+                    query_executer(stmt,insert=True)
+                elif re.match(r'^3', str(sub_input1)):
+                    print("Enter the id of activity you want to insert")
+                    aid = str(input())
+                    print("Enter the description")
+                    description = str(input())
+                    print("Enter the mngName")
+                    mngname = str(input())
+                    stmt = "INSERT INTO activity " \
+                           "VALUES("+aid+"," +"\'"+description+"\'"+","+"\'"+mngname+"\'"+");"
+                    query_executer(stmt,insert=True)
+
+                elif re.match(r'^4', str(sub_input1)):
+                    print("Exit")
+                    break
+                else:
+                    print("Invalid Input")
+
+        except Exception as e:
+            print("I/O error occurred\n")
+            print("ARGS:{}\n".format(e.args))
+            print("Error: ", e)
+            print(e.__traceback__)
+            print("Context: ", e.__context__)
 
             
             

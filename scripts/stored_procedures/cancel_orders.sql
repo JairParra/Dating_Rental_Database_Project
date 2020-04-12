@@ -1,4 +1,4 @@
-    CREATE OR REPLACE FUNCTION CancelOrders() RETURNs void
+    CREATE OR REPLACE PROCEDURE CancelOrders()
     LANGUAGE PLPGSQL
     AS $$
         DECLARE 
@@ -14,7 +14,7 @@
         invoice_row RECORD;
 
         OrderCursor CURSOR(p INTEGER   )
-            FOR SELECT * FROM orderTable WHERE startDate > '2020-03-20';
+            FOR SELECT * FROM orderTable WHERE startDate > '2019-12-08';
         BEGIN
 
         OPEN OrderCursor(1);
@@ -29,17 +29,10 @@
                 SET ordStatus = 'complete'
                 WHERE CURRENT OF OrderCursor;
 
-                SELECT INTO invoice_row * FROM invoice WHERE oid = order_row.oid ;
+                SELECT INTO invoice_row * FROM invoice WHERE invoice.oid = order_row.oid ;
                 IF invoice_row.status = 'paid' THEN
-                -- DECLARE InvoiceCursor CURSOR(h INTEGER) FOR SELECT * FROM invoice WHERE oid = order_row.oid AND status = 'paid';
-
-                -- OPEN InvoiceCursor(1);
-                -- LOOP 
-
-                --     FETCH InvoiceCursor INTO invoice_row;
-                --     EXIT WHEN NOT FOUND;
                     INSERT INTO invoice(oid, description,duedate, amount, custName, method, status) 
-                    VALUES (order_row.oid, description, duedate, invoice_row.amount, invoice_row.custName, invoice_row.method, status);
+                    VALUES (order_row.oid, description, duedate, -1 * invoice_row.amount, invoice_row.custName, invoice_row.method, status);
                 
                 END IF;
                 
@@ -50,6 +43,7 @@
     ;
 
 
+    CALL CancelOrders();
             
 
 
