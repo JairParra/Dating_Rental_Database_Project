@@ -6,7 +6,7 @@
 
 ![](figs/database-blue.png)
 
-# COMP421_Database_Project
+# COMP421_Database_Project: Boyfriend/girlfriend rental system
 
 Creation from scratch of an database from scratch for a real world application. Step by step, you will design a schema, create a database using DB2/PostgreSQL, populate your database with data, maintain, query and update your data, develop application programs, and implement a user-friendly interface.
 
