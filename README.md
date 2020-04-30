@@ -8,7 +8,7 @@
 
 # Dating_Rental_Database_Project : Boyfriend/Girlfriend Database System
 
-Creation from scratch of an database from scratch for a real world application, all from scratch. We created requirement analysis for an application idea, constructed and approprate ER schema, created the database using PostgreSQL, wrote all the Python and SQL scripts to create data, maintain the database operations, query and update, develop application programs, and implement a user-friendly interface.
+Creation from scratch of a database from scratch for a real-world application, all from scratch. We created requirement analysis for an application idea, constructed and appropriate ER schema, created the database using PostgreSQL, wrote all the Python and SQL scripts to create data, maintain the database operations, query and update, develop application programs, and implement a user-friendly interface.
 
 ## Description 
 - The purpose of this application is to introduce a dating system different to any others: a date rental service. Instead of putting time and effort in looking for a date, in which some cases people are not willing or feel unable to put in, we want to offer them the possibility of renting a suitable dating partner with certain desired characteristics. Consider for instance, an event in which going alone would be rather awkward; rent a date of your liking instead! Sometimes people feel lonely and would simply like some companies to do their preferred activities: walking around a park, going to a restaurant or a cinema, talk at a café, etc. We propose an interactive platform in which people can do this easily. 
